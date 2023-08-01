@@ -34,15 +34,18 @@ use dam_rs::templates::sam::wr_scanner::{CompressedWrScan, ValsWrScan};
              ''')
     fd.write("\n")
     fd.write("fn " + test_name + "<ValType, CrdType, StopType>() {\n")
-    fd.write("\ttype VT = ValType\n")
-    fd.write("\ttype CT = ValType\n")
-    fd.write("\ttype ST = ValType\n")
-    fd.write("\tlet test_name = " + "\"{}\"\n".format(test_name))
+    fd.write("\ttype VT = ValType;\n")
+    fd.write("\ttype CT = ValType;\n")
+    fd.write("\ttype ST = ValType;\n")
+    fd.write("\tlet test_name = " + "\"{}\";\n".format(test_name))
     fd.write("\tlet filename = home::home_dir().unwrap().join(\"sam_config.toml\");\n")
     fd.write("\tlet contents = fs::read_to_string(filename).unwrap();\n")
     fd.write("\tlet data: Data = toml::from_str(&contents).unwrap();\n")
     fd.write("\tlet formatted_dir = data.sam_config.sam_path;\n")
     fd.write("\tlet base_path = Path::new(&formatted_dir).join(&test_name);\n")
+    fd.write("\tlet mut parent = Program::default();\n")
+    fd.write("\tlet chan_size = 1024;\n")
+    fd.write("\n")
 
 
 def parse_proto(fd, proto_file, data_name):
@@ -60,7 +63,7 @@ def parse_proto(fd, proto_file, data_name):
     for i, t in enumerate(tensors_with_formats):
         tensor_name, modes = t.split("=")
         mode_format = re.compile(
-            "([a-zA-Z]+)([0-9]+)").match(modes).groups()[0]
+            "([a-zA-Z]+)([0-9]+)").match(modes).groups()[1]
         # print(mode_format)
         # num_modes = sum(
         #     list(map(lambda x: 1 if x.isdigit() else 0, set(mode_format))))
@@ -82,50 +85,131 @@ def parse_proto(fd, proto_file, data_name):
                 fd.write(
                     "\tlet {t}{mode}_crd = read_inputs::<CT>(&{t}{mode}_crd_filename);\n".format(t=tensor_name.lower(), mode=mode))
             fd.write(
-                "\tlet {t}_vals = read_inputs::<CT>(&{t}_vals_filename);\n".format(t=tensor_name.lower()))
+                "\tlet {t}_vals = read_inputs::<VT>(&{t}_vals_filename);\n".format(t=tensor_name.lower()))
             fd.write("\n")
-    fd.write("\tlet mut parent = Program::default();\n")
-    fd.write("\tlet chan_size = 1024\n")
+
+    print(mode_formats)
+
+    map_outputs = {}
+    for operator in reversed(operators):
+        op = operator.WhichOneof("op")
+        if op == "fiber_lookup":
+            if operator.id not in map_outputs:
+                map_outputs[operator.id] = {}
+            if "crd" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["crd"] = []
+            map_outputs[operator.id]["crd"].append(
+                operator.fiber_lookup.output_crd.id.id)
+            if "ref" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["ref"] = []
+            map_outputs[operator.id]["ref"].append(
+                operator.fiber_lookup.output_ref.id.id)
+        elif op == "array":
+            if operator.id not in map_outputs:
+                map_outputs[operator.id] = {}
+            if "val" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["val"] = []
+            map_outputs[operator.id]["val"].append(
+                operator.array.output_val.id.id)
+        elif op == "joiner":
+            if operator.id not in map_outputs:
+                map_outputs[operator.id] = {}
+            if "ref1" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["ref1"] = []
+            map_outputs[operator.id]["ref1"].append(
+                operator.joiner.output_ref1.id.id)
+            if "ref2" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["ref2"] = []
+            map_outputs[operator.id]["ref2"].append(
+                operator.joiner.output_ref2.id.id)
+            if "crd" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["crd"] = []
+            map_outputs[operator.id]["crd"].append(
+                operator.joiner.output_crd.id.id)
+        elif op == "reduce":
+            if operator.id not in map_outputs:
+                map_outputs[operator.id] = {}
+            if "val" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["val"] = []
+            map_outputs[operator.id]["val"].append(
+                operator.reduce.output_val.id.id)
+        elif op == "alu":
+            if operator.id not in map_outputs:
+                map_outputs[operator.id] = {}
+            if "val1" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["val1"] = []
+            map_outputs[operator.id]["val1"].append(
+                operator.alu.vals.inputs[0].id.id)
+            if "val2" not in map_outputs[operator.id]:
+                map_outputs[operator.id]["val2"] = []
+            map_outputs[operator.id]["val2"].append(
+                operator.alu.vals.inputs[1].id.id)
+
+    # print(map_outputs)
+
+    map_to_channel = {}
+
+    # std::sort(program.mutable_operators())
 
     for operator in reversed(operators):
         name = operator.name
         id = operator.id
         op = operator.WhichOneof("op")
+        print(id)
 
         if op == "fiber_lookup":
-            new_op = operator.fiber_lookup
-            root = new_op.root
-            print(root)
-            if root:
-                print(new_op.label)
-                fd.write(
-                    "\tlet gen = GeneratorContext::new(|| token_vec!(VT; ST; 0, \"D\").into_iter(), in_ref_sender)\n")
+            process_fiberlookup(fd, operator, map_to_channel)
+        elif op == "repeat":
+            process_repeat(fd, operator)
             # if operator.fibe:
             #     print("true")
-
-        # if operator_op == "broadcast":
-        #     broadcast_op = operator.broadcast
-        #     # print(broadcast_op.output)
-        #     input_id = broadcast_op.input.id
-        #     # output_id = broadcast_op.output[0].id
-
-        # #     printing broadcast operators
-        #     print(f"Operator: {operator_name}")
-        #     print(f"ID: {operator_id}")
-        #     print(f"Input ID: {input_id}")
-        #     print(f"Output ID: {output_id}")
-        # elif operator_op == "fiber_lookup":
-        #     fiber_op = operator.fiber_lookup
-        #     # print(broadcast_op.output)
-        # #     input_id = fiber_op.input.id
-        #     output_id = fiber_op.input_ref.id
-
-        # #     printing broadcast operators
-        #     print(f"Operator: {operator_name}")
-        #     print(f"ID: {operator_id}")
-        #     print(f"Output ID: {output_id}")
-        # # print(operator)
     fd.write("}\n")
+
+
+def process_fiberlookup(fd, operator, map_out_channel):
+    op = operator.fiber_lookup
+    id = operator.id
+    root = op.root
+    print(root)
+    fd.write("\tlet ({t}{i}_out_ref_{m}_sender, {t}{i}_out_ref_{m}_receiver) = parent.bounded(chan_size);\n".format(
+        t=op.tensor, i=op.index, m=op.mode))
+    fd.write("\tlet ({t}{i}_out_crd_{m}_sender, {t}{i}_out_crd_{m}_receiver) = parent.bounded(chan_size);\n".format(
+        t=op.tensor, i=op.index, m=op.mode))
+
+    map_out_channel[id] = {"crd": "{t}{i}_out_crd_{m}_sender".format(
+        t=op.tensor, i=op.index, m=op.mode), "ref": "{t}{i}_out_ref_{m}_sender".format(t=op.tensor, i=op.index, m=op.mode)}
+
+    if root:
+        print(op.tensor)
+        # fd.write("")
+        fd.write("\tlet ({t}{i}_in_ref_{m}_sender, {t}{i}_in_ref_{m}_receiver) = parent.bounded(chan_size);\n".format(
+            t=op.tensor, i=op.index, m=op.mode))
+        fd.write(
+            "\tlet gen = GeneratorContext::new(|| token_vec!(VT; ST; 0, \"D\").into_iter(), {}{}_in_ref_{}_sender);\n".format(op.tensor, op.index, op.mode))
+        fd.write("\tparent.add_child(gen);\n")
+        fd.write("\tlet {t}{i}_data = RdScanData::<CT, ST> ".format(t=op.tensor, i=op.index) + "{" + "{t}{i}_in_ref_{m}_receiver, {r}, {c}".format(
+            t=op.tensor, i=op.index, m=op.mode, r=map_out_channel[id]["ref"], c=map_out_channel[id]["crd"]) + "};\n")
+    else:
+        try:
+            fd.write("\tlet {t}{i}_data = RdScanData::<CT, ST> ".format(t=op.tensor, i=op.index) + "{" + "{i}, {r}, {c}".format(
+                i=map_out_channel[op.input_ref.id.id]["ref"], r=map_out_channel[id]["ref"], c=map_out_channel[id]["crd"]) + "};\n")
+        except:
+            fd.write("\tlet {t}{i}_data = RdScanData::<CT, ST> ".format(t=op.tensor, i=op.index) + "{" + "{i}, {r}, {c}".format(
+                i="test", r=map_out_channel[id]["ref"], c=map_out_channel[id]["crd"]) + "};\n")
+    fd.write(
+        "\tlet {t}{i}_rdscanner = CompressedCrdRdScan::new({t}{i}_data, {t}{m}_seg.clone(), {t}{m}_crd.clone());\n".format(t=op.tensor, i=op.index, m=op.mode))
+    fd.write("\tparent.add_child({}{}_rdscanner);\n".format(op.tensor, op.index))
+    fd.write("\n")
+
+
+def process_repeat(fd, operator):
+    new_op = operator.fiber_lookup
+    root = new_op.root
+    print(root)
+    if root:
+        print(new_op.label)
+        # fd.write(
+        # "\tlet gen = GeneratorContext::new(|| token_vec!(VT; ST; 0, \"D\").into_iter(), {}_in_ref_sender);\n".format())
 
 
 fd = open("generated.rs", "w")

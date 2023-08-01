@@ -737,7 +737,7 @@ operators {
   name: "arrayvals"
   id: 10
   array {
-    tensor: "arrayvals"
+    tensor: "K"
     input_ref {
       id {
         id: 15
