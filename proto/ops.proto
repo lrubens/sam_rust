@@ -1,0 +1,200 @@
+syntax = "proto3";
+
+import "stream.proto";
+
+message Operation {
+  string name = 1;
+  uint64 id = 2;
+  reserved 3 to 10;
+  oneof op {
+    Broadcast broadcast = 11;
+    Joiner joiner = 12;
+    FiberLookup fiber_lookup = 13;
+    FiberWrite fiber_write = 14;
+    Repeat repeat = 15;
+    RepeatSig repeatsig = 16;
+    ALU alu = 17;
+    Reduce reduce = 18;
+    CoordHold coord_hold = 19;
+    CoordMask coord_mask = 20;
+    CoordDrop coord_drop = 21;
+    ArrayVals array = 22;
+    SparseAccumulator spacc = 23;
+    ValWrite val_write = 24;
+  }
+}
+
+message Broadcast {
+  CrdStream input = 1;
+  repeated CrdStream outputs = 2;
+  string label = 3;
+}
+
+message Joiner {
+  enum Type {
+    INTERSECT = 0;
+    UNION = 1;
+  }
+  message JoinBundle {
+    CrdStream crd = 1;
+    // optional string crd_label = 2;
+    // string crd_label = 2;
+    RefStream ref = 3;
+    // string ref_label = 4;
+  }
+
+  Type join_type = 1;
+  repeated JoinBundle input_pairs = 2;
+  string index = 3;
+  string label = 4;
+  RefStream output_ref1 = 5;
+  RefStream output_ref2 = 6;
+  CrdStream output_crd = 7;
+}
+
+message FiberLookup {
+  // bool ref = 1;
+  RefStream input_ref = 2;
+  RefStream output_ref = 3;
+  CrdStream output_crd = 4;
+  string index = 5;
+  string tensor = 6;
+  uint64 mode = 7;
+  string format = 8;
+  bool src = 9;
+  bool root = 10;
+  string label = 11;
+}
+
+message FiberWrite {
+  bool ref = 1;
+  CrdStream input_crd = 2;
+  string index = 3;
+  string tensor = 4;
+  string mode_val = 5;
+  string format = 6;
+  string segsize = 7;
+  string crdsize = 8;
+  string size = 9;
+  bool sink = 10;
+  string label = 11;
+}
+
+message ValWrite {
+  ValStream input_val = 1;
+  string label = 2;
+  // string index = 5;
+  string crdsize = 3;
+  string segsize = 4;
+  string tensor = 5;
+  bool sink = 6;
+}
+
+message Repeat {
+  RefStream input_ref = 1;
+  RefStream output_ref = 2;
+  RepSigStream input_rep_sig = 3;
+  string label = 4;
+  string index = 5;
+  bool root = 6;
+  string tensor = 7;
+}
+
+message RepeatSig {
+  CrdStream input_crd = 1;
+  RepSigStream output_rep_sig = 2;
+  string label = 3;
+  string index = 4;
+}
+
+message ALU {
+  message Val {
+    repeated ValStream inputs = 1;
+    ValStream output = 2;
+  }
+
+  message Crd {
+    repeated CrdStream inputs = 1;
+    CrdStream output = 2;
+  }
+
+  oneof conn {
+    Val vals = 1;
+    Crd crds = 2;
+  }
+
+  enum ALUOp {
+    ADD = 0;
+    SUB = 1;
+    MUL = 2;
+    DIV = 3;
+    EXP = 4;
+    SIN = 5;
+    COS = 6;
+    MAX = 7;
+  }
+  message Stage {
+    repeated uint64 inputs = 1;
+    uint64 output = 2;
+    ALUOp op = 3;
+  }
+
+  repeated Stage stages = 3;
+  uint64 output_val = 4;
+  string label = 5;
+}
+
+message Reduce {
+  ValStream input_val = 1;
+  ValStream output_val = 2;
+  string label = 3;
+}
+
+message SparseAccumulator {
+  CrdStream input_inner_crd = 1;
+  CrdStream output_inner_crd = 2;
+  CrdStream input_outer_crd = 3;
+  ValStream input_val = 4;
+  ValStream output_val = 5;
+  uint64 order = 6;
+  string inner_crd = 7;
+  repeated string outer_crd = 8;
+  string label = 9;
+  // string val = 10;
+}
+
+message CoordHold {
+  CrdStream input_inner_crd = 1;
+  CrdStream input_outer_crd = 2;
+  CrdStream output_inner_crd = 3;
+  CrdStream output_outer_crd = 4;
+  string inner_crd = 5;
+  string outer_crd = 6;
+  string label = 7;
+}
+
+message CoordDrop {
+  CrdStream input_inner_crd = 1;
+  CrdStream input_outer_crd = 2;
+  CrdStream output_inner_crd = 3;
+  CrdStream output_outer_crd = 4;
+  string inner_crd = 5;
+  string outer_crd = 6;
+  string label = 7;
+}
+
+message CoordMask {
+  CrdStream input_inner_crd = 1;
+  CrdStream input_outer_crd = 2;
+  RefStream input_ref = 3;
+  CrdStream output_inner_crd = 4;
+  CrdStream output_outer_crd = 5;
+  RefStream output_ref = 6;
+}
+
+message ArrayVals {
+  string tensor = 1;
+  RefStream input_ref = 2;
+  ValStream output_val = 3;
+  string label = 4;
+}
