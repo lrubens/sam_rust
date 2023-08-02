@@ -5,13 +5,12 @@ operators {
   fiber_lookup {
     output_ref {
       id {
-        id: 29
+        id: 1038
       }
       name: "in-Q"
     }
     output_crd {
       id {
-        id: 29
       }
       name: "in-Q"
     }
@@ -30,13 +29,13 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 30
+          id: 1000
         }
         name: "crd_in-Q"
       }
       ref {
         id {
-          id: 30
+          id: 1041
         }
         name: "ref_in-Q"
       }
@@ -44,13 +43,13 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 31
+          id: 1042
         }
         name: "crd_in-K"
       }
       ref {
         id {
-          id: 31
+          id: 1043
         }
         name: "ref_in-K"
       }
@@ -59,19 +58,16 @@ operators {
     label: "intersect i"
     output_ref1 {
       id {
-        id: 27
       }
       name: "out-Q"
     }
     output_ref2 {
       id {
-        id: 28
       }
       name: "out-K"
     }
     output_crd {
       id {
-        id: 11
       }
       name: "in-i"
     }
@@ -83,25 +79,21 @@ operators {
   coord_drop {
     input_inner_crd {
       id {
-        id: 12
+        id: 1007
       }
       name: "crd_outer-j"
     }
     input_outer_crd {
       id {
-        id: 29
+        id: 1001
       }
       name: "crd_in-i"
     }
     output_inner_crd {
-      id {
-        id: 4
-      }
       name: "inner-j"
     }
     output_outer_crd {
       id {
-        id: 5
       }
       name: "outer-i"
     }
@@ -116,7 +108,7 @@ operators {
   fiber_write {
     input_crd {
       id {
-        id: 11
+        id: 1002
       }
       name: "crd_outer-i"
     }
@@ -135,7 +127,7 @@ operators {
   fiber_write {
     input_crd {
       id {
-        id: 11
+        id: 1003
       }
       name: "crd_inner-j"
     }
@@ -154,19 +146,18 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 29
+        id: 1004
       }
       name: "ref_out-Q"
     }
     output_ref {
       id {
-        id: 26
+        id: 1036
       }
       name: "in-Q"
     }
     output_crd {
       id {
-        id: 26
       }
       name: "in-Q"
     }
@@ -185,29 +176,27 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 27
+          id: 1005
         }
         name: "crd_in-Q"
       }
-    }
-    input_pairs {
-      crd {
-        id {
-          id: 28
-        }
-        name: "crd_in-K"
-      }
       ref {
         id {
-          id: 27
+          id: 1037
         }
         name: "ref_in-Q"
       }
     }
     input_pairs {
+      crd {
+        id {
+          id: 1039
+        }
+        name: "crd_in-K"
+      }
       ref {
         id {
-          id: 28
+          id: 1040
         }
         name: "ref_in-K"
       }
@@ -216,19 +205,17 @@ operators {
     label: "intersect j"
     output_ref1 {
       id {
-        id: 25
       }
       name: "out-Q"
     }
     output_ref2 {
       id {
-        id: 22
+        id: 1016
       }
       name: "out-K"
     }
     output_crd {
       id {
-        id: 12
       }
       name: "in-j"
     }
@@ -240,25 +227,21 @@ operators {
   coord_drop {
     input_inner_crd {
       id {
-        id: 13
+        id: 1012
       }
       name: "crd_outer-k"
     }
     input_outer_crd {
       id {
-        id: 26
+        id: 1006
       }
       name: "crd_in-j"
     }
     output_inner_crd {
-      id {
-        id: 3
-      }
       name: "inner-k"
     }
     output_outer_crd {
       id {
-        id: 11
       }
       name: "outer-j"
     }
@@ -273,7 +256,7 @@ operators {
   fiber_write {
     input_crd {
       id {
-        id: 12
+        id: 1008
       }
       name: "crd_inner-k"
     }
@@ -292,18 +275,17 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 26
+        id: 1009
       }
       name: "ref_out-Q"
     }
     output_ref {
       id {
-        id: 18
+        id: 1022
       }
     }
     output_crd {
       id {
-        id: 24
       }
     }
     index: "k"
@@ -320,19 +302,17 @@ operators {
   broadcast {
     input {
       id {
-        id: 25
+        id: 1010
       }
       name: "crd"
     }
     outputs {
       id {
-        id: 13
       }
       name: "k"
     }
     outputs {
       id {
-        id: 23
       }
     }
     label: "broadcast"
@@ -344,25 +324,21 @@ operators {
   coord_drop {
     input_inner_crd {
       id {
-        id: 14
+        id: 1019
       }
       name: "crd_outer-l"
     }
     input_outer_crd {
       id {
-        id: 24
+        id: 1011
       }
       name: "crd_k"
     }
     output_inner_crd {
-      id {
-        id: 2
-      }
       name: "inner-l"
     }
     output_outer_crd {
       id {
-        id: 12
       }
       name: "outer-k"
     }
@@ -377,7 +353,7 @@ operators {
   fiber_write {
     input_crd {
       id {
-        id: 13
+        id: 1013
       }
       name: "crd_inner-l"
     }
@@ -396,13 +372,12 @@ operators {
   repeatsig {
     input_crd {
       id {
-        id: 24
+        id: 1014
       }
       name: "crd"
     }
     output_rep_sig {
       id {
-        id: 22
       }
       name: "repsig"
     }
@@ -416,19 +391,18 @@ operators {
   repeat {
     input_ref {
       id {
-        id: 26
+        id: 1036
       }
       name: "ref_out-K"
     }
     output_ref {
       id {
-        id: 21
       }
       name: "ref"
     }
     input_rep_sig {
       id {
-        id: 23
+        id: 1015
       }
       name: "repsig"
     }
@@ -443,18 +417,16 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 22
+        id: 1016
       }
       name: "ref"
     }
     output_ref {
       id {
-        id: 17
       }
     }
     output_crd {
       id {
-        id: 20
       }
     }
     index: "l"
@@ -471,19 +443,17 @@ operators {
   broadcast {
     input {
       id {
-        id: 21
+        id: 1017
       }
       name: "crd"
     }
     outputs {
       id {
-        id: 14
       }
       name: "l"
     }
     outputs {
       id {
-        id: 19
       }
     }
     label: "broadcast"
@@ -495,19 +465,19 @@ operators {
   coord_drop {
     input_inner_crd {
       id {
-        id: 15
+        id: 1024
       }
       name: "crd_in-m"
     }
     input_outer_crd {
       id {
-        id: 20
+        id: 1018
       }
       name: "crd_l"
     }
     output_outer_crd {
       id {
-        id: 13
+        id: 1013
       }
       name: "outer-l"
     }
@@ -522,13 +492,12 @@ operators {
   repeatsig {
     input_crd {
       id {
-        id: 20
+        id: 1020
       }
       name: "crd"
     }
     output_rep_sig {
       id {
-        id: 18
       }
       name: "repsig"
     }
@@ -542,19 +511,18 @@ operators {
   repeat {
     input_ref {
       id {
-        id: 25
+        id: 1035
       }
       name: "ref"
     }
     output_ref {
       id {
-        id: 16
       }
       name: "ref"
     }
     input_rep_sig {
       id {
-        id: 19
+        id: 1021
       }
       name: "repsig"
     }
@@ -569,19 +537,18 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 18
+        id: 1022
       }
       name: "ref"
     }
     output_ref {
       id {
-        id: 15
+        id: 1029
       }
       name: "in-Q"
     }
     output_crd {
       id {
-        id: 15
       }
       name: "in-Q"
     }
@@ -600,13 +567,13 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 16
+          id: 1023
         }
         name: "crd_in-Q"
       }
       ref {
         id {
-          id: 16
+          id: 1031
         }
         name: "ref_in-Q"
       }
@@ -614,13 +581,13 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 17
+          id: 1033
         }
         name: "crd_in-K"
       }
       ref {
         id {
-          id: 17
+          id: 1034
         }
         name: "ref_in-K"
       }
@@ -629,19 +596,17 @@ operators {
     label: "intersect m"
     output_ref1 {
       id {
-        id: 9
       }
       name: "out-Q"
     }
     output_ref2 {
       id {
-        id: 10
       }
       name: "out-K"
     }
     output_crd {
       id {
-        id: 14
+        id: 1019
       }
       name: "in-m"
     }
@@ -651,16 +616,15 @@ operators {
   name: "arrayvals"
   id: 9
   array {
-    tensor: "arrayvals"
+    tensor: "Q"
     input_ref {
       id {
-        id: 15
+        id: 1025
       }
       name: "ref_out-Q"
     }
     output_val {
       id {
-        id: 8
       }
       name: "val"
     }
@@ -674,19 +638,18 @@ operators {
     vals {
       inputs {
         id {
-          id: 9
+          id: 1026
         }
         name: "val"
       }
       inputs {
         id {
-          id: 10
+          id: 1030
         }
         name: "val"
       }
       output {
         id {
-          id: 7
         }
         name: "val"
       }
@@ -705,15 +668,14 @@ operators {
   reduce {
     input_val {
       id {
-        id: 8
+        id: 1027
       }
       name: "val"
     }
     output_val {
       id {
-        id: 1
       }
-      name: "reduce_val"
+      name: "val"
     }
   }
 }
@@ -723,7 +685,7 @@ operators {
   val_write {
     input_val {
       id {
-        id: 7
+        id: 1028
       }
       name: "val"
     }
@@ -740,13 +702,13 @@ operators {
     tensor: "K"
     input_ref {
       id {
-        id: 15
+        id: 1029
       }
       name: "ref_out-K"
     }
     output_val {
       id {
-        id: 8
+        id: 1027
       }
       name: "val"
     }
@@ -759,19 +721,19 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 21
+        id: 1032
       }
       name: "ref"
     }
     output_ref {
       id {
-        id: 15
+        id: 1029
       }
       name: "in-K"
     }
     output_crd {
       id {
-        id: 15
+        id: 1029
       }
       name: "in-K"
     }
@@ -789,19 +751,19 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 29
+        id: 1038
       }
       name: "ref_out-K"
     }
     output_ref {
       id {
-        id: 26
+        id: 1036
       }
       name: "in-K"
     }
     output_crd {
       id {
-        id: 26
+        id: 1036
       }
       name: "in-K"
     }
@@ -819,13 +781,13 @@ operators {
   fiber_lookup {
     output_ref {
       id {
-        id: 29
+        id: 1038
       }
       name: "in-K"
     }
     output_crd {
       id {
-        id: 29
+        id: 1038
       }
       name: "in-K"
     }
