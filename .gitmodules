@@ -1,3 +1,4 @@
 [submodule "taco"]
 	path = taco
 	url = git@github.com:lrubens/taco.git
+	branch = sam-proto
