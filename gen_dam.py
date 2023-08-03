@@ -254,20 +254,23 @@ def process_joiner(fd, operator, map_out_channel):
     fd.write(
         f"\tlet (channel_{crd_id}_send, channel_{crd_id}_rcv) = parent.bounded(chan_size);\n")
 
-    map_out_channel[id] = {"crd": "{t}{i}_out_crd_receiver".format(
-        t=joiner_type, i=op.index), "ref1": "{t}{i}_out_ref1_receiver".format(t=joiner_type, i=op.index),
-        "ref2": "{t}{i}_out_ref2_receiver".format(t=joiner_type, i=op.index)}
+    map_out_channel[id] = {"crd": f"channel_{crd_id}_rcv", "ref1": f"channel_{ref1_id}_rcv",
+                           "ref2": f"channel_{ref2_id}_rcv"}
 
-    # print(op.input_pairs[0])
+    in1 = map_out_channel[op.input_pairs[0].crd.id.id]["crd"]
+    in2 = map_out_channel[op.input_pairs[0].crd.id.id]["ref"]
+    in3 = map_out_channel[op.input_pairs[1].crd.id.id]["crd"]
+    in4 = map_out_channel[op.input_pairs[1].crd.id.id]["ref"]
+    out1 = map_out_channel[id]['crd']
+    out2 = map_out_channel[id]['ref1']
+    out3 = map_out_channel[id]['ref2']
 
-    fd.write("\tlet {t}{i}_data = CrdJoinerData::<CT, ST> ".format(t=joiner_type, i=op.index) + "{" + "{ic1}, {ir1}, {ic2}, {ir2}, {oc}, {or1}, {or2}".format(
-        ic1=map_out_channel[op.input_pairs[0].crd.id.id]["crd"], ir1=map_out_channel[op.input_pairs[0].ref.id.id]["ref"],
-        ic2=map_out_channel[op.input_pairs[1].crd.id.id]["crd"], ir2=map_out_channel[op.input_pairs[1].ref.id.id]["ref"],
-        oc=map_out_channel[id]['crd'], or1=map_out_channel[id]['ref1'], or2=map_out_channel[id]['ref2']) + "};\n")
+    fd.write(f"\tlet {joiner_type}{op.index}_data = CrdJoinerData::<CT, ST> " +
+             "{" + f"{in1}, {in2}, {in3}, {in4}, {out1}, {out2}, {out3}" + "};\n")
 
     fd.write(
-        "\tlet {t}{i}_joiner = Intersect::new({t}{i}_data);\n".format(t=joiner_type, i=op.index))
-    fd.write("\tparent.add_child({}{}_joiner);\n".format(joiner_type, op.index))
+        f"\tlet {joiner_type}{op.index}_joiner = Intersect::new({joiner_type}{op.index}_data);\n")
+    fd.write(f"\tparent.add_child({joiner_type}{op.index}_joiner);\n")
 
     fd.write("\n")
 
@@ -276,14 +279,13 @@ def process_array(fd, operator, map_out_channel):
     id = operator.id
     op = operator.array
 
+    val_id = operator.array.output_val.id.id
+
     fd.write(
-        f"\tlet ({op.tensor}_out_val_sender, {op.tensor}_out_val_receiver) = parent.bounded(chan_size);\n")
+        f"\tlet (channel_{val_id}_send, channel_{val_id}_rcv) = parent.bounded(chan_size);\n")
 
-    map_out_channel[id] = {"val": f"{op.tensor}_out_val_receiver"}
+    map_out_channel[id] = {"val": f"channel_{val_id}_rcv"}
 
-    # print(op.input_pairs[0])
-
-    print(id)
     joiner_types = ["intersect", "union"]
     input_ref = "ref"
     if id_to_node[op.input_ref.id.id].name in joiner_types:
@@ -304,15 +306,20 @@ def process_array(fd, operator, map_out_channel):
 def process_fiberlookup(fd, operator, map_out_channel):
     op = operator.fiber_lookup
     id = operator.id
+    name = operator.name
     root = op.root
     print(root)
-    fd.write("\tlet ({t}{i}_out_ref_{m}_sender, {t}{i}_out_ref_{m}_receiver) = parent.bounded(chan_size);\n".format(
-        t=op.tensor, i=op.index, m=op.mode))
-    fd.write("\tlet ({t}{i}_out_crd_{m}_sender, {t}{i}_out_crd_{m}_receiver) = parent.bounded(chan_size);\n".format(
-        t=op.tensor, i=op.index, m=op.mode))
 
-    map_out_channel[id] = {"crd": "{t}{i}_out_crd_{m}_receiver".format(
-        t=op.tensor, i=op.index, m=op.mode), "ref": "{t}{i}_out_ref_{m}_receiver".format(t=op.tensor, i=op.index, m=op.mode)}
+    ref_id = operator.fiber_lookup.output_ref.id.id
+    crd_id = operator.fiber_lookup.output_crd.id.id
+
+    fd.write(
+        f"\tlet (channel_{ref_id}_send, channel_{ref_id}_rcv) = parent.bounded(chan_size);\n")
+    fd.write(
+        f"\tlet (channel_{crd_id}_send, channel_{crd_id}_rcv) = parent.bounded(chan_size);\n")
+
+    map_out_channel[id] = {
+        "crd": f"channel_{crd_id}_rcv", "ref": f"channel_{ref_id}_rcv"}
 
     if root:
         # fd.write("")
@@ -321,7 +328,7 @@ def process_fiberlookup(fd, operator, map_out_channel):
         fd.write(
             "\tlet gen = GeneratorContext::new(|| token_vec!(VT; ST; 0, \"D\").into_iter(), {}{}_in_ref_{}_sender);\n".format(op.tensor, op.index, op.mode))
         fd.write("\tparent.add_child(gen);\n")
-        fd.write("\tlet {t}{i}_data = RdScanData::<CT, ST> ".format(t=op.tensor, i=op.index) + "{" + "{t}{i}_in_ref_{m}_receiver, {r}, {c}".format(
+        fd.write(f"\tlet {op.tensor}{op.index}_data = RdScanData::<CT, ST> " + "{" + "{t}{i}_in_ref_{m}_receiver, {r}, {c}".format(
             t=op.tensor, i=op.index, m=op.mode, r=map_out_channel[id]["ref"], c=map_out_channel[id]["crd"]) + "};\n")
     else:
         joiner_types = ["intersect", "union"]
