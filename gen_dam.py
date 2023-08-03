@@ -229,8 +229,6 @@ def parse_proto(fd, proto_file, data_name):
             process_joiner(fd, operator, map_to_channel)
         elif op == "repeatsig":
             process_rep_sig(fd, operator, map_to_channel)
-        elif op == "broadcast":
-            process_broadcast(fd, operator, map_to_channel)
         elif op == "coord_drop":
             process_crddrop(fd, operator, map_to_channel)
         elif op == "array":
@@ -245,12 +243,16 @@ def process_joiner(fd, operator, map_out_channel):
     joiner_type = operator.name
     op = operator.joiner
 
-    fd.write("\tlet ({t}{i}_out_ref1_sender, {t}{i}_out_ref1_receiver) = parent.bounded(chan_size);\n".format(
-        t=joiner_type, i=op.index))
-    fd.write("\tlet ({t}{i}_out_ref2_sender, {t}{i}_out_ref2_receiver) = parent.bounded(chan_size);\n".format(
-        t=joiner_type, i=op.index))
-    fd.write("\tlet ({t}{i}_out_crd_sender, {t}{i}_out_crd_receiver) = parent.bounded(chan_size);\n".format(
-        t=joiner_type, i=op.index))
+    ref1_id = operator.joiner.output_ref1.id.id
+    ref2_id = operator.joiner.output_ref2.id.id
+    crd_id = operator.joiner.output_crd.id.id
+
+    fd.write(
+        f"\tlet (channel_{ref1_id}_send, channel_{ref1_id}_rcv) = parent.bounded(chan_size);\n")
+    fd.write(
+        f"\tlet (channel_{ref2_id}_send, channel_{ref2_id}_rcv) = parent.bounded(chan_size);\n")
+    fd.write(
+        f"\tlet (channel_{crd_id}_send, channel_{crd_id}_rcv) = parent.bounded(chan_size);\n")
 
     map_out_channel[id] = {"crd": "{t}{i}_out_crd_receiver".format(
         t=joiner_type, i=op.index), "ref1": "{t}{i}_out_ref1_receiver".format(t=joiner_type, i=op.index),
@@ -441,7 +443,7 @@ def process_alu(fd, operator, map_out_channel):
         f"\tlet {name} = make_alu({map_out_channel[op.vals.inputs[0].id.id]['val']}, {map_out_channel[op.vals.inputs[1].id.id]['val']}, {map_out_channel[id]['val']}, {alu_op});\n")
     fd.write(f"\tparent.add_child({name});\n")
     fd.write("\n")
-    
+
 
 def process_alu(fd, operator, map_out_channel):
     op = operator.alu
