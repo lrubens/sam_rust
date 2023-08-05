@@ -62,37 +62,37 @@ def parse_proto(fd, proto_file, data_name):
     program_name = program.name
     operators = program.operators
 
-    mode_formats = {}
-    tensors_with_formats = program_name.strip("\"").split(",")
-    for i, t in enumerate(tensors_with_formats):
-        tensor_name, modes = t.split("=")
-        mode_format = re.compile(
-            "([a-zA-Z]+)([0-9]+)").match(modes).groups()[1]
-        # print(mode_format)
-        # num_modes = sum(
-        #     list(map(lambda x: 1 if x.isdigit() else 0, set(mode_format))))
-        if i != 0:
-            mode_formats[tensor_name] = mode_format
-            for (mode, format) in enumerate(mode_format):
-                fd.write(
-                    "\tlet {}{mode}_seg_filename = base_path.join(\"tensor_{}_mode_{mode}_seg\");\n".format(tensor_name.lower(), tensor_name, mode=mode))
-                fd.write(
-                    "\tlet {}{mode}_crd_filename = base_path.join(\"tensor_{}_mode_{mode}_crd\");\n".format(tensor_name.lower(), tensor_name, mode=mode))
+    # mode_formats = {}
+    # tensors_with_formats = program_name.strip("\"").split(",")
+    # for i, t in enumerate(tensors_with_formats):
+    #     tensor_name, modes = t.split("=")
+    #     mode_format = re.compile(
+    #         "([a-zA-Z]+)([0-9]+)").match(modes).groups()[1]
+    #     # print(mode_format)
+    #     # num_modes = sum(
+    #     #     list(map(lambda x: 1 if x.isdigit() else 0, set(mode_format))))
+    #     if i != 0:
+    #         mode_formats[tensor_name] = mode_format
+    #         for (mode, format) in enumerate(mode_format):
+    #             fd.write(
+    #                 "\tlet {}{mode}_seg_filename = base_path.join(\"tensor_{}_mode_{mode}_seg\");\n".format(tensor_name.lower(), tensor_name, mode=mode))
+    #             fd.write(
+    #                 "\tlet {}{mode}_crd_filename = base_path.join(\"tensor_{}_mode_{mode}_crd\");\n".format(tensor_name.lower(), tensor_name, mode=mode))
 
-            fd.write(
-                "\tlet {}_vals_filename = base_path.join(\"tensor_{}_mode_vals\");\n".format(tensor_name.lower(), tensor_name))
-            fd.write("\n")
+    #         fd.write(
+    #             "\tlet {}_vals_filename = base_path.join(\"tensor_{}_mode_vals\");\n".format(tensor_name.lower(), tensor_name))
+    #         fd.write("\n")
 
-            for (mode, format) in enumerate(mode_format):
-                fd.write(
-                    "\tlet {t}{mode}_seg = read_inputs::<CT>(&{t}{mode}_seg_filename);\n".format(t=tensor_name.lower(), mode=mode))
-                fd.write(
-                    "\tlet {t}{mode}_crd = read_inputs::<CT>(&{t}{mode}_crd_filename);\n".format(t=tensor_name.lower(), mode=mode))
-            fd.write(
-                "\tlet {t}_vals = read_inputs::<VT>(&{t}_vals_filename);\n".format(t=tensor_name.lower()))
-            fd.write("\n")
+    #         for (mode, format) in enumerate(mode_format):
+    #             fd.write(
+    #                 "\tlet {t}{mode}_seg = read_inputs::<CT>(&{t}{mode}_seg_filename);\n".format(t=tensor_name.lower(), mode=mode))
+    #             fd.write(
+    #                 "\tlet {t}{mode}_crd = read_inputs::<CT>(&{t}{mode}_crd_filename);\n".format(t=tensor_name.lower(), mode=mode))
+    #         fd.write(
+    #             "\tlet {t}_vals = read_inputs::<VT>(&{t}_vals_filename);\n".format(t=tensor_name.lower()))
+    #         fd.write("\n")
 
-    print(mode_formats)
+    # print(mode_formats)
 
     map_broad = {}
     map_channel_broadcast = {}
@@ -101,7 +101,10 @@ def parse_proto(fd, proto_file, data_name):
         op_id = operator.id
         id_to_node[op_id] = operator
         if op == "fiber_lookup":
-            map_broad[(operator.fiber_lookup.input_ref.id.id, "ref")] = op_id
+            in1 = operator.fiber_lookup.input_ref.id.id
+            if (in1, "ref") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            map_broad[(in1, "ref")] = op_id
         if op == "repeat":
             in1 = operator.repeat.input_rep_sig.id.id
             in2 = operator.repeat.input_ref.id.id
@@ -195,30 +198,14 @@ def parse_proto(fd, proto_file, data_name):
     print("Needs broadcasting")
     print(map_channel_broadcast)
 
-    map_to_channel = {}
+    # print(program.broadcast)
 
-    # std::sort(program.mutable_operators())
-
-    # for operator in operators:
-    #     name = operator.name
-    #     id = operator.id
-    #     op = operator.WhichOneof("op")
-
-    #     if op == "fiber_lookup":
-    #         process_fiberlookup(fd, operator, map_to_channel)
-    #     elif op == "repeat":
-    #         process_repeat(fd, operator, map_to_channel)
-    #     elif op == "joiner":
-    #         process_joiner(fd, operator, map_to_channel)
-    #     elif op == "repeatsig":
-    #         process_rep_sig(fd, operator, map_to_channel)
-    #     elif op == "coord_drop":
-    #         process_crddrop(fd, operator, map_to_channel)
-    #     elif op == "array":
-    #         process_array(fd, operator, map_to_channel)
-    #     elif op == "alu":
-    #         process_alu(fd, operator, map_to_channel)
-    # fd.write("}\n")
+    for (key, val) in map_channel_broadcast.items():
+        new_broadcast = program.operators.add()
+        new_broadcast = op.broadcast
+        # new_broadcast = program.operation.broadcast
+        new_broadcast.name = "broadcast"
+        print(new_broadcast)
 
 
 def process_joiner(fd, operator, map_out_channel):
@@ -491,7 +478,4 @@ def process_crddrop(fd, operator, map_out_channel):
 
 
 fd = open("generated.rs", "w")
-print_header(fd, "test_mult2")
 parse_proto(fd, "sam.textproto", "tensor4_mha")
-
-fd.close()
