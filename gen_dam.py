@@ -94,148 +94,131 @@ def parse_proto(fd, proto_file, data_name):
 
     print(mode_formats)
 
-    map_outputs = {}
+    map_broad = {}
+    map_channel_broadcast = {}
     for operator in reversed(operators):
         op = operator.WhichOneof("op")
-        id = operator.id
-        id_to_node[id] = operator
+        op_id = operator.id
+        id_to_node[op_id] = operator
         if op == "fiber_lookup":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            # if "crd" not in map_outputs[operator.id]:
-            #     map_outputs[operator.id]["crd"] = []
-            # map_outputs[operator.id]["crd"].append(
-            #     operator.fiber_lookup.output_crd.id.id)
-            if "ref" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["ref"] = []
-            map_outputs[operator.id]["ref"].append(
-                operator.fiber_lookup.input_ref.id.id)
+            map_broad[(operator.fiber_lookup.input_ref.id.id, "ref")] = op_id
         if op == "repeat":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "repsig" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["repsig"] = []
-            map_outputs[operator.id]["repsig"].append(
-                operator.repeat.input_rep_sig.id.id)
-            if not operator.repeat.root:
-                if "ref" not in map_outputs[operator.id]:
-                    map_outputs[operator.id]["ref"] = []
-                map_outputs[operator.id]["ref"].append(
-                    operator.repeat.input_ref.id.id)
+            in1 = operator.repeat.input_rep_sig.id.id
+            in2 = operator.repeat.input_ref.id.id
+            if (in1, "repsig") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            if (in2, "ref") in map_broad:
+                map_channel_broadcast[in2] = op_id
+            map_broad[(in1, "repsig")] = op_id
+            map_broad[(in2, "ref")] = op_id
         if op == "repeatsig":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "crd" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["crd"] = []
-            map_outputs[operator.id]["crd"].append(
-                operator.repeatsig.input_crd.id.id)
-            if not operator.repeat.root:
-                if "ref" not in map_outputs[operator.id]:
-                    map_outputs[operator.id]["ref"] = []
-                map_outputs[operator.id]["ref"].append(
-                    operator.repeat.input_ref.id.id)
+            in1 = operator.repeatsig.input_crd.id.id
+            if (in1, "crd") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            map_broad[(in1, "crd")] = op_id
         elif op == "fiber_write":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "crd" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["crd"] = []
-            map_outputs[operator.id]["crd"].append(
-                operator.fiber_write.input_crd.id.id)
+            in1 = operator.fiber_write.input_crd.id.id
+            if (in1, "crd") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            map_broad[(in1, "crd")] = op_id
         elif op == "array":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "ref" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["ref"] = []
-            map_outputs[operator.id]["ref"].append(
-                operator.array.input_ref.id.id)
+            in1 = operator.array.input_ref.id.id
+            if (in1, "ref") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            map_broad[(in1, "ref")] = op_id
         elif op == "joiner":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "ref1" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["ref1"] = []
-            map_outputs[operator.id]["ref1"].append(
-                operator.joiner.input_pairs[0].ref.id.id)
-            if "ref2" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["ref2"] = []
-            map_outputs[operator.id]["ref2"].append(
-                operator.joiner.input_pairs[1].ref.id.id)
-            if "crd1" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["crd1"] = []
-            map_outputs[operator.id]["crd1"].append(
-                operator.joiner.input_pairs[0].crd.id.id)
-            if "crd2" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["crd2"] = []
-            map_outputs[operator.id]["crd2"].append(
-                operator.joiner.input_pairs[1].crd.id.id)
+            in1 = operator.joiner.input_pairs[0].crd.id.id
+            in2 = operator.joiner.input_pairs[0].ref.id.id
+            in3 = operator.joiner.input_pairs[1].crd.id.id
+            in4 = operator.joiner.input_pairs[1].ref.id.id
+            if (in1, "crd") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            if (in2, "ref") in map_broad:
+                map_channel_broadcast[in2] = op_id
+            if (in3, "crd") in map_broad:
+                map_channel_broadcast[in3] = op_id
+            if (in4, "ref") in map_broad:
+                map_channel_broadcast[in4] = op_id
+            map_broad[(in1, "crd")] = op_id
+            map_broad[(in2, "ref")] = op_id
+            map_broad[(in3, "crd")] = op_id
+            map_broad[(in4, "ref")] = op_id
         elif op == "reduce":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "val" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["val"] = []
-            map_outputs[operator.id]["val"].append(
-                operator.reduce.input_val.id.id)
+            in1 = operator.reduce.input_val.id.id
+            if (in1, "val") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            map_broad[(in1, "val")] = op_id
         elif op == "alu":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "val1" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["val1"] = []
-            map_outputs[operator.id]["val1"].append(
-                operator.alu.vals.inputs[0].id.id)
-            if "val2" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["val2"] = []
-            map_outputs[operator.id]["val2"].append(
-                operator.alu.vals.inputs[1].id.id)
+            in1 = operator.alu.vals.inputs[0].id.id
+            in2 = operator.alu.vals.inputs[1].id.id
+            if (in1, "val") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            if (in2, "val") in map_broad:
+                map_channel_broadcast[in2] = op_id
+            map_broad[(in1, "val")] = op_id
+            map_broad[(in2, "val")] = op_id
         elif op == "coord_drop":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "crd1" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["crd1"] = []
-            map_outputs[operator.id]["crd1"].append(
-                operator.coord_drop.input_inner_crd.id.id)
-            if "crd2" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["crd2"] = []
-            map_outputs[operator.id]["crd2"].append(
-                operator.coord_drop.input_outer_crd.id.id)
+            in1 = operator.coord_drop.input_inner_crd.id.id
+            in2 = operator.coord_drop.input_outer_crd.id.id
+            if (in1, "crd") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            if (in2, "crd") in map_broad:
+                map_channel_broadcast[in2] = op_id
+            map_broad[(in1, "crd")] = op_id
+            map_broad[(in2, "crd")] = op_id
         elif op == "coord_hold":
-            if operator.id not in map_outputs:
-                map_outputs[operator.id] = {}
-            if "crd1" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["crd1"] = []
-            map_outputs[operator.id]["crd1"].append(
-                operator.coord_hold.input_inner_crd.id.id)
-            if "crd2" not in map_outputs[operator.id]:
-                map_outputs[operator.id]["crd2"] = []
-            map_outputs[operator.id]["crd2"].append(
-                operator.coord_hold.input_outer_crd.id.id)
+            in1 = operator.coord_hold.input_inner_crd.id.id
+            in2 = operator.coord_hold.input_outer_crd.id.id
+            if (in1, "crd") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            if (in2, "crd") in map_broad:
+                map_channel_broadcast[in2] = op_id
+            map_broad[(in1, "crd")] = op_id
+            map_broad[(in2, "crd")] = op_id
+        elif op == "spacc":
+            in1 = operator.spacc.input_inner_crd.id.id
+            in2 = operator.spacc.input_outer_crd.id.id
+            in3 = operator.spacc.input_val.id.id
+            if (in1, "crd") in map_broad:
+                map_channel_broadcast[in1] = op_id
+            if (in2, "crd") in map_broad:
+                map_channel_broadcast[in2] = op_id
+            if (in3, "val") in map_broad:
+                map_channel_broadcast[in3] = op_id
+            map_broad[(in1, "crd")] = op_id
+            map_broad[(in2, "crd")] = op_id
+            map_broad[(in3, "val")] = op_id
 
     # for (key, val) in map_outputs.items():
 
-    print(map_outputs)
+    print(map_broad)
+    print("Needs broadcasting")
+    print(map_channel_broadcast)
 
     map_to_channel = {}
 
     # std::sort(program.mutable_operators())
 
-    for operator in operators:
-        name = operator.name
-        id = operator.id
-        op = operator.WhichOneof("op")
+    # for operator in operators:
+    #     name = operator.name
+    #     id = operator.id
+    #     op = operator.WhichOneof("op")
 
-        if op == "fiber_lookup":
-            process_fiberlookup(fd, operator, map_to_channel)
-        elif op == "repeat":
-            process_repeat(fd, operator, map_to_channel)
-        elif op == "joiner":
-            process_joiner(fd, operator, map_to_channel)
-        elif op == "repeatsig":
-            process_rep_sig(fd, operator, map_to_channel)
-        elif op == "coord_drop":
-            process_crddrop(fd, operator, map_to_channel)
-        elif op == "array":
-            process_array(fd, operator, map_to_channel)
-        elif op == "alu":
-            process_alu(fd, operator, map_to_channel)
-    fd.write("}\n")
+    #     if op == "fiber_lookup":
+    #         process_fiberlookup(fd, operator, map_to_channel)
+    #     elif op == "repeat":
+    #         process_repeat(fd, operator, map_to_channel)
+    #     elif op == "joiner":
+    #         process_joiner(fd, operator, map_to_channel)
+    #     elif op == "repeatsig":
+    #         process_rep_sig(fd, operator, map_to_channel)
+    #     elif op == "coord_drop":
+    #         process_crddrop(fd, operator, map_to_channel)
+    #     elif op == "array":
+    #         process_array(fd, operator, map_to_channel)
+    #     elif op == "alu":
+    #         process_alu(fd, operator, map_to_channel)
+    # fd.write("}\n")
 
 
 def process_joiner(fd, operator, map_out_channel):
