@@ -52,6 +52,14 @@ use dam_rs::templates::sam::wr_scanner::{CompressedWrScan, ValsWrScan};
     fd.write("\n")
 
 
+def set_or_create(map, key, val):
+    if key not in map:
+        map[key] = val
+        return
+    map[key] += val
+    return
+
+
 def parse_proto(fd, proto_file, data_name):
     program = tortilla_pb2.ProgramGraph()
 
@@ -94,118 +102,314 @@ def parse_proto(fd, proto_file, data_name):
 
     # print(mode_formats)
 
+    max_node_id = 0
+    max_channel_id = 0
     map_broad = {}
     map_channel_broadcast = {}
-    for operator in reversed(operators):
+
+    for operator in operators:
         op = operator.WhichOneof("op")
         op_id = operator.id
+        # if i == 0:
+        max_node_id = max(max_node_id, op_id)
+            # max_channel_id = max_node_id + 1
         id_to_node[op_id] = operator
         if op == "fiber_lookup":
             in1 = operator.fiber_lookup.input_ref.id.id
             if (in1, "ref") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                # map_channel_broadcast[in1] += 1
+                set_or_create(map_channel_broadcast, in1, 1)
+                # insert_broadcast(program, max_node_id, max_channel_id, "ref")
+                # operator.fiber_lookup.input_ref.id.id = max_channel_id
+                max_node_id += 1
+                max_channel_id += 1
             map_broad[(in1, "ref")] = op_id
+            max_channel_id = max(max_channel_id, in1)
         if op == "repeat":
             in1 = operator.repeat.input_rep_sig.id.id
             in2 = operator.repeat.input_ref.id.id
             if (in1, "repsig") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                # map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # insert_broadcast(program, max_node_id, max_channel_id, "ref")
+                # operator.fiber_lookup.input_ref.id.id = max_channel_id
+                max_node_id += 1
+                max_channel_id += 1
             if (in2, "ref") in map_broad:
-                map_channel_broadcast[in2] = op_id
+                # map_channel_broadcast[in2] = op_id
+                set_or_create(map_channel_broadcast, in2, 1)
+                # insert_broadcast(program, max_node_id, max_channel_id, "ref")
+                # operator.fiber_lookup.input_ref.id.id = max_channel_id
+                max_node_id += 1
+                max_channel_id += 1
             map_broad[(in1, "repsig")] = op_id
             map_broad[(in2, "ref")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2)
         if op == "repeatsig":
             in1 = operator.repeatsig.input_crd.id.id
             if (in1, "crd") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                # map_channel_broadcast[in1] += 1
+                set_or_create(map_channel_broadcast, in1, 1)
             map_broad[(in1, "crd")] = op_id
+            max_channel_id = max(max_channel_id, in1)
         elif op == "fiber_write":
             in1 = operator.fiber_write.input_crd.id.id
             if (in1, "crd") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
             map_broad[(in1, "crd")] = op_id
+            max_channel_id = max(max_channel_id, in1)
         elif op == "array":
             in1 = operator.array.input_ref.id.id
             if (in1, "ref") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
             map_broad[(in1, "ref")] = op_id
+            max_channel_id = max(max_channel_id, in1)
         elif op == "joiner":
             in1 = operator.joiner.input_pairs[0].crd.id.id
             in2 = operator.joiner.input_pairs[0].ref.id.id
             in3 = operator.joiner.input_pairs[1].crd.id.id
             in4 = operator.joiner.input_pairs[1].ref.id.id
             if (in1, "crd") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                # map_channel_broadcast[in1] += 1
+                set_or_create(map_channel_broadcast, in1, 1)
             if (in2, "ref") in map_broad:
-                map_channel_broadcast[in2] = op_id
+                # map_channel_broadcast[in2] += 1
+                set_or_create(map_channel_broadcast, in2, 1)
             if (in3, "crd") in map_broad:
-                map_channel_broadcast[in3] = op_id
+                set_or_create(map_channel_broadcast, in3, 1)
+                # map_channel_broadcast[in3] += 1
             if (in4, "ref") in map_broad:
-                map_channel_broadcast[in4] = op_id
+                set_or_create(map_channel_broadcast, in4, 1)
+                # map_channel_broadcast[in4] += 1
             map_broad[(in1, "crd")] = op_id
             map_broad[(in2, "ref")] = op_id
             map_broad[(in3, "crd")] = op_id
             map_broad[(in4, "ref")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2, in3, in4)
         elif op == "reduce":
             in1 = operator.reduce.input_val.id.id
             if (in1, "val") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
             map_broad[(in1, "val")] = op_id
+            max_channel_id = max(max_channel_id, in1)
         elif op == "alu":
             in1 = operator.alu.vals.inputs[0].id.id
             in2 = operator.alu.vals.inputs[1].id.id
             if (in1, "val") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
             if (in2, "val") in map_broad:
-                map_channel_broadcast[in2] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in2] += 1
             map_broad[(in1, "val")] = op_id
             map_broad[(in2, "val")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2)
         elif op == "coord_drop":
             in1 = operator.coord_drop.input_inner_crd.id.id
             in2 = operator.coord_drop.input_outer_crd.id.id
             if (in1, "crd") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
             if (in2, "crd") in map_broad:
-                map_channel_broadcast[in2] = op_id
+                set_or_create(map_channel_broadcast, in2, 1)
+                # map_channel_broadcast[in2] += 1
             map_broad[(in1, "crd")] = op_id
             map_broad[(in2, "crd")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2)
         elif op == "coord_hold":
             in1 = operator.coord_hold.input_inner_crd.id.id
             in2 = operator.coord_hold.input_outer_crd.id.id
             if (in1, "crd") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
             if (in2, "crd") in map_broad:
-                map_channel_broadcast[in2] = op_id
+                set_or_create(map_channel_broadcast, in2, 1)
+                # map_channel_broadcast[in2] += 1
             map_broad[(in1, "crd")] = op_id
             map_broad[(in2, "crd")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2)
         elif op == "spacc":
             in1 = operator.spacc.input_inner_crd.id.id
             in2 = operator.spacc.input_outer_crd.id.id
             in3 = operator.spacc.input_val.id.id
             if (in1, "crd") in map_broad:
-                map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
             if (in2, "crd") in map_broad:
-                map_channel_broadcast[in2] = op_id
+                set_or_create(map_channel_broadcast, in2, 1)
+                # map_channel_broadcast[in2] += 1
             if (in3, "val") in map_broad:
-                map_channel_broadcast[in3] = op_id
+                set_or_create(map_channel_broadcast, in3, 1)
+                # map_channel_broadcast[in3] += 1
             map_broad[(in1, "crd")] = op_id
             map_broad[(in2, "crd")] = op_id
             map_broad[(in3, "val")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2, in3)
 
     # for (key, val) in map_outputs.items():
+    for operator in operators:
+        op = operator.WhichOneof("op")
+        op_id = operator.id
+        # if i == 0:
+        max_node_id = max(max_node_id, op_id)
+            # max_channel_id = max_node_id + 1
+        id_to_node[op_id] = operator
+        if op == "fiber_lookup":
+            in1 = operator.fiber_lookup.input_ref.id.id
+            if (in1, "ref") in map_broad:
+                # map_channel_broadcast[in1] += 1
+                set_or_create(map_channel_broadcast, in1, 1)
+                # insert_broadcast(program, max_node_id, max_channel_id, "ref")
+                # operator.fiber_lookup.input_ref.id.id = max_channel_id
+                max_node_id += 1
+                max_channel_id += 1
+            map_broad[(in1, "ref")] = op_id
+            max_channel_id = max(max_channel_id, in1)
+        if op == "repeat":
+            in1 = operator.repeat.input_rep_sig.id.id
+            in2 = operator.repeat.input_ref.id.id
+            if (in1, "repsig") in map_broad:
+                # map_channel_broadcast[in1] = op_id
+                set_or_create(map_channel_broadcast, in1, 1)
+                # insert_broadcast(program, max_node_id, max_channel_id, "ref")
+                # operator.fiber_lookup.input_ref.id.id = max_channel_id
+                max_node_id += 1
+                max_channel_id += 1
+            if (in2, "ref") in map_broad:
+                # map_channel_broadcast[in2] = op_id
+                set_or_create(map_channel_broadcast, in2, 1)
+                # insert_broadcast(program, max_node_id, max_channel_id, "ref")
+                # operator.fiber_lookup.input_ref.id.id = max_channel_id
+                max_node_id += 1
+                max_channel_id += 1
+            map_broad[(in1, "repsig")] = op_id
+            map_broad[(in2, "ref")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2)
+        if op == "repeatsig":
+            in1 = operator.repeatsig.input_crd.id.id
+            if (in1, "crd") in map_broad:
+                # map_channel_broadcast[in1] += 1
+                set_or_create(map_channel_broadcast, in1, 1)
+            map_broad[(in1, "crd")] = op_id
+            max_channel_id = max(max_channel_id, in1)
+        elif op == "fiber_write":
+            in1 = operator.fiber_write.input_crd.id.id
+            if (in1, "crd") in map_broad:
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
+            map_broad[(in1, "crd")] = op_id
+            max_channel_id = max(max_channel_id, in1)
+        elif op == "array":
+            in1 = operator.array.input_ref.id.id
+            if (in1, "ref") in map_broad:
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
+            map_broad[(in1, "ref")] = op_id
+            max_channel_id = max(max_channel_id, in1)
+        elif op == "joiner":
+            in1 = operator.joiner.input_pairs[0].crd.id.id
+            in2 = operator.joiner.input_pairs[0].ref.id.id
+            in3 = operator.joiner.input_pairs[1].crd.id.id
+            in4 = operator.joiner.input_pairs[1].ref.id.id
+            if (in1, "crd") in map_broad:
+                # map_channel_broadcast[in1] += 1
+                set_or_create(map_channel_broadcast, in1, 1)
+            if (in2, "ref") in map_broad:
+                # map_channel_broadcast[in2] += 1
+                set_or_create(map_channel_broadcast, in2, 1)
+            if (in3, "crd") in map_broad:
+                set_or_create(map_channel_broadcast, in3, 1)
+                # map_channel_broadcast[in3] += 1
+            if (in4, "ref") in map_broad:
+                set_or_create(map_channel_broadcast, in4, 1)
+                # map_channel_broadcast[in4] += 1
+            map_broad[(in1, "crd")] = op_id
+            map_broad[(in2, "ref")] = op_id
+            map_broad[(in3, "crd")] = op_id
+            map_broad[(in4, "ref")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2, in3, in4)
+        elif op == "reduce":
+            in1 = operator.reduce.input_val.id.id
+            if (in1, "val") in map_broad:
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
+            map_broad[(in1, "val")] = op_id
+            max_channel_id = max(max_channel_id, in1)
+        elif op == "alu":
+            in1 = operator.alu.vals.inputs[0].id.id
+            in2 = operator.alu.vals.inputs[1].id.id
+            if (in1, "val") in map_broad:
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
+            if (in2, "val") in map_broad:
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in2] += 1
+            map_broad[(in1, "val")] = op_id
+            map_broad[(in2, "val")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2)
+        elif op == "coord_drop":
+            in1 = operator.coord_drop.input_inner_crd.id.id
+            in2 = operator.coord_drop.input_outer_crd.id.id
+            if (in1, "crd") in map_broad:
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
+            if (in2, "crd") in map_broad:
+                set_or_create(map_channel_broadcast, in2, 1)
+                # map_channel_broadcast[in2] += 1
+            map_broad[(in1, "crd")] = op_id
+            map_broad[(in2, "crd")] = op_id
+            max_channel_id = max(max_channel_id, in1, in2)
+        elif op == "coord_hold":
+            in1 = operator.coord_hold.input_inner_crd.id.id
+            in2 = operator.coord_hold.input_outer_crd.id.id
+            if (in1, "crd") in map_broad:
+                # set_or_create(map_channel_broadcast, in1, 1)
+                insert_broadcast(program, op_id, in1, "crd")
+                # map_channel_broadcast[in1] += 1
+            if (in2, "crd") in map_broad:
+                set_or_create(map_channel_broadcast, in2, 1)
+                # map_channel_broadcast[in2] += 1
+        elif op == "spacc":
+            in1 = operator.spacc.input_inner_crd.id.id
+            in2 = operator.spacc.input_outer_crd.id.id
+            in3 = operator.spacc.input_val.id.id
+            if (in1, "crd") in map_broad:
+                set_or_create(map_channel_broadcast, in1, 1)
+                # map_channel_broadcast[in1] += 1
+            if (in2, "crd") in map_broad:
+                set_or_create(map_channel_broadcast, in2, 1)
+                # map_channel_broadcast[in2] += 1
+            if (in3, "val") in map_broad:
+                set_or_create(map_channel_broadcast, in3, 1)
+                # map_channel_broadcast[in3] += 1
+
 
     print(map_broad)
     print("Needs broadcasting")
     print(map_channel_broadcast)
+    print(max_node_id)
+    print(max_channel_id)
 
     # print(program.broadcast)
 
     for (key, val) in map_channel_broadcast.items():
-        new_broadcast = program.operators.add()
-        new_broadcast = op.broadcast
+        new_broadcast = program.operators.add(
+            name="broadcast", id=max_node_id+1)
+        new_broadcast.broadcast.input.name = "testing"
+        # new_broadcast = ops_pb2.Broadcast()
         # new_broadcast = program.operation.broadcast
-        new_broadcast.name = "broadcast"
-        print(new_broadcast)
+        # new_broadcast.name = "broadcast"
+        print(program)
+        max_node_id += 1
+        
+
+def insert_broadcast(program, op_id, chan_id, chan_name):
+    new_broadcast = program.operators.add(name="broadcast", id=op_id)
+    new_broadcast.broadcast.input.name = chan_name
+    new_broadcast.broadcast.id.id = chan_id
 
 
 def process_joiner(fd, operator, map_out_channel):
