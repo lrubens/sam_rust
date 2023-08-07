@@ -237,11 +237,24 @@ def parse_proto(fd, proto_file, data_name):
             continue
         new_broadcast = program.operators.add(
             name="broadcast", id=max_node_id+1)
-        new_broadcast.broadcast.input.id.id = key
-        new_broadcast.broadcast.input.name = val[1]
+        outputs = []
+        if val[1] == "crd":
+            new_broadcast.broadcast.crd.input.id.id = key
+            new_broadcast.broadcast.crd.input.name = val[1]
+            outputs = new_broadcast.broadcast.crd.outputs
+        if val[1] == "ref":
+            new_broadcast.broadcast.ref.input.id.id = key
+            new_broadcast.broadcast.ref.input.name = val[1]
+        if val[1] == "val":
+            new_broadcast.broadcast.val.input.id.id = key
+            new_broadcast.broadcast.val.input.name = val[1]
+        if val[1] == "repsig":
+            new_broadcast.broadcast.repsig.input.id.id = key
+            new_broadcast.broadcast.repsig.input.name = val[1]
+
         for s_id in map_broad[(key, val[1])]:
             s_id.id.id = max_channel_id + 1
-            new_broadcast.broadcast.outputs.add().id.id = max_channel_id + 1
+            outputs.add().id.id = max_channel_id + 1
             max_channel_id += 1
         print(program)
         max_node_id += 1
@@ -259,6 +272,7 @@ def parse_proto(fd, proto_file, data_name):
 
     with open(out_comal_bin, "wb") as f:
         f.write(comal_graph.SerializeToString())
+
 
 def insert_broadcast(program, op_id, chan_id, chan_name):
     new_broadcast = program.operators.add(name="broadcast", id=op_id)

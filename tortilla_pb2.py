@@ -16,11 +16,11 @@ import ops_pb2 as ops__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='tortilla.proto',
-  package='',
+  package='tortilla',
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0etortilla.proto\x1a\tops.proto\"A\n\x0cProgramGraph\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1d\n\toperators\x18\x02 \x03(\x0b\x32\n.OperationJ\x04\x08\x03\x10\x0b\x62\x06proto3'
+  serialized_pb=b'\n\x0etortilla.proto\x12\x08tortilla\x1a\tops.proto\"J\n\x0cProgramGraph\x12\x0c\n\x04name\x18\x01 \x01(\t\x12&\n\toperators\x18\x02 \x03(\x0b\x32\x13.tortilla.OperationJ\x04\x08\x03\x10\x0b\x62\x06proto3'
   ,
   dependencies=[ops__pb2.DESCRIPTOR,])
 
@@ -29,21 +29,21 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _PROGRAMGRAPH = _descriptor.Descriptor(
   name='ProgramGraph',
-  full_name='ProgramGraph',
+  full_name='tortilla.ProgramGraph',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='ProgramGraph.name', index=0,
+      name='name', full_name='tortilla.ProgramGraph.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='operators', full_name='ProgramGraph.operators', index=1,
+      name='operators', full_name='tortilla.ProgramGraph.operators', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -61,8 +61,8 @@ _PROGRAMGRAPH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=29,
-  serialized_end=94,
+  serialized_start=39,
+  serialized_end=113,
 )
 
 _PROGRAMGRAPH.fields_by_name['operators'].message_type = ops__pb2._OPERATION
@@ -72,7 +72,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 ProgramGraph = _reflection.GeneratedProtocolMessageType('ProgramGraph', (_message.Message,), {
   'DESCRIPTOR' : _PROGRAMGRAPH,
   '__module__' : 'tortilla_pb2'
-  # @@protoc_insertion_point(class_scope:ProgramGraph)
+  # @@protoc_insertion_point(class_scope:tortilla.ProgramGraph)
   })
 _sym_db.RegisterMessage(ProgramGraph)
 

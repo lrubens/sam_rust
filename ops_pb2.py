@@ -16,11 +16,11 @@ import stream_pb2 as stream__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='ops.proto',
-  package='',
+  package='tortilla',
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\tops.proto\x1a\x0cstream.proto\"\xeb\x03\n\tOperation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\x04\x12\x1f\n\tbroadcast\x18\x0b \x01(\x0b\x32\n.BroadcastH\x00\x12\x19\n\x06joiner\x18\x0c \x01(\x0b\x32\x07.JoinerH\x00\x12$\n\x0c\x66iber_lookup\x18\r \x01(\x0b\x32\x0c.FiberLookupH\x00\x12\"\n\x0b\x66iber_write\x18\x0e \x01(\x0b\x32\x0b.FiberWriteH\x00\x12\x19\n\x06repeat\x18\x0f \x01(\x0b\x32\x07.RepeatH\x00\x12\x1f\n\trepeatsig\x18\x10 \x01(\x0b\x32\n.RepeatSigH\x00\x12\x13\n\x03\x61lu\x18\x11 \x01(\x0b\x32\x04.ALUH\x00\x12\x19\n\x06reduce\x18\x12 \x01(\x0b\x32\x07.ReduceH\x00\x12 \n\ncoord_hold\x18\x13 \x01(\x0b\x32\n.CoordHoldH\x00\x12 \n\ncoord_mask\x18\x14 \x01(\x0b\x32\n.CoordMaskH\x00\x12 \n\ncoord_drop\x18\x15 \x01(\x0b\x32\n.CoordDropH\x00\x12\x1b\n\x05\x61rray\x18\x16 \x01(\x0b\x32\n.ArrayValsH\x00\x12#\n\x05spacc\x18\x17 \x01(\x0b\x32\x12.SparseAccumulatorH\x00\x12\x1e\n\tval_write\x18\x18 \x01(\x0b\x32\t.ValWriteH\x00\x42\x04\n\x02opJ\x04\x08\x03\x10\x0b\"R\n\tBroadcast\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.CrdStream\x12\x1b\n\x07outputs\x18\x02 \x03(\x0b\x32\n.CrdStream\x12\r\n\x05label\x18\x03 \x01(\t\"\xb4\x02\n\x06Joiner\x12\x1f\n\tjoin_type\x18\x01 \x01(\x0e\x32\x0c.Joiner.Type\x12\'\n\x0binput_pairs\x18\x02 \x03(\x0b\x32\x12.Joiner.JoinBundle\x12\r\n\x05index\x18\x03 \x01(\t\x12\r\n\x05label\x18\x04 \x01(\t\x12\x1f\n\x0boutput_ref1\x18\x05 \x01(\x0b\x32\n.RefStream\x12\x1f\n\x0boutput_ref2\x18\x06 \x01(\x0b\x32\n.RefStream\x12\x1e\n\noutput_crd\x18\x07 \x01(\x0b\x32\n.CrdStream\x1a>\n\nJoinBundle\x12\x17\n\x03\x63rd\x18\x01 \x01(\x0b\x32\n.CrdStream\x12\x17\n\x03ref\x18\x03 \x01(\x0b\x32\n.RefStream\" \n\x04Type\x12\r\n\tINTERSECT\x10\x00\x12\t\n\x05UNION\x10\x01\"\xd3\x01\n\x0b\x46iberLookup\x12\x1d\n\tinput_ref\x18\x02 \x01(\x0b\x32\n.RefStream\x12\x1e\n\noutput_ref\x18\x03 \x01(\x0b\x32\n.RefStream\x12\x1e\n\noutput_crd\x18\x04 \x01(\x0b\x32\n.CrdStream\x12\r\n\x05index\x18\x05 \x01(\t\x12\x0e\n\x06tensor\x18\x06 \x01(\t\x12\x0c\n\x04mode\x18\x07 \x01(\x04\x12\x0e\n\x06\x66ormat\x18\x08 \x01(\t\x12\x0b\n\x03src\x18\t \x01(\x08\x12\x0c\n\x04root\x18\n \x01(\x08\x12\r\n\x05label\x18\x0b \x01(\t\"\xc6\x01\n\nFiberWrite\x12\x0b\n\x03ref\x18\x01 \x01(\x08\x12\x1d\n\tinput_crd\x18\x02 \x01(\x0b\x32\n.CrdStream\x12\r\n\x05index\x18\x03 \x01(\t\x12\x0e\n\x06tensor\x18\x04 \x01(\t\x12\x10\n\x08mode_val\x18\x05 \x01(\t\x12\x0e\n\x06\x66ormat\x18\x06 \x01(\t\x12\x0f\n\x07segsize\x18\x07 \x01(\t\x12\x0f\n\x07\x63rdsize\x18\x08 \x01(\t\x12\x0c\n\x04size\x18\t \x01(\t\x12\x0c\n\x04sink\x18\n \x01(\x08\x12\r\n\x05label\x18\x0b \x01(\t\"x\n\x08ValWrite\x12\x1d\n\tinput_val\x18\x01 \x01(\x0b\x32\n.ValStream\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0f\n\x07\x63rdsize\x18\x03 \x01(\t\x12\x0f\n\x07segsize\x18\x04 \x01(\t\x12\x0e\n\x06tensor\x18\x05 \x01(\t\x12\x0c\n\x04sink\x18\x06 \x01(\x08\"\xa9\x01\n\x06Repeat\x12\x1d\n\tinput_ref\x18\x01 \x01(\x0b\x32\n.RefStream\x12\x1e\n\noutput_ref\x18\x02 \x01(\x0b\x32\n.RefStream\x12$\n\rinput_rep_sig\x18\x03 \x01(\x0b\x32\r.RepSigStream\x12\r\n\x05label\x18\x04 \x01(\t\x12\r\n\x05index\x18\x05 \x01(\t\x12\x0c\n\x04root\x18\x06 \x01(\x08\x12\x0e\n\x06tensor\x18\x07 \x01(\t\"o\n\tRepeatSig\x12\x1d\n\tinput_crd\x18\x01 \x01(\x0b\x32\n.CrdStream\x12%\n\x0eoutput_rep_sig\x18\x02 \x01(\x0b\x32\r.RepSigStream\x12\r\n\x05label\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\"\x90\x03\n\x03\x41LU\x12\x18\n\x04vals\x18\x01 \x01(\x0b\x32\x08.ALU.ValH\x00\x12\x18\n\x04\x63rds\x18\x02 \x01(\x0b\x32\x08.ALU.CrdH\x00\x12\x1a\n\x06stages\x18\x03 \x03(\x0b\x32\n.ALU.Stage\x12\x12\n\noutput_val\x18\x04 \x01(\x04\x12\r\n\x05label\x18\x05 \x01(\t\x1a=\n\x03Val\x12\x1a\n\x06inputs\x18\x01 \x03(\x0b\x32\n.ValStream\x12\x1a\n\x06output\x18\x02 \x01(\x0b\x32\n.ValStream\x1a=\n\x03\x43rd\x12\x1a\n\x06inputs\x18\x01 \x03(\x0b\x32\n.CrdStream\x12\x1a\n\x06output\x18\x02 \x01(\x0b\x32\n.CrdStream\x1a?\n\x05Stage\x12\x0e\n\x06inputs\x18\x01 \x03(\x04\x12\x0e\n\x06output\x18\x02 \x01(\x04\x12\x16\n\x02op\x18\x03 \x01(\x0e\x32\n.ALU.ALUOp\"O\n\x05\x41LUOp\x12\x07\n\x03\x41\x44\x44\x10\x00\x12\x07\n\x03SUB\x10\x01\x12\x07\n\x03MUL\x10\x02\x12\x07\n\x03\x44IV\x10\x03\x12\x07\n\x03\x45XP\x10\x04\x12\x07\n\x03SIN\x10\x05\x12\x07\n\x03\x43OS\x10\x06\x12\x07\n\x03MAX\x10\x07\x42\x06\n\x04\x63onn\"V\n\x06Reduce\x12\x1d\n\tinput_val\x18\x01 \x01(\x0b\x32\n.ValStream\x12\x1e\n\noutput_val\x18\x02 \x01(\x0b\x32\n.ValStream\x12\r\n\x05label\x18\x03 \x01(\t\"\x86\x02\n\x11SparseAccumulator\x12#\n\x0finput_inner_crd\x18\x01 \x01(\x0b\x32\n.CrdStream\x12$\n\x10output_inner_crd\x18\x02 \x01(\x0b\x32\n.CrdStream\x12#\n\x0finput_outer_crd\x18\x03 \x01(\x0b\x32\n.CrdStream\x12\x1d\n\tinput_val\x18\x04 \x01(\x0b\x32\n.ValStream\x12\x1e\n\noutput_val\x18\x05 \x01(\x0b\x32\n.ValStream\x12\r\n\x05order\x18\x06 \x01(\x04\x12\x11\n\tinner_crd\x18\x07 \x01(\t\x12\x11\n\touter_crd\x18\x08 \x03(\t\x12\r\n\x05label\x18\t \x01(\t\"\xd6\x01\n\tCoordHold\x12#\n\x0finput_inner_crd\x18\x01 \x01(\x0b\x32\n.CrdStream\x12#\n\x0finput_outer_crd\x18\x02 \x01(\x0b\x32\n.CrdStream\x12$\n\x10output_inner_crd\x18\x03 \x01(\x0b\x32\n.CrdStream\x12$\n\x10output_outer_crd\x18\x04 \x01(\x0b\x32\n.CrdStream\x12\x11\n\tinner_crd\x18\x05 \x01(\t\x12\x11\n\touter_crd\x18\x06 \x01(\t\x12\r\n\x05label\x18\x07 \x01(\t\"\xd6\x01\n\tCoordDrop\x12#\n\x0finput_inner_crd\x18\x01 \x01(\x0b\x32\n.CrdStream\x12#\n\x0finput_outer_crd\x18\x02 \x01(\x0b\x32\n.CrdStream\x12$\n\x10output_inner_crd\x18\x03 \x01(\x0b\x32\n.CrdStream\x12$\n\x10output_outer_crd\x18\x04 \x01(\x0b\x32\n.CrdStream\x12\x11\n\tinner_crd\x18\x05 \x01(\t\x12\x11\n\touter_crd\x18\x06 \x01(\t\x12\r\n\x05label\x18\x07 \x01(\t\"\xe0\x01\n\tCoordMask\x12#\n\x0finput_inner_crd\x18\x01 \x01(\x0b\x32\n.CrdStream\x12#\n\x0finput_outer_crd\x18\x02 \x01(\x0b\x32\n.CrdStream\x12\x1d\n\tinput_ref\x18\x03 \x01(\x0b\x32\n.RefStream\x12$\n\x10output_inner_crd\x18\x04 \x01(\x0b\x32\n.CrdStream\x12$\n\x10output_outer_crd\x18\x05 \x01(\x0b\x32\n.CrdStream\x12\x1e\n\noutput_ref\x18\x06 \x01(\x0b\x32\n.RefStream\"i\n\tArrayVals\x12\x0e\n\x06tensor\x18\x01 \x01(\t\x12\x1d\n\tinput_ref\x18\x02 \x01(\x0b\x32\n.RefStream\x12\x1e\n\noutput_val\x18\x03 \x01(\x0b\x32\n.ValStream\x12\r\n\x05label\x18\x04 \x01(\tb\x06proto3'
+  serialized_pb=b'\n\tops.proto\x12\x08tortilla\x1a\x0cstream.proto\"\xe9\x04\n\tOperation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\x04\x12(\n\tbroadcast\x18\x0b \x01(\x0b\x32\x13.tortilla.BroadcastH\x00\x12\"\n\x06joiner\x18\x0c \x01(\x0b\x32\x10.tortilla.JoinerH\x00\x12-\n\x0c\x66iber_lookup\x18\r \x01(\x0b\x32\x15.tortilla.FiberLookupH\x00\x12+\n\x0b\x66iber_write\x18\x0e \x01(\x0b\x32\x14.tortilla.FiberWriteH\x00\x12\"\n\x06repeat\x18\x0f \x01(\x0b\x32\x10.tortilla.RepeatH\x00\x12(\n\trepeatsig\x18\x10 \x01(\x0b\x32\x13.tortilla.RepeatSigH\x00\x12\x1c\n\x03\x61lu\x18\x11 \x01(\x0b\x32\r.tortilla.ALUH\x00\x12\"\n\x06reduce\x18\x12 \x01(\x0b\x32\x10.tortilla.ReduceH\x00\x12)\n\ncoord_hold\x18\x13 \x01(\x0b\x32\x13.tortilla.CoordHoldH\x00\x12)\n\ncoord_mask\x18\x14 \x01(\x0b\x32\x13.tortilla.CoordMaskH\x00\x12)\n\ncoord_drop\x18\x15 \x01(\x0b\x32\x13.tortilla.CoordDropH\x00\x12$\n\x05\x61rray\x18\x16 \x01(\x0b\x32\x13.tortilla.ArrayValsH\x00\x12,\n\x05spacc\x18\x17 \x01(\x0b\x32\x1b.tortilla.SparseAccumulatorH\x00\x12\'\n\tval_write\x18\x18 \x01(\x0b\x32\x12.tortilla.ValWriteH\x00\x42\x04\n\x02opJ\x04\x08\x03\x10\x0b\"\xc5\x04\n\tBroadcast\x12\r\n\x05label\x18\x01 \x01(\t\x12,\n\x03\x63rd\x18\x02 \x01(\x0b\x32\x1d.tortilla.Broadcast.CrdBundleH\x00\x12,\n\x03ref\x18\x03 \x01(\x0b\x32\x1d.tortilla.Broadcast.RefBundleH\x00\x12,\n\x03val\x18\x04 \x01(\x0b\x32\x1d.tortilla.Broadcast.ValBundleH\x00\x12\x32\n\x06repsig\x18\x05 \x01(\x0b\x32 .tortilla.Broadcast.RepSigBundleH\x00\x1aU\n\tCrdBundle\x12\"\n\x05input\x18\x01 \x01(\x0b\x32\x13.tortilla.CrdStream\x12$\n\x07outputs\x18\x02 \x03(\x0b\x32\x13.tortilla.CrdStream\x1aU\n\tRefBundle\x12\"\n\x05input\x18\x01 \x01(\x0b\x32\x13.tortilla.RefStream\x12$\n\x07outputs\x18\x02 \x03(\x0b\x32\x13.tortilla.RefStream\x1aU\n\tValBundle\x12\"\n\x05input\x18\x01 \x01(\x0b\x32\x13.tortilla.ValStream\x12$\n\x07outputs\x18\x02 \x03(\x0b\x32\x13.tortilla.ValStream\x1a^\n\x0cRepSigBundle\x12%\n\x05input\x18\x01 \x01(\x0b\x32\x16.tortilla.RepSigStream\x12\'\n\x07outputs\x18\x02 \x03(\x0b\x32\x16.tortilla.RepSigStreamB\x06\n\x04\x63onn\"\xf3\x02\n\x06Joiner\x12(\n\tjoin_type\x18\x01 \x01(\x0e\x32\x15.tortilla.Joiner.Type\x12\x30\n\x0binput_pairs\x18\x02 \x03(\x0b\x32\x1b.tortilla.Joiner.JoinBundle\x12\r\n\x05index\x18\x03 \x01(\t\x12\r\n\x05label\x18\x04 \x01(\t\x12(\n\x0boutput_ref1\x18\x05 \x01(\x0b\x32\x13.tortilla.RefStream\x12(\n\x0boutput_ref2\x18\x06 \x01(\x0b\x32\x13.tortilla.RefStream\x12\'\n\noutput_crd\x18\x07 \x01(\x0b\x32\x13.tortilla.CrdStream\x1aP\n\nJoinBundle\x12 \n\x03\x63rd\x18\x01 \x01(\x0b\x32\x13.tortilla.CrdStream\x12 \n\x03ref\x18\x03 \x01(\x0b\x32\x13.tortilla.RefStream\" \n\x04Type\x12\r\n\tINTERSECT\x10\x00\x12\t\n\x05UNION\x10\x01\"\xee\x01\n\x0b\x46iberLookup\x12&\n\tinput_ref\x18\x02 \x01(\x0b\x32\x13.tortilla.RefStream\x12\'\n\noutput_ref\x18\x03 \x01(\x0b\x32\x13.tortilla.RefStream\x12\'\n\noutput_crd\x18\x04 \x01(\x0b\x32\x13.tortilla.CrdStream\x12\r\n\x05index\x18\x05 \x01(\t\x12\x0e\n\x06tensor\x18\x06 \x01(\t\x12\x0c\n\x04mode\x18\x07 \x01(\x04\x12\x0e\n\x06\x66ormat\x18\x08 \x01(\t\x12\x0b\n\x03src\x18\t \x01(\x08\x12\x0c\n\x04root\x18\n \x01(\x08\x12\r\n\x05label\x18\x0b \x01(\t\"\xcf\x01\n\nFiberWrite\x12\x0b\n\x03ref\x18\x01 \x01(\x08\x12&\n\tinput_crd\x18\x02 \x01(\x0b\x32\x13.tortilla.CrdStream\x12\r\n\x05index\x18\x03 \x01(\t\x12\x0e\n\x06tensor\x18\x04 \x01(\t\x12\x10\n\x08mode_val\x18\x05 \x01(\t\x12\x0e\n\x06\x66ormat\x18\x06 \x01(\t\x12\x0f\n\x07segsize\x18\x07 \x01(\t\x12\x0f\n\x07\x63rdsize\x18\x08 \x01(\t\x12\x0c\n\x04size\x18\t \x01(\t\x12\x0c\n\x04sink\x18\n \x01(\x08\x12\r\n\x05label\x18\x0b \x01(\t\"\x81\x01\n\x08ValWrite\x12&\n\tinput_val\x18\x01 \x01(\x0b\x32\x13.tortilla.ValStream\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0f\n\x07\x63rdsize\x18\x03 \x01(\t\x12\x0f\n\x07segsize\x18\x04 \x01(\t\x12\x0e\n\x06tensor\x18\x05 \x01(\t\x12\x0c\n\x04sink\x18\x06 \x01(\x08\"\xc4\x01\n\x06Repeat\x12&\n\tinput_ref\x18\x01 \x01(\x0b\x32\x13.tortilla.RefStream\x12\'\n\noutput_ref\x18\x02 \x01(\x0b\x32\x13.tortilla.RefStream\x12-\n\rinput_rep_sig\x18\x03 \x01(\x0b\x32\x16.tortilla.RepSigStream\x12\r\n\x05label\x18\x04 \x01(\t\x12\r\n\x05index\x18\x05 \x01(\t\x12\x0c\n\x04root\x18\x06 \x01(\x08\x12\x0e\n\x06tensor\x18\x07 \x01(\t\"\x81\x01\n\tRepeatSig\x12&\n\tinput_crd\x18\x01 \x01(\x0b\x32\x13.tortilla.CrdStream\x12.\n\x0eoutput_rep_sig\x18\x02 \x01(\x0b\x32\x16.tortilla.RepSigStream\x12\r\n\x05label\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\t\"\xd8\x03\n\x03\x41LU\x12!\n\x04vals\x18\x01 \x01(\x0b\x32\x11.tortilla.ALU.ValH\x00\x12!\n\x04\x63rds\x18\x02 \x01(\x0b\x32\x11.tortilla.ALU.CrdH\x00\x12#\n\x06stages\x18\x03 \x03(\x0b\x32\x13.tortilla.ALU.Stage\x12\x12\n\noutput_val\x18\x04 \x01(\x04\x12\r\n\x05label\x18\x05 \x01(\t\x1aO\n\x03Val\x12#\n\x06inputs\x18\x01 \x03(\x0b\x32\x13.tortilla.ValStream\x12#\n\x06output\x18\x02 \x01(\x0b\x32\x13.tortilla.ValStream\x1aO\n\x03\x43rd\x12#\n\x06inputs\x18\x01 \x03(\x0b\x32\x13.tortilla.CrdStream\x12#\n\x06output\x18\x02 \x01(\x0b\x32\x13.tortilla.CrdStream\x1aH\n\x05Stage\x12\x0e\n\x06inputs\x18\x01 \x03(\x04\x12\x0e\n\x06output\x18\x02 \x01(\x04\x12\x1f\n\x02op\x18\x03 \x01(\x0e\x32\x13.tortilla.ALU.ALUOp\"O\n\x05\x41LUOp\x12\x07\n\x03\x41\x44\x44\x10\x00\x12\x07\n\x03SUB\x10\x01\x12\x07\n\x03MUL\x10\x02\x12\x07\n\x03\x44IV\x10\x03\x12\x07\n\x03\x45XP\x10\x04\x12\x07\n\x03SIN\x10\x05\x12\x07\n\x03\x43OS\x10\x06\x12\x07\n\x03MAX\x10\x07\x42\x06\n\x04\x63onn\"h\n\x06Reduce\x12&\n\tinput_val\x18\x01 \x01(\x0b\x32\x13.tortilla.ValStream\x12\'\n\noutput_val\x18\x02 \x01(\x0b\x32\x13.tortilla.ValStream\x12\r\n\x05label\x18\x03 \x01(\t\"\xb3\x02\n\x11SparseAccumulator\x12,\n\x0finput_inner_crd\x18\x01 \x01(\x0b\x32\x13.tortilla.CrdStream\x12-\n\x10output_inner_crd\x18\x02 \x01(\x0b\x32\x13.tortilla.CrdStream\x12,\n\x0finput_outer_crd\x18\x03 \x01(\x0b\x32\x13.tortilla.CrdStream\x12&\n\tinput_val\x18\x04 \x01(\x0b\x32\x13.tortilla.ValStream\x12\'\n\noutput_val\x18\x05 \x01(\x0b\x32\x13.tortilla.ValStream\x12\r\n\x05order\x18\x06 \x01(\x04\x12\x11\n\tinner_crd\x18\x07 \x01(\t\x12\x11\n\touter_crd\x18\x08 \x03(\t\x12\r\n\x05label\x18\t \x01(\t\"\xfa\x01\n\tCoordHold\x12,\n\x0finput_inner_crd\x18\x01 \x01(\x0b\x32\x13.tortilla.CrdStream\x12,\n\x0finput_outer_crd\x18\x02 \x01(\x0b\x32\x13.tortilla.CrdStream\x12-\n\x10output_inner_crd\x18\x03 \x01(\x0b\x32\x13.tortilla.CrdStream\x12-\n\x10output_outer_crd\x18\x04 \x01(\x0b\x32\x13.tortilla.CrdStream\x12\x11\n\tinner_crd\x18\x05 \x01(\t\x12\x11\n\touter_crd\x18\x06 \x01(\t\x12\r\n\x05label\x18\x07 \x01(\t\"\xfa\x01\n\tCoordDrop\x12,\n\x0finput_inner_crd\x18\x01 \x01(\x0b\x32\x13.tortilla.CrdStream\x12,\n\x0finput_outer_crd\x18\x02 \x01(\x0b\x32\x13.tortilla.CrdStream\x12-\n\x10output_inner_crd\x18\x03 \x01(\x0b\x32\x13.tortilla.CrdStream\x12-\n\x10output_outer_crd\x18\x04 \x01(\x0b\x32\x13.tortilla.CrdStream\x12\x11\n\tinner_crd\x18\x05 \x01(\t\x12\x11\n\touter_crd\x18\x06 \x01(\t\x12\r\n\x05label\x18\x07 \x01(\t\"\x96\x02\n\tCoordMask\x12,\n\x0finput_inner_crd\x18\x01 \x01(\x0b\x32\x13.tortilla.CrdStream\x12,\n\x0finput_outer_crd\x18\x02 \x01(\x0b\x32\x13.tortilla.CrdStream\x12&\n\tinput_ref\x18\x03 \x01(\x0b\x32\x13.tortilla.RefStream\x12-\n\x10output_inner_crd\x18\x04 \x01(\x0b\x32\x13.tortilla.CrdStream\x12-\n\x10output_outer_crd\x18\x05 \x01(\x0b\x32\x13.tortilla.CrdStream\x12\'\n\noutput_ref\x18\x06 \x01(\x0b\x32\x13.tortilla.RefStream\"{\n\tArrayVals\x12\x0e\n\x06tensor\x18\x01 \x01(\t\x12&\n\tinput_ref\x18\x02 \x01(\x0b\x32\x13.tortilla.RefStream\x12\'\n\noutput_val\x18\x03 \x01(\x0b\x32\x13.tortilla.ValStream\x12\r\n\x05label\x18\x04 \x01(\tb\x06proto3'
   ,
   dependencies=[stream__pb2.DESCRIPTOR,])
 
@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _JOINER_TYPE = _descriptor.EnumDescriptor(
   name='Type',
-  full_name='Joiner.Type',
+  full_name='tortilla.Joiner.Type',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -46,14 +46,14 @@ _JOINER_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=882,
-  serialized_end=914,
+  serialized_start=1581,
+  serialized_end=1613,
 )
 _sym_db.RegisterEnumDescriptor(_JOINER_TYPE)
 
 _ALU_ALUOP = _descriptor.EnumDescriptor(
   name='ALUOp',
-  full_name='ALU.ALUOp',
+  full_name='tortilla.ALU.ALUOp',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -101,127 +101,127 @@ _ALU_ALUOP = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2052,
-  serialized_end=2131,
+  serialized_start=2915,
+  serialized_end=2994,
 )
 _sym_db.RegisterEnumDescriptor(_ALU_ALUOP)
 
 
 _OPERATION = _descriptor.Descriptor(
   name='Operation',
-  full_name='Operation',
+  full_name='tortilla.Operation',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='Operation.name', index=0,
+      name='name', full_name='tortilla.Operation.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='id', full_name='Operation.id', index=1,
+      name='id', full_name='tortilla.Operation.id', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='broadcast', full_name='Operation.broadcast', index=2,
+      name='broadcast', full_name='tortilla.Operation.broadcast', index=2,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='joiner', full_name='Operation.joiner', index=3,
+      name='joiner', full_name='tortilla.Operation.joiner', index=3,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='fiber_lookup', full_name='Operation.fiber_lookup', index=4,
+      name='fiber_lookup', full_name='tortilla.Operation.fiber_lookup', index=4,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='fiber_write', full_name='Operation.fiber_write', index=5,
+      name='fiber_write', full_name='tortilla.Operation.fiber_write', index=5,
       number=14, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='repeat', full_name='Operation.repeat', index=6,
+      name='repeat', full_name='tortilla.Operation.repeat', index=6,
       number=15, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='repeatsig', full_name='Operation.repeatsig', index=7,
+      name='repeatsig', full_name='tortilla.Operation.repeatsig', index=7,
       number=16, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='alu', full_name='Operation.alu', index=8,
+      name='alu', full_name='tortilla.Operation.alu', index=8,
       number=17, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='reduce', full_name='Operation.reduce', index=9,
+      name='reduce', full_name='tortilla.Operation.reduce', index=9,
       number=18, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='coord_hold', full_name='Operation.coord_hold', index=10,
+      name='coord_hold', full_name='tortilla.Operation.coord_hold', index=10,
       number=19, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='coord_mask', full_name='Operation.coord_mask', index=11,
+      name='coord_mask', full_name='tortilla.Operation.coord_mask', index=11,
       number=20, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='coord_drop', full_name='Operation.coord_drop', index=12,
+      name='coord_drop', full_name='tortilla.Operation.coord_drop', index=12,
       number=21, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='array', full_name='Operation.array', index=13,
+      name='array', full_name='tortilla.Operation.array', index=13,
       number=22, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='spacc', full_name='Operation.spacc', index=14,
+      name='spacc', full_name='tortilla.Operation.spacc', index=14,
       number=23, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='val_write', full_name='Operation.val_write', index=15,
+      name='val_write', full_name='tortilla.Operation.val_write', index=15,
       number=24, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -239,42 +239,35 @@ _OPERATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='op', full_name='Operation.op',
+      name='op', full_name='tortilla.Operation.op',
       index=0, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=28,
-  serialized_end=519,
+  serialized_start=38,
+  serialized_end=655,
 )
 
 
-_BROADCAST = _descriptor.Descriptor(
-  name='Broadcast',
-  full_name='Broadcast',
+_BROADCAST_CRDBUNDLE = _descriptor.Descriptor(
+  name='CrdBundle',
+  full_name='tortilla.Broadcast.CrdBundle',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input', full_name='Broadcast.input', index=0,
+      name='input', full_name='tortilla.Broadcast.CrdBundle.input', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='outputs', full_name='Broadcast.outputs', index=1,
+      name='outputs', full_name='tortilla.Broadcast.CrdBundle.outputs', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='label', full_name='Broadcast.label', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -290,28 +283,206 @@ _BROADCAST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=521,
-  serialized_end=603,
+  serialized_start=876,
+  serialized_end=961,
 )
 
-
-_JOINER_JOINBUNDLE = _descriptor.Descriptor(
-  name='JoinBundle',
-  full_name='Joiner.JoinBundle',
+_BROADCAST_REFBUNDLE = _descriptor.Descriptor(
+  name='RefBundle',
+  full_name='tortilla.Broadcast.RefBundle',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='crd', full_name='Joiner.JoinBundle.crd', index=0,
+      name='input', full_name='tortilla.Broadcast.RefBundle.input', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='ref', full_name='Joiner.JoinBundle.ref', index=1,
+      name='outputs', full_name='tortilla.Broadcast.RefBundle.outputs', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=963,
+  serialized_end=1048,
+)
+
+_BROADCAST_VALBUNDLE = _descriptor.Descriptor(
+  name='ValBundle',
+  full_name='tortilla.Broadcast.ValBundle',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='input', full_name='tortilla.Broadcast.ValBundle.input', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='outputs', full_name='tortilla.Broadcast.ValBundle.outputs', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1050,
+  serialized_end=1135,
+)
+
+_BROADCAST_REPSIGBUNDLE = _descriptor.Descriptor(
+  name='RepSigBundle',
+  full_name='tortilla.Broadcast.RepSigBundle',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='input', full_name='tortilla.Broadcast.RepSigBundle.input', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='outputs', full_name='tortilla.Broadcast.RepSigBundle.outputs', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1137,
+  serialized_end=1231,
+)
+
+_BROADCAST = _descriptor.Descriptor(
+  name='Broadcast',
+  full_name='tortilla.Broadcast',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='label', full_name='tortilla.Broadcast.label', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='crd', full_name='tortilla.Broadcast.crd', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='ref', full_name='tortilla.Broadcast.ref', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='val', full_name='tortilla.Broadcast.val', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='repsig', full_name='tortilla.Broadcast.repsig', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_BROADCAST_CRDBUNDLE, _BROADCAST_REFBUNDLE, _BROADCAST_VALBUNDLE, _BROADCAST_REPSIGBUNDLE, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='conn', full_name='tortilla.Broadcast.conn',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+  ],
+  serialized_start=658,
+  serialized_end=1239,
+)
+
+
+_JOINER_JOINBUNDLE = _descriptor.Descriptor(
+  name='JoinBundle',
+  full_name='tortilla.Joiner.JoinBundle',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='crd', full_name='tortilla.Joiner.JoinBundle.crd', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='ref', full_name='tortilla.Joiner.JoinBundle.ref', index=1,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -329,62 +500,62 @@ _JOINER_JOINBUNDLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=818,
-  serialized_end=880,
+  serialized_start=1499,
+  serialized_end=1579,
 )
 
 _JOINER = _descriptor.Descriptor(
   name='Joiner',
-  full_name='Joiner',
+  full_name='tortilla.Joiner',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='join_type', full_name='Joiner.join_type', index=0,
+      name='join_type', full_name='tortilla.Joiner.join_type', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_pairs', full_name='Joiner.input_pairs', index=1,
+      name='input_pairs', full_name='tortilla.Joiner.input_pairs', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='index', full_name='Joiner.index', index=2,
+      name='index', full_name='tortilla.Joiner.index', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='Joiner.label', index=3,
+      name='label', full_name='tortilla.Joiner.label', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_ref1', full_name='Joiner.output_ref1', index=4,
+      name='output_ref1', full_name='tortilla.Joiner.output_ref1', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_ref2', full_name='Joiner.output_ref2', index=5,
+      name='output_ref2', full_name='tortilla.Joiner.output_ref2', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_crd', full_name='Joiner.output_crd', index=6,
+      name='output_crd', full_name='tortilla.Joiner.output_crd', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -403,84 +574,84 @@ _JOINER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=606,
-  serialized_end=914,
+  serialized_start=1242,
+  serialized_end=1613,
 )
 
 
 _FIBERLOOKUP = _descriptor.Descriptor(
   name='FiberLookup',
-  full_name='FiberLookup',
+  full_name='tortilla.FiberLookup',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_ref', full_name='FiberLookup.input_ref', index=0,
+      name='input_ref', full_name='tortilla.FiberLookup.input_ref', index=0,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_ref', full_name='FiberLookup.output_ref', index=1,
+      name='output_ref', full_name='tortilla.FiberLookup.output_ref', index=1,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_crd', full_name='FiberLookup.output_crd', index=2,
+      name='output_crd', full_name='tortilla.FiberLookup.output_crd', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='index', full_name='FiberLookup.index', index=3,
+      name='index', full_name='tortilla.FiberLookup.index', index=3,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='tensor', full_name='FiberLookup.tensor', index=4,
+      name='tensor', full_name='tortilla.FiberLookup.tensor', index=4,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='mode', full_name='FiberLookup.mode', index=5,
+      name='mode', full_name='tortilla.FiberLookup.mode', index=5,
       number=7, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='format', full_name='FiberLookup.format', index=6,
+      name='format', full_name='tortilla.FiberLookup.format', index=6,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='src', full_name='FiberLookup.src', index=7,
+      name='src', full_name='tortilla.FiberLookup.src', index=7,
       number=9, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='root', full_name='FiberLookup.root', index=8,
+      name='root', full_name='tortilla.FiberLookup.root', index=8,
       number=10, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='FiberLookup.label', index=9,
+      name='label', full_name='tortilla.FiberLookup.label', index=9,
       number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -498,91 +669,91 @@ _FIBERLOOKUP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=917,
-  serialized_end=1128,
+  serialized_start=1616,
+  serialized_end=1854,
 )
 
 
 _FIBERWRITE = _descriptor.Descriptor(
   name='FiberWrite',
-  full_name='FiberWrite',
+  full_name='tortilla.FiberWrite',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='ref', full_name='FiberWrite.ref', index=0,
+      name='ref', full_name='tortilla.FiberWrite.ref', index=0,
       number=1, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_crd', full_name='FiberWrite.input_crd', index=1,
+      name='input_crd', full_name='tortilla.FiberWrite.input_crd', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='index', full_name='FiberWrite.index', index=2,
+      name='index', full_name='tortilla.FiberWrite.index', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='tensor', full_name='FiberWrite.tensor', index=3,
+      name='tensor', full_name='tortilla.FiberWrite.tensor', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='mode_val', full_name='FiberWrite.mode_val', index=4,
+      name='mode_val', full_name='tortilla.FiberWrite.mode_val', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='format', full_name='FiberWrite.format', index=5,
+      name='format', full_name='tortilla.FiberWrite.format', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='segsize', full_name='FiberWrite.segsize', index=6,
+      name='segsize', full_name='tortilla.FiberWrite.segsize', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='crdsize', full_name='FiberWrite.crdsize', index=7,
+      name='crdsize', full_name='tortilla.FiberWrite.crdsize', index=7,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='size', full_name='FiberWrite.size', index=8,
+      name='size', full_name='tortilla.FiberWrite.size', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='sink', full_name='FiberWrite.sink', index=9,
+      name='sink', full_name='tortilla.FiberWrite.sink', index=9,
       number=10, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='FiberWrite.label', index=10,
+      name='label', full_name='tortilla.FiberWrite.label', index=10,
       number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -600,56 +771,56 @@ _FIBERWRITE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1131,
-  serialized_end=1329,
+  serialized_start=1857,
+  serialized_end=2064,
 )
 
 
 _VALWRITE = _descriptor.Descriptor(
   name='ValWrite',
-  full_name='ValWrite',
+  full_name='tortilla.ValWrite',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_val', full_name='ValWrite.input_val', index=0,
+      name='input_val', full_name='tortilla.ValWrite.input_val', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='ValWrite.label', index=1,
+      name='label', full_name='tortilla.ValWrite.label', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='crdsize', full_name='ValWrite.crdsize', index=2,
+      name='crdsize', full_name='tortilla.ValWrite.crdsize', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='segsize', full_name='ValWrite.segsize', index=3,
+      name='segsize', full_name='tortilla.ValWrite.segsize', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='tensor', full_name='ValWrite.tensor', index=4,
+      name='tensor', full_name='tortilla.ValWrite.tensor', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='sink', full_name='ValWrite.sink', index=5,
+      name='sink', full_name='tortilla.ValWrite.sink', index=5,
       number=6, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -667,63 +838,63 @@ _VALWRITE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1331,
-  serialized_end=1451,
+  serialized_start=2067,
+  serialized_end=2196,
 )
 
 
 _REPEAT = _descriptor.Descriptor(
   name='Repeat',
-  full_name='Repeat',
+  full_name='tortilla.Repeat',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_ref', full_name='Repeat.input_ref', index=0,
+      name='input_ref', full_name='tortilla.Repeat.input_ref', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_ref', full_name='Repeat.output_ref', index=1,
+      name='output_ref', full_name='tortilla.Repeat.output_ref', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_rep_sig', full_name='Repeat.input_rep_sig', index=2,
+      name='input_rep_sig', full_name='tortilla.Repeat.input_rep_sig', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='Repeat.label', index=3,
+      name='label', full_name='tortilla.Repeat.label', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='index', full_name='Repeat.index', index=4,
+      name='index', full_name='tortilla.Repeat.index', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='root', full_name='Repeat.root', index=5,
+      name='root', full_name='tortilla.Repeat.root', index=5,
       number=6, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='tensor', full_name='Repeat.tensor', index=6,
+      name='tensor', full_name='tortilla.Repeat.tensor', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -741,42 +912,42 @@ _REPEAT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1454,
-  serialized_end=1623,
+  serialized_start=2199,
+  serialized_end=2395,
 )
 
 
 _REPEATSIG = _descriptor.Descriptor(
   name='RepeatSig',
-  full_name='RepeatSig',
+  full_name='tortilla.RepeatSig',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_crd', full_name='RepeatSig.input_crd', index=0,
+      name='input_crd', full_name='tortilla.RepeatSig.input_crd', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_rep_sig', full_name='RepeatSig.output_rep_sig', index=1,
+      name='output_rep_sig', full_name='tortilla.RepeatSig.output_rep_sig', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='RepeatSig.label', index=2,
+      name='label', full_name='tortilla.RepeatSig.label', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='index', full_name='RepeatSig.index', index=3,
+      name='index', full_name='tortilla.RepeatSig.index', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -794,28 +965,28 @@ _REPEATSIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1625,
-  serialized_end=1736,
+  serialized_start=2398,
+  serialized_end=2527,
 )
 
 
 _ALU_VAL = _descriptor.Descriptor(
   name='Val',
-  full_name='ALU.Val',
+  full_name='tortilla.ALU.Val',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='inputs', full_name='ALU.Val.inputs', index=0,
+      name='inputs', full_name='tortilla.ALU.Val.inputs', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output', full_name='ALU.Val.output', index=1,
+      name='output', full_name='tortilla.ALU.Val.output', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -833,27 +1004,27 @@ _ALU_VAL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1861,
-  serialized_end=1922,
+  serialized_start=2679,
+  serialized_end=2758,
 )
 
 _ALU_CRD = _descriptor.Descriptor(
   name='Crd',
-  full_name='ALU.Crd',
+  full_name='tortilla.ALU.Crd',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='inputs', full_name='ALU.Crd.inputs', index=0,
+      name='inputs', full_name='tortilla.ALU.Crd.inputs', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output', full_name='ALU.Crd.output', index=1,
+      name='output', full_name='tortilla.ALU.Crd.output', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -871,34 +1042,34 @@ _ALU_CRD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1924,
-  serialized_end=1985,
+  serialized_start=2760,
+  serialized_end=2839,
 )
 
 _ALU_STAGE = _descriptor.Descriptor(
   name='Stage',
-  full_name='ALU.Stage',
+  full_name='tortilla.ALU.Stage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='inputs', full_name='ALU.Stage.inputs', index=0,
+      name='inputs', full_name='tortilla.ALU.Stage.inputs', index=0,
       number=1, type=4, cpp_type=4, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output', full_name='ALU.Stage.output', index=1,
+      name='output', full_name='tortilla.ALU.Stage.output', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='op', full_name='ALU.Stage.op', index=2,
+      name='op', full_name='tortilla.ALU.Stage.op', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -916,48 +1087,48 @@ _ALU_STAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1987,
-  serialized_end=2050,
+  serialized_start=2841,
+  serialized_end=2913,
 )
 
 _ALU = _descriptor.Descriptor(
   name='ALU',
-  full_name='ALU',
+  full_name='tortilla.ALU',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='vals', full_name='ALU.vals', index=0,
+      name='vals', full_name='tortilla.ALU.vals', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='crds', full_name='ALU.crds', index=1,
+      name='crds', full_name='tortilla.ALU.crds', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='stages', full_name='ALU.stages', index=2,
+      name='stages', full_name='tortilla.ALU.stages', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_val', full_name='ALU.output_val', index=3,
+      name='output_val', full_name='tortilla.ALU.output_val', index=3,
       number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='ALU.label', index=4,
+      name='label', full_name='tortilla.ALU.label', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -976,40 +1147,40 @@ _ALU = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='conn', full_name='ALU.conn',
+      name='conn', full_name='tortilla.ALU.conn',
       index=0, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1739,
-  serialized_end=2139,
+  serialized_start=2530,
+  serialized_end=3002,
 )
 
 
 _REDUCE = _descriptor.Descriptor(
   name='Reduce',
-  full_name='Reduce',
+  full_name='tortilla.Reduce',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_val', full_name='Reduce.input_val', index=0,
+      name='input_val', full_name='tortilla.Reduce.input_val', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_val', full_name='Reduce.output_val', index=1,
+      name='output_val', full_name='tortilla.Reduce.output_val', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='Reduce.label', index=2,
+      name='label', full_name='tortilla.Reduce.label', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1027,77 +1198,77 @@ _REDUCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2141,
-  serialized_end=2227,
+  serialized_start=3004,
+  serialized_end=3108,
 )
 
 
 _SPARSEACCUMULATOR = _descriptor.Descriptor(
   name='SparseAccumulator',
-  full_name='SparseAccumulator',
+  full_name='tortilla.SparseAccumulator',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_inner_crd', full_name='SparseAccumulator.input_inner_crd', index=0,
+      name='input_inner_crd', full_name='tortilla.SparseAccumulator.input_inner_crd', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_inner_crd', full_name='SparseAccumulator.output_inner_crd', index=1,
+      name='output_inner_crd', full_name='tortilla.SparseAccumulator.output_inner_crd', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_outer_crd', full_name='SparseAccumulator.input_outer_crd', index=2,
+      name='input_outer_crd', full_name='tortilla.SparseAccumulator.input_outer_crd', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_val', full_name='SparseAccumulator.input_val', index=3,
+      name='input_val', full_name='tortilla.SparseAccumulator.input_val', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_val', full_name='SparseAccumulator.output_val', index=4,
+      name='output_val', full_name='tortilla.SparseAccumulator.output_val', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='order', full_name='SparseAccumulator.order', index=5,
+      name='order', full_name='tortilla.SparseAccumulator.order', index=5,
       number=6, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='inner_crd', full_name='SparseAccumulator.inner_crd', index=6,
+      name='inner_crd', full_name='tortilla.SparseAccumulator.inner_crd', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='outer_crd', full_name='SparseAccumulator.outer_crd', index=7,
+      name='outer_crd', full_name='tortilla.SparseAccumulator.outer_crd', index=7,
       number=8, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='SparseAccumulator.label', index=8,
+      name='label', full_name='tortilla.SparseAccumulator.label', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1115,63 +1286,63 @@ _SPARSEACCUMULATOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2230,
-  serialized_end=2492,
+  serialized_start=3111,
+  serialized_end=3418,
 )
 
 
 _COORDHOLD = _descriptor.Descriptor(
   name='CoordHold',
-  full_name='CoordHold',
+  full_name='tortilla.CoordHold',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_inner_crd', full_name='CoordHold.input_inner_crd', index=0,
+      name='input_inner_crd', full_name='tortilla.CoordHold.input_inner_crd', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_outer_crd', full_name='CoordHold.input_outer_crd', index=1,
+      name='input_outer_crd', full_name='tortilla.CoordHold.input_outer_crd', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_inner_crd', full_name='CoordHold.output_inner_crd', index=2,
+      name='output_inner_crd', full_name='tortilla.CoordHold.output_inner_crd', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_outer_crd', full_name='CoordHold.output_outer_crd', index=3,
+      name='output_outer_crd', full_name='tortilla.CoordHold.output_outer_crd', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='inner_crd', full_name='CoordHold.inner_crd', index=4,
+      name='inner_crd', full_name='tortilla.CoordHold.inner_crd', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='outer_crd', full_name='CoordHold.outer_crd', index=5,
+      name='outer_crd', full_name='tortilla.CoordHold.outer_crd', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='CoordHold.label', index=6,
+      name='label', full_name='tortilla.CoordHold.label', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1189,63 +1360,63 @@ _COORDHOLD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2495,
-  serialized_end=2709,
+  serialized_start=3421,
+  serialized_end=3671,
 )
 
 
 _COORDDROP = _descriptor.Descriptor(
   name='CoordDrop',
-  full_name='CoordDrop',
+  full_name='tortilla.CoordDrop',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_inner_crd', full_name='CoordDrop.input_inner_crd', index=0,
+      name='input_inner_crd', full_name='tortilla.CoordDrop.input_inner_crd', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_outer_crd', full_name='CoordDrop.input_outer_crd', index=1,
+      name='input_outer_crd', full_name='tortilla.CoordDrop.input_outer_crd', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_inner_crd', full_name='CoordDrop.output_inner_crd', index=2,
+      name='output_inner_crd', full_name='tortilla.CoordDrop.output_inner_crd', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_outer_crd', full_name='CoordDrop.output_outer_crd', index=3,
+      name='output_outer_crd', full_name='tortilla.CoordDrop.output_outer_crd', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='inner_crd', full_name='CoordDrop.inner_crd', index=4,
+      name='inner_crd', full_name='tortilla.CoordDrop.inner_crd', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='outer_crd', full_name='CoordDrop.outer_crd', index=5,
+      name='outer_crd', full_name='tortilla.CoordDrop.outer_crd', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='CoordDrop.label', index=6,
+      name='label', full_name='tortilla.CoordDrop.label', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1263,56 +1434,56 @@ _COORDDROP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2712,
-  serialized_end=2926,
+  serialized_start=3674,
+  serialized_end=3924,
 )
 
 
 _COORDMASK = _descriptor.Descriptor(
   name='CoordMask',
-  full_name='CoordMask',
+  full_name='tortilla.CoordMask',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input_inner_crd', full_name='CoordMask.input_inner_crd', index=0,
+      name='input_inner_crd', full_name='tortilla.CoordMask.input_inner_crd', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_outer_crd', full_name='CoordMask.input_outer_crd', index=1,
+      name='input_outer_crd', full_name='tortilla.CoordMask.input_outer_crd', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_ref', full_name='CoordMask.input_ref', index=2,
+      name='input_ref', full_name='tortilla.CoordMask.input_ref', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_inner_crd', full_name='CoordMask.output_inner_crd', index=3,
+      name='output_inner_crd', full_name='tortilla.CoordMask.output_inner_crd', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_outer_crd', full_name='CoordMask.output_outer_crd', index=4,
+      name='output_outer_crd', full_name='tortilla.CoordMask.output_outer_crd', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_ref', full_name='CoordMask.output_ref', index=5,
+      name='output_ref', full_name='tortilla.CoordMask.output_ref', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1330,42 +1501,42 @@ _COORDMASK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2929,
-  serialized_end=3153,
+  serialized_start=3927,
+  serialized_end=4205,
 )
 
 
 _ARRAYVALS = _descriptor.Descriptor(
   name='ArrayVals',
-  full_name='ArrayVals',
+  full_name='tortilla.ArrayVals',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='tensor', full_name='ArrayVals.tensor', index=0,
+      name='tensor', full_name='tortilla.ArrayVals.tensor', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_ref', full_name='ArrayVals.input_ref', index=1,
+      name='input_ref', full_name='tortilla.ArrayVals.input_ref', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_val', full_name='ArrayVals.output_val', index=2,
+      name='output_val', full_name='tortilla.ArrayVals.output_val', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='label', full_name='ArrayVals.label', index=3,
+      name='label', full_name='tortilla.ArrayVals.label', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1383,8 +1554,8 @@ _ARRAYVALS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3155,
-  serialized_end=3260,
+  serialized_start=4207,
+  serialized_end=4330,
 )
 
 _OPERATION.fields_by_name['broadcast'].message_type = _BROADCAST
@@ -1443,8 +1614,34 @@ _OPERATION.fields_by_name['spacc'].containing_oneof = _OPERATION.oneofs_by_name[
 _OPERATION.oneofs_by_name['op'].fields.append(
   _OPERATION.fields_by_name['val_write'])
 _OPERATION.fields_by_name['val_write'].containing_oneof = _OPERATION.oneofs_by_name['op']
-_BROADCAST.fields_by_name['input'].message_type = stream__pb2._CRDSTREAM
-_BROADCAST.fields_by_name['outputs'].message_type = stream__pb2._CRDSTREAM
+_BROADCAST_CRDBUNDLE.fields_by_name['input'].message_type = stream__pb2._CRDSTREAM
+_BROADCAST_CRDBUNDLE.fields_by_name['outputs'].message_type = stream__pb2._CRDSTREAM
+_BROADCAST_CRDBUNDLE.containing_type = _BROADCAST
+_BROADCAST_REFBUNDLE.fields_by_name['input'].message_type = stream__pb2._REFSTREAM
+_BROADCAST_REFBUNDLE.fields_by_name['outputs'].message_type = stream__pb2._REFSTREAM
+_BROADCAST_REFBUNDLE.containing_type = _BROADCAST
+_BROADCAST_VALBUNDLE.fields_by_name['input'].message_type = stream__pb2._VALSTREAM
+_BROADCAST_VALBUNDLE.fields_by_name['outputs'].message_type = stream__pb2._VALSTREAM
+_BROADCAST_VALBUNDLE.containing_type = _BROADCAST
+_BROADCAST_REPSIGBUNDLE.fields_by_name['input'].message_type = stream__pb2._REPSIGSTREAM
+_BROADCAST_REPSIGBUNDLE.fields_by_name['outputs'].message_type = stream__pb2._REPSIGSTREAM
+_BROADCAST_REPSIGBUNDLE.containing_type = _BROADCAST
+_BROADCAST.fields_by_name['crd'].message_type = _BROADCAST_CRDBUNDLE
+_BROADCAST.fields_by_name['ref'].message_type = _BROADCAST_REFBUNDLE
+_BROADCAST.fields_by_name['val'].message_type = _BROADCAST_VALBUNDLE
+_BROADCAST.fields_by_name['repsig'].message_type = _BROADCAST_REPSIGBUNDLE
+_BROADCAST.oneofs_by_name['conn'].fields.append(
+  _BROADCAST.fields_by_name['crd'])
+_BROADCAST.fields_by_name['crd'].containing_oneof = _BROADCAST.oneofs_by_name['conn']
+_BROADCAST.oneofs_by_name['conn'].fields.append(
+  _BROADCAST.fields_by_name['ref'])
+_BROADCAST.fields_by_name['ref'].containing_oneof = _BROADCAST.oneofs_by_name['conn']
+_BROADCAST.oneofs_by_name['conn'].fields.append(
+  _BROADCAST.fields_by_name['val'])
+_BROADCAST.fields_by_name['val'].containing_oneof = _BROADCAST.oneofs_by_name['conn']
+_BROADCAST.oneofs_by_name['conn'].fields.append(
+  _BROADCAST.fields_by_name['repsig'])
+_BROADCAST.fields_by_name['repsig'].containing_oneof = _BROADCAST.oneofs_by_name['conn']
 _JOINER_JOINBUNDLE.fields_by_name['crd'].message_type = stream__pb2._CRDSTREAM
 _JOINER_JOINBUNDLE.fields_by_name['ref'].message_type = stream__pb2._REFSTREAM
 _JOINER_JOINBUNDLE.containing_type = _JOINER
@@ -1525,28 +1722,60 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 Operation = _reflection.GeneratedProtocolMessageType('Operation', (_message.Message,), {
   'DESCRIPTOR' : _OPERATION,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:Operation)
+  # @@protoc_insertion_point(class_scope:tortilla.Operation)
   })
 _sym_db.RegisterMessage(Operation)
 
 Broadcast = _reflection.GeneratedProtocolMessageType('Broadcast', (_message.Message,), {
+
+  'CrdBundle' : _reflection.GeneratedProtocolMessageType('CrdBundle', (_message.Message,), {
+    'DESCRIPTOR' : _BROADCAST_CRDBUNDLE,
+    '__module__' : 'ops_pb2'
+    # @@protoc_insertion_point(class_scope:tortilla.Broadcast.CrdBundle)
+    })
+  ,
+
+  'RefBundle' : _reflection.GeneratedProtocolMessageType('RefBundle', (_message.Message,), {
+    'DESCRIPTOR' : _BROADCAST_REFBUNDLE,
+    '__module__' : 'ops_pb2'
+    # @@protoc_insertion_point(class_scope:tortilla.Broadcast.RefBundle)
+    })
+  ,
+
+  'ValBundle' : _reflection.GeneratedProtocolMessageType('ValBundle', (_message.Message,), {
+    'DESCRIPTOR' : _BROADCAST_VALBUNDLE,
+    '__module__' : 'ops_pb2'
+    # @@protoc_insertion_point(class_scope:tortilla.Broadcast.ValBundle)
+    })
+  ,
+
+  'RepSigBundle' : _reflection.GeneratedProtocolMessageType('RepSigBundle', (_message.Message,), {
+    'DESCRIPTOR' : _BROADCAST_REPSIGBUNDLE,
+    '__module__' : 'ops_pb2'
+    # @@protoc_insertion_point(class_scope:tortilla.Broadcast.RepSigBundle)
+    })
+  ,
   'DESCRIPTOR' : _BROADCAST,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:Broadcast)
+  # @@protoc_insertion_point(class_scope:tortilla.Broadcast)
   })
 _sym_db.RegisterMessage(Broadcast)
+_sym_db.RegisterMessage(Broadcast.CrdBundle)
+_sym_db.RegisterMessage(Broadcast.RefBundle)
+_sym_db.RegisterMessage(Broadcast.ValBundle)
+_sym_db.RegisterMessage(Broadcast.RepSigBundle)
 
 Joiner = _reflection.GeneratedProtocolMessageType('Joiner', (_message.Message,), {
 
   'JoinBundle' : _reflection.GeneratedProtocolMessageType('JoinBundle', (_message.Message,), {
     'DESCRIPTOR' : _JOINER_JOINBUNDLE,
     '__module__' : 'ops_pb2'
-    # @@protoc_insertion_point(class_scope:Joiner.JoinBundle)
+    # @@protoc_insertion_point(class_scope:tortilla.Joiner.JoinBundle)
     })
   ,
   'DESCRIPTOR' : _JOINER,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:Joiner)
+  # @@protoc_insertion_point(class_scope:tortilla.Joiner)
   })
 _sym_db.RegisterMessage(Joiner)
 _sym_db.RegisterMessage(Joiner.JoinBundle)
@@ -1554,35 +1783,35 @@ _sym_db.RegisterMessage(Joiner.JoinBundle)
 FiberLookup = _reflection.GeneratedProtocolMessageType('FiberLookup', (_message.Message,), {
   'DESCRIPTOR' : _FIBERLOOKUP,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:FiberLookup)
+  # @@protoc_insertion_point(class_scope:tortilla.FiberLookup)
   })
 _sym_db.RegisterMessage(FiberLookup)
 
 FiberWrite = _reflection.GeneratedProtocolMessageType('FiberWrite', (_message.Message,), {
   'DESCRIPTOR' : _FIBERWRITE,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:FiberWrite)
+  # @@protoc_insertion_point(class_scope:tortilla.FiberWrite)
   })
 _sym_db.RegisterMessage(FiberWrite)
 
 ValWrite = _reflection.GeneratedProtocolMessageType('ValWrite', (_message.Message,), {
   'DESCRIPTOR' : _VALWRITE,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:ValWrite)
+  # @@protoc_insertion_point(class_scope:tortilla.ValWrite)
   })
 _sym_db.RegisterMessage(ValWrite)
 
 Repeat = _reflection.GeneratedProtocolMessageType('Repeat', (_message.Message,), {
   'DESCRIPTOR' : _REPEAT,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:Repeat)
+  # @@protoc_insertion_point(class_scope:tortilla.Repeat)
   })
 _sym_db.RegisterMessage(Repeat)
 
 RepeatSig = _reflection.GeneratedProtocolMessageType('RepeatSig', (_message.Message,), {
   'DESCRIPTOR' : _REPEATSIG,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:RepeatSig)
+  # @@protoc_insertion_point(class_scope:tortilla.RepeatSig)
   })
 _sym_db.RegisterMessage(RepeatSig)
 
@@ -1591,26 +1820,26 @@ ALU = _reflection.GeneratedProtocolMessageType('ALU', (_message.Message,), {
   'Val' : _reflection.GeneratedProtocolMessageType('Val', (_message.Message,), {
     'DESCRIPTOR' : _ALU_VAL,
     '__module__' : 'ops_pb2'
-    # @@protoc_insertion_point(class_scope:ALU.Val)
+    # @@protoc_insertion_point(class_scope:tortilla.ALU.Val)
     })
   ,
 
   'Crd' : _reflection.GeneratedProtocolMessageType('Crd', (_message.Message,), {
     'DESCRIPTOR' : _ALU_CRD,
     '__module__' : 'ops_pb2'
-    # @@protoc_insertion_point(class_scope:ALU.Crd)
+    # @@protoc_insertion_point(class_scope:tortilla.ALU.Crd)
     })
   ,
 
   'Stage' : _reflection.GeneratedProtocolMessageType('Stage', (_message.Message,), {
     'DESCRIPTOR' : _ALU_STAGE,
     '__module__' : 'ops_pb2'
-    # @@protoc_insertion_point(class_scope:ALU.Stage)
+    # @@protoc_insertion_point(class_scope:tortilla.ALU.Stage)
     })
   ,
   'DESCRIPTOR' : _ALU,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:ALU)
+  # @@protoc_insertion_point(class_scope:tortilla.ALU)
   })
 _sym_db.RegisterMessage(ALU)
 _sym_db.RegisterMessage(ALU.Val)
@@ -1620,42 +1849,42 @@ _sym_db.RegisterMessage(ALU.Stage)
 Reduce = _reflection.GeneratedProtocolMessageType('Reduce', (_message.Message,), {
   'DESCRIPTOR' : _REDUCE,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:Reduce)
+  # @@protoc_insertion_point(class_scope:tortilla.Reduce)
   })
 _sym_db.RegisterMessage(Reduce)
 
 SparseAccumulator = _reflection.GeneratedProtocolMessageType('SparseAccumulator', (_message.Message,), {
   'DESCRIPTOR' : _SPARSEACCUMULATOR,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:SparseAccumulator)
+  # @@protoc_insertion_point(class_scope:tortilla.SparseAccumulator)
   })
 _sym_db.RegisterMessage(SparseAccumulator)
 
 CoordHold = _reflection.GeneratedProtocolMessageType('CoordHold', (_message.Message,), {
   'DESCRIPTOR' : _COORDHOLD,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:CoordHold)
+  # @@protoc_insertion_point(class_scope:tortilla.CoordHold)
   })
 _sym_db.RegisterMessage(CoordHold)
 
 CoordDrop = _reflection.GeneratedProtocolMessageType('CoordDrop', (_message.Message,), {
   'DESCRIPTOR' : _COORDDROP,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:CoordDrop)
+  # @@protoc_insertion_point(class_scope:tortilla.CoordDrop)
   })
 _sym_db.RegisterMessage(CoordDrop)
 
 CoordMask = _reflection.GeneratedProtocolMessageType('CoordMask', (_message.Message,), {
   'DESCRIPTOR' : _COORDMASK,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:CoordMask)
+  # @@protoc_insertion_point(class_scope:tortilla.CoordMask)
   })
 _sym_db.RegisterMessage(CoordMask)
 
 ArrayVals = _reflection.GeneratedProtocolMessageType('ArrayVals', (_message.Message,), {
   'DESCRIPTOR' : _ARRAYVALS,
   '__module__' : 'ops_pb2'
-  # @@protoc_insertion_point(class_scope:ArrayVals)
+  # @@protoc_insertion_point(class_scope:tortilla.ArrayVals)
   })
 _sym_db.RegisterMessage(ArrayVals)
 

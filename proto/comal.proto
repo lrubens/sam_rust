@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package tortilla;
+
 import "tortilla.proto";
 
 message ComalGraph {
