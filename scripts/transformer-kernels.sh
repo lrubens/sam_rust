@@ -67,7 +67,7 @@ for i in ${!KERNEL_NAMES[@]}; do
     name=${KERNEL_NAMES[$i]}
     args=${TACO_ARGS[$i]}
 
-    $taco_exe $args --print-sam-graph="$name.textproto"
+    $taco_exe $args --print-sam-graph="$name.pbtxt"
     #dot -Tpng $dot_dir/$name.gv -o $png_dir/$name.png
     echo "Generating sam for $name to $dir"
 done

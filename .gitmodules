@@ -2,3 +2,6 @@
 	path = taco
 	url = git@github.com:lrubens/taco.git
 	branch = sam-proto
+[submodule "tortilla"]
+	path = tortilla
+	url = https://github.com/stanford-ppl/tortilla.git

@@ -1,7 +1,5 @@
-import tortilla_pb2
-import ops_pb2
-import stream_pb2
-import comal_pb2
+import lib.tortilla_pb2
+import lib.comal_pb2
 import re
 from google.protobuf import text_format
 
