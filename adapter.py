@@ -90,6 +90,52 @@ def parse_proto(proto_file, out_bin):
         f.write(comal_graph.SerializeToString())
 
 
+def merge_protos(proto_files, out_bin):
+    program1 = tortilla_pb2.ProgramGraph()
+    program2 = tortilla_pb2.ProgramGraph()
+
+    with open(proto_files[0], "rb") as f:
+        proto_fd = f.read()
+        text_format.Parse(proto_fd, program1)
+    with open(proto_files[1], "rb") as f:
+        proto_fd = f.read()
+        text_format.Parse(proto_fd, program2)
+    program_name1 = program1.name
+    operators1 = program1.operators
+    program_name2 = program1.name
+    operators2 = program1.operators
+
+    process_funcs = {}
+    register_process_funcs(process_funcs)
+
+    max_node_id = 0
+    max_channel_id = 0
+    map_broad = {}
+    map_channel_broadcast = {}
+
+    for operator in operators1:
+        op = operator.WhichOneof("op")
+        op_id = operator.id
+        max_node_id = max(max_node_id, op_id)
+        max_id = process_funcs[op](operator, map_broad, map_channel_broadcast)
+        max_channel_id = max(max_channel_id, max_id)
+
+    insert_broadcast(program1, map_broad, map_channel_broadcast,
+                     max_node_id, max_channel_id)
+
+    comal_graph = comal_pb2.ComalGraph()
+    comal_graph.name = "comal graph"
+    comal_graph.channel_size = 1024
+    comal_graph.graph.CopyFrom(program1)
+
+    # out_comal = "comal.pbtxt"
+    # with open(out_comal, "w") as f:
+    #     text_format.PrintMessage(comal_graph, f)
+
+    with open(out_bin, "wb") as f:
+        f.write(comal_graph.SerializeToString())
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="Comal Adapter",
                                      description="Applies optimizations and adds metadata to program graph")
