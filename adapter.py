@@ -91,19 +91,21 @@ def parse_proto(proto_file, out_bin):
 
 
 def merge_protos(proto_files, out_bin):
-    program1 = tortilla_pb2.ProgramGraph()
-    program2 = tortilla_pb2.ProgramGraph()
+    # program1 = tortilla_pb2.ProgramGraph()
+    # program2 = tortilla_pb2.ProgramGraph()
+    program_graphs = []
 
-    with open(proto_files[0], "rb") as f:
-        proto_fd = f.read()
-        text_format.Parse(proto_fd, program1)
-    with open(proto_files[1], "rb") as f:
-        proto_fd = f.read()
-        text_format.Parse(proto_fd, program2)
-    program_name1 = program1.name
-    operators1 = program1.operators
-    program_name2 = program1.name
-    operators2 = program1.operators
+    for i, proto in enumerate(proto_files):
+        program_graph = tortilla_pb2.ProgramGraph()
+        with open(proto_files[i], "rb") as f:
+            proto_fd = f.read()
+            text_format.Parse(proto_fd, program_graph)
+        program_graphs.append(program_graph)
+
+    # program_name1 = program1.name
+    # operators1 = program1.operators
+    # program_name2 = program1.name
+    # operators2 = program1.operators
 
     process_funcs = {}
     register_process_funcs(process_funcs)
@@ -113,36 +115,55 @@ def merge_protos(proto_files, out_bin):
     map_broad = {}
     map_channel_broadcast = {}
 
-    for operator in operators1:
-        op = operator.WhichOneof("op")
-        op_id = operator.id
-        max_node_id = max(max_node_id, op_id)
-        max_id = process_funcs[op](operator, map_broad, map_channel_broadcast)
-        max_channel_id = max(max_channel_id, max_id)
+    index_variables = []
+    for program in program_graphs:
+        ind = []
+        for operator in program.operators:
+            op = operator.WhichOneof("op")
+            op_id = operator.id
+            max_node_id = max(max_node_id, op_id)
+            if op == "fiber_lookup":
+                index = operator.fiber_lookup.index
+                if not ind or (ind and ind[len(ind) - 1] is not index):
+                    ind.append(index)
+        index_variables.append(ind)
 
-    insert_broadcast(program1, map_broad, map_channel_broadcast,
-                     max_node_id, max_channel_id)
+    print(index_variables)
+    free_vars = set(*index_variables)
 
-    comal_graph = comal_pb2.ComalGraph()
-    comal_graph.name = "comal graph"
-    comal_graph.channel_size = 1024
-    comal_graph.graph.CopyFrom(program1)
+    # for operator in operators1:
+    #     op = operator.WhichOneof("op")
+    #     op_id = operator.id
+    #     max_node_id = max(max_node_id, op_id)
+    #     max_id = process_funcs[op](operator, map_broad, map_channel_broadcast)
+    #     max_channel_id = max(max_channel_id, max_id)
+
+    # insert_broadcast(program1, map_broad, map_channel_broadcast,
+    #                  max_node_id, max_channel_id)
+
+    # comal_graph = comal_pb2.ComalGraph()
+    # comal_graph.name = "comal graph"
+    # comal_graph.channel_size = 1024
+    # comal_graph.graph.CopyFrom(program1)
 
     # out_comal = "comal.pbtxt"
     # with open(out_comal, "w") as f:
     #     text_format.PrintMessage(comal_graph, f)
 
-    with open(out_bin, "wb") as f:
-        f.write(comal_graph.SerializeToString())
+    # with open(out_bin, "wb") as f:
+    #     f.write(comal_graph.SerializeToString())
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="Comal Adapter",
                                      description="Applies optimizations and adds metadata to program graph")
-    parser.add_argument('-p', '--proto_file',
+    parser.add_argument('-p', '--proto_file', type=str, nargs='*',
                         help='path of the textproto file')
     parser.add_argument('-o', '--out_bin',
                         help='path of the output comal graph file')
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-    parse_proto(args.proto_file, args.out_bin)
+    if type(args.proto_file) == list:
+        merge_protos(args.proto_file, args.out_bin)
+    else:
+        parse_proto(args.proto_file, args.out_bin)
