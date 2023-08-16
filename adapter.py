@@ -102,34 +102,53 @@ def merge_protos(proto_files, out_bin):
             text_format.Parse(proto_fd, program_graph)
         program_graphs.append(program_graph)
 
-    # program_name1 = program1.name
-    # operators1 = program1.operators
-    # program_name2 = program1.name
-    # operators2 = program1.operators
-
     process_funcs = {}
     register_process_funcs(process_funcs)
 
-    max_node_id = 0
-    max_channel_id = 0
+    max_node_ids = []
+    max_channel_ids = []
     map_broad = {}
     map_channel_broadcast = {}
 
     index_variables = []
-    for program in program_graphs:
+    for i, program in enumerate(program_graphs):
         ind = []
+        max_node_ids.append(0)
+        max_channel_ids.append(0)
         for operator in program.operators:
             op = operator.WhichOneof("op")
             op_id = operator.id
-            max_node_id = max(max_node_id, op_id)
+            max_node_ids[i] = max(max_node_ids[i], op_id)
             if op == "fiber_lookup":
                 index = operator.fiber_lookup.index
                 if not ind or (ind and ind[len(ind) - 1] is not index):
                     ind.append(index)
+                max_channel_ids[i] = max(
+                    max_channel_ids[i], operator.fiber_lookup.output_ref.id.id)
+            if op == "fiber_write":
+                print("")
         index_variables.append(ind)
 
-    print(index_variables)
-    free_vars = set(*index_variables)
+    shared_vars = [i[0] for i in zip(*index_variables)]
+
+    print(max_channel_ids)
+    print(max_node_ids)
+
+    new_program_graph = tortilla_pb2.ProgramGraph()
+
+    # for programs in program_graphs:
+    #     ind = []
+    max_node_id = sum(max_node_ids)
+    max_channel_id = sum(max_channel_ids)
+    for i, operator in enumerate(program_graphs[0].operators):
+        operator2 = program_graphs
+        op = operator.WhichOneof("op")
+        op_id = operator.id
+        new_program_graph.operators.add().CopyFrom(operator)
+        new_program_graph.operators[-1].id = max_node_id
+        max_node_id -= 1
+
+    print(new_program_graph)
 
     # for operator in operators1:
     #     op = operator.WhichOneof("op")
