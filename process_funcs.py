@@ -126,7 +126,7 @@ def process_alu(operator, map_broad, map_channel_broadcast):
     else:
         map_broad[(in1, "val")] = []
     if (in2, "val") in map_broad:
-        set_or_create(map_channel_broadcast, in1, 1, "val")
+        set_or_create(map_channel_broadcast, in2, 1, "val")
         # map_channel_broadcast[in2] += 1
     else:
         map_broad[(in2, "val")] = []

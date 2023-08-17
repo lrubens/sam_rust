@@ -2,3 +2,4 @@ bazel-*
 outputs
 __gitignore__
 .vscode
+__pycache__/

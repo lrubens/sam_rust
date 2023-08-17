@@ -146,6 +146,7 @@ def merge_protos(proto_files, out_bin):
 
     for i, program_graph in enumerate(program_graphs):
         chan_map = {}
+        tensor_to_chan = {}
         for operator in program_graph.operators:
             op_id = operator.id
             max_node_id -= 1
@@ -188,8 +189,8 @@ def merge_protos(proto_files, out_bin):
 
                 if i not in dependencies:
                     if operator.fiber_lookup.index in shared_vars:
-                        interm_outs[(operator.fiber_lookup.index, "crd")] = operator.fiber_lookup.output_crd
-                        interm_outs[(operator.fiber_lookup.index, "ref")] = operator.fiber_lookup.output_ref
+                        interm_outs[(operator.fiber_lookup.index, "crd")] = operator.fiber_lookup.output_crd.id.id
+                        interm_outs[(operator.fiber_lookup.index, "ref")] = operator.fiber_lookup.output_ref.id.id
             elif op == "repeat":
                 in1 = operator.repeat.input_rep_sig.id.id
                 if in1 not in chan_map:
@@ -237,11 +238,11 @@ def merge_protos(proto_files, out_bin):
                 tensor_2 = operator.joiner.input_pairs[1].crd.name[-1]
 
                 if i in dependencies and tensor_1 in shared_tens:
-                    chan_map[in1] = interm_outs[(operator.joiner.index, "crd")].id.id
-                    chan_map[in2] = interm_outs[(operator.joiner.index, "ref")].id.id
+                    chan_map[in1] = interm_outs[(operator.joiner.index, "crd")]
+                    chan_map[in2] = interm_outs[(operator.joiner.index, "ref")]
                 elif i in dependencies and tensor_2 in shared_tens:
-                    chan_map[in3] = interm_outs[(operator.joiner.index, "crd")].id.id
-                    chan_map[in4] = interm_outs[(operator.joiner.index, "ref")].id.id
+                    chan_map[in3] = interm_outs[(operator.joiner.index, "crd")]
+                    chan_map[in4] = interm_outs[(operator.joiner.index, "ref")]
                     
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
@@ -315,13 +316,13 @@ def merge_protos(proto_files, out_bin):
                         out_ref = ""
                         # out_crd = operator.joiner.input_pairs[0].crd if tensor_1 in shared_tens else 
                         if tensor_1 in shared_tens:
-                            out_crd = operator.joiner.input_pairs[0].crd
-                            out_ref = operator.joiner.input_pairs[0].ref
+                            out_crd = operator.joiner.input_pairs[0].crd.id.id
+                            out_ref = operator.joiner.input_pairs[0].ref.id.id
                         elif tensor_2 in shared_tens:
-                            out_crd = operator.joiner.input_pairs[1].crd
-                            out_ref = operator.joiner.input_pairs[1].ref
-                        interm_outs[(operator.fiber_lookup.index, "crd")] = out_crd
-                        interm_outs[(operator.fiber_lookup.index, "ref")] = out_ref
+                            out_crd = operator.joiner.input_pairs[1].crd.id.id
+                            out_ref = operator.joiner.input_pairs[1].ref.id.id
+                        interm_outs[(operator.fiber_lookup.index, "crd")] = chan_map[out_crd]
+                        interm_outs[(operator.fiber_lookup.index, "ref")] = chan_map[out_ref]
             elif op == "repeatsig":
                 in1 = operator.repeatsig.input_crd.id.id
                 if in1 not in chan_map:
@@ -344,7 +345,7 @@ def merge_protos(proto_files, out_bin):
             elif op == "val_write":
                 in1 = operator.val_write.input_val.id.id
                 if i not in dependencies:
-                    interm_outs[(operator.val_write.tensor, "val")] = operator.val_write.input_val
+                    interm_outs[(operator.val_write.tensor, "val")] = chan_map[operator.val_write.input_val.id.id]
                     continue
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
@@ -357,6 +358,104 @@ def merge_protos(proto_files, out_bin):
                 else:
                     map_broad[(chan_map[in1], "val")] = []
                 map_broad[(chan_map[in1], "val")].append(operator.fiber_write.input_crd)
+            elif op == "fiber_write":
+                in1 = operator.fiber_write.input_crd.id.id
+                if i not in dependencies:
+                    continue
+                if in1 not in chan_map:
+                    chan_map[in1] = max_channel_id
+                    operator.fiber_write.input_crd.id.id = max_channel_id
+                    max_channel_id -= 1
+                else:
+                    operator.fiber_write.input_crd.id.id = chan_map[in1]
+                if (chan_map[in1], "crd") in map_broad:
+                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "crd")
+                else:
+                    map_broad[(chan_map[in1], "crd")] = []
+                map_broad[(chan_map[in1], "crd")].append(operator.fiber_write.input_crd)
+            elif op == "array":
+                in1 = operator.array.input_ref.id.id
+                if i in dependencies and operator.array.tensor in shared_tens:
+                    tensor_to_chan[operator.array.output_val.id.id] = operator.array.tensor
+                    continue
+                if in1 not in chan_map:
+                    chan_map[in1] = max_channel_id
+                    operator.array.input_ref.id.id = max_channel_id
+                    max_channel_id -= 1
+                else:
+                    operator.array.input_ref.id.id = chan_map[in1]
+                if (chan_map[in1], "ref") in map_broad:
+                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "ref")
+                else:
+                    map_broad[(chan_map[in1], "ref")] = []
+                map_broad[(chan_map[in1], "ref")].append(operator.array.input_ref)
+                out1 = operator.array.output_val.id.id
+                if out1 not in chan_map:
+                    chan_map[out1] = max_channel_id
+                    operator.array.output_val.id.id = max_channel_id
+                    max_channel_id -= 1
+                # tensor_to_chan[operator.array.tensor] = operator.array.output_val
+            elif op == "alu":
+                in1 = operator.alu.vals.inputs[0].id.id
+                in2 = operator.alu.vals.inputs[1].id.id
+
+                if in1 in tensor_to_chan:
+                    chan_map[in1] = interm_outs[(tensor_to_chan[in1], "val")]
+                    print(chan_map[in1])
+                elif in2 in tensor_to_chan:
+                    chan_map[in2] = interm_outs[(tensor_to_chan[in2], "val")]
+                    print(chan_map[in2])
+                
+
+                if in1 not in chan_map:
+                    chan_map[in1] = max_channel_id
+                    operator.alu.vals.inputs[0].id.id = max_channel_id
+                    max_channel_id -= 1
+                else:
+                    operator.alu.vals.inputs[0].id.id = chan_map[in1]
+                if in2 not in chan_map:
+                    chan_map[in2] = max_channel_id
+                    operator.alu.vals.inputs[1].id.id = max_channel_id
+                    max_channel_id -= 1
+                else:
+                    operator.alu.vals.inputs[1].id.id = chan_map[in2]
+
+                if (chan_map[in1], "val") in map_broad:
+                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "val")
+                    # map_channel_broadcast[in1] += 1
+                else:
+                    map_broad[(chan_map[in1], "val")] = []
+                if (chan_map[in2], "val") in map_broad:
+                    set_or_create(map_channel_broadcast, chan_map[in2], 1, "val")
+                    # map_channel_broadcast[in2] += 1
+                else:
+                    map_broad[(chan_map[in2], "val")] = []
+                map_broad[(chan_map[in1], "val")].append(operator.alu.vals.inputs[0])
+                map_broad[(chan_map[in2], "val")].append(operator.alu.vals.inputs[1])
+                out1 = operator.alu.vals.output.id.id
+                if out1 not in chan_map:
+                    chan_map[out1] = max_channel_id
+                    operator.alu.vals.output.id.id = max_channel_id
+                    max_channel_id -= 1
+                
+            elif op == "reduce":
+                in1 = operator.reduce.input_val.id.id
+                if in1 not in chan_map:
+                    chan_map[in1] = max_channel_id
+                    operator.reduce.input_val.id.id = max_channel_id
+                    max_channel_id -= 1
+                else:
+                    operator.reduce.input_val.id.id = chan_map[in1]
+                if (chan_map[in1], "val") in map_broad:
+                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "val")
+                else:
+                    map_broad[(chan_map[in1], "val")] = []
+                map_broad[(chan_map[in1], "val")].append(operator.reduce.input_val)
+                out1 = operator.reduce.output_val.id.id
+                if out1 not in chan_map:
+                    chan_map[out1] = max_channel_id
+                    operator.reduce.output_val.id.id = max_channel_id
+                    max_channel_id -= 1
 
             new_program_graph.operators.add().CopyFrom(operator)
             new_program_graph.operators[-1].id = max_node_id
@@ -378,14 +477,14 @@ def merge_protos(proto_files, out_bin):
     # insert_broadcast(program1, map_broad, map_channel_broadcast,
     #                  max_node_id, max_channel_id)
 
-    # comal_graph = comal_pb2.ComalGraph()
-    # comal_graph.name = "comal graph"
-    # comal_graph.channel_size = 1024
-    # comal_graph.graph.CopyFrom(program1)
+    comal_graph = comal_pb2.ComalGraph()
+    comal_graph.name = "comal graph"
+    comal_graph.channel_size = 1024
+    comal_graph.graph.CopyFrom(new_program_graph)
 
-    # out_comal = "comal.pbtxt"
-    # with open(out_comal, "w") as f:
-    #     text_format.PrintMessage(comal_graph, f)
+    out_comal = "comal.pbtxt"
+    with open(out_comal, "w") as f:
+        text_format.PrintMessage(comal_graph, f)
 
     # with open(out_bin, "wb") as f:
     #     f.write(comal_graph.SerializeToString())
