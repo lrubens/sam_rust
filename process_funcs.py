@@ -191,34 +191,6 @@ def process_spacc(operator, map_broad, map_channel_broadcast):
     return max(in1, in2, in3)
 
 
-def insert_broadcast(program, map_broad, map_channel_broadcast, max_node_id, max_channel_id):
-    for (key, val) in map_channel_broadcast.items():
-        if key == 0:
-            continue
-        new_broadcast = program.operators.add(
-            name="broadcast", id=max_node_id+1)
-        outputs = []
-        if val[1] == "crd":
-            new_broadcast.broadcast.crd.input.id.id = key
-            new_broadcast.broadcast.crd.input.name = val[1]
-            outputs = new_broadcast.broadcast.crd.outputs
-        if val[1] == "ref":
-            new_broadcast.broadcast.ref.input.id.id = key
-            new_broadcast.broadcast.ref.input.name = val[1]
-        if val[1] == "val":
-            new_broadcast.broadcast.val.input.id.id = key
-            new_broadcast.broadcast.val.input.name = val[1]
-        if val[1] == "repsig":
-            new_broadcast.broadcast.repsig.input.id.id = key
-            new_broadcast.broadcast.repsig.input.name = val[1]
-
-        for s_id in map_broad[(key, val[1])]:
-            s_id.id.id = max_channel_id + 1
-            outputs.add().id.id = max_channel_id + 1
-            max_channel_id += 1
-        max_node_id += 1
-
-
 def register_process_funcs(process_ops):
     process_ops["fiber_lookup"] = process_fiber_lookup
     process_ops["repeat"] = process_repeat
