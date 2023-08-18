@@ -39,7 +39,7 @@ def insert_broadcast(program, map_broad, map_channel_broadcast, max_node_id, max
             outputs.add().id.id = max_channel_id + 1
             max_channel_id += 1
         max_node_id += 1
-        
+
 
 def add_void_channels(program, input_id_lst):
     for operator in program.operators:
@@ -71,9 +71,6 @@ def add_void_channels(program, input_id_lst):
             out1 = operator.reduce.output_val
             if out1.id.id not in input_id_lst:
                 out1.id.id = 0
-            
-
-
 
 
 def register_process_funcs(process_funcs):
@@ -153,11 +150,17 @@ def merge_protos(proto_files, out_bin):
 
     index_variables = []
     expr_tens = []
+    new_name = ""
+    expr = {}
     for i, program in enumerate(program_graphs):
         ind = []
         max_node_ids.append(0)
         max_channel_ids.append(0)
-        expr_tens.append([expr.split("=")[0] for expr in program.name.strip("\"").split(",")])
+        expr_tens.append([expr.split("=")[0]
+                         for expr in program.name.strip("\"").split(",")])
+        new_name = program.name.strip("\"").split(",")
+        expr[new_name[0]] = new_name[1:]
+        print(expr)
         print(expr_tens)
         for operator in program.operators:
             op = operator.WhichOneof("op")
@@ -171,20 +174,31 @@ def merge_protos(proto_files, out_bin):
                     max_channel_ids[i], operator.fiber_lookup.output_ref.id.id)
         index_variables.append(ind)
 
+    final_expr = []
+    for i in expr[list(expr.keys())[-1]]:
+        if i in expr:
+            final_expr.append(",".join(expr[i]))
+        else:
+            final_expr.append(i)
+    final_name = list(expr.keys())[-1] + "," + \
+        ",".join(final_expr)
+    print(final_name)
+
     # TODO: Figure out how to get dependencies between each expression
     shared_tens = [i[0] for i in zip(*expr_tens)]
-    dependencies = {expr_num: shared_tens[0] for expr_num in range(1, len(program_graphs))}
+    dependencies = {expr_num: shared_tens[0]
+                    for expr_num in range(1, len(program_graphs))}
     shared_vars = [i[0] for i in zip(*index_variables)]
 
     new_program_graph = tortilla_pb2.ProgramGraph()
+
+    new_program_graph.name = final_name
 
     # max_node_id = sum(max_node_ids)
     # max_channel_id = sum(max_channel_ids)
 
     max_node_id = 1
     max_channel_id = 1
-
-    # max_node_id 
 
     interm_outs = {}
 
@@ -213,10 +227,11 @@ def merge_protos(proto_files, out_bin):
                 # inputs_lst.append(cha)
                 # in1 = operator.fiber_lookup.input_ref.id.id
                 if (chan_map[in1], "ref") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "ref")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in1], 1, "ref")
                 else:
                     map_broad[(chan_map[in1], "ref")] = []
-                
+
                 out1 = operator.fiber_lookup.output_ref.id.id
                 if out1 not in chan_map and out1 != 0:
                     chan_map[out1] = max_channel_id
@@ -235,16 +250,21 @@ def merge_protos(proto_files, out_bin):
 
                 if i not in dependencies:
                     if operator.fiber_lookup.index in shared_vars:
-                        interm_outs[(operator.fiber_lookup.index, "crd")] = operator.fiber_lookup.output_crd.id.id
-                        interm_outs[(operator.fiber_lookup.index, "ref")] = operator.fiber_lookup.output_ref.id.id
+                        interm_outs[(operator.fiber_lookup.index, "crd")
+                                    ] = operator.fiber_lookup.output_crd.id.id
+                        interm_outs[(operator.fiber_lookup.index, "ref")
+                                    ] = operator.fiber_lookup.output_ref.id.id
 
                 new_program_graph.operators.add().CopyFrom(operator)
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
 
-                map_broad[(chan_map[in1], "ref")].append(new_operator.fiber_lookup.input_ref)
+                map_broad[(chan_map[in1], "ref")].append(
+                    new_operator.fiber_lookup.input_ref)
 
             elif op == "repeat":
+                if i in dependencies and operator.repeat.tensor in shared_tens:
+                    continue
                 in1 = operator.repeat.input_rep_sig.id.id
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
@@ -261,15 +281,17 @@ def merge_protos(proto_files, out_bin):
                 elif in2 == 0:
                     chan_map[in2] = in2
                 elif in2 != 0:
-                    operator.repeat.input_ref.id.id = chan_map[in2] 
+                    operator.repeat.input_ref.id.id = chan_map[in2]
 
                 if (chan_map[in1], "repsig") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "repsig")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in1], 1, "repsig")
                 else:
                     map_broad[(chan_map[in1], "repsig")] = []
 
                 if (chan_map[in2], "ref") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in2], 1, "ref")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in2], 1, "ref")
                 else:
                     map_broad[(chan_map[in2], "ref")] = []
 
@@ -285,8 +307,10 @@ def merge_protos(proto_files, out_bin):
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
 
-                map_broad[(chan_map[in1], "repsig")].append(new_operator.repeat.input_rep_sig)
-                map_broad[(chan_map[in2], "ref")].append(new_operator.repeat.input_ref)
+                map_broad[(chan_map[in1], "repsig")].append(
+                    new_operator.repeat.input_rep_sig)
+                map_broad[(chan_map[in2], "ref")].append(
+                    new_operator.repeat.input_ref)
 
             elif op == "joiner":
                 in1 = operator.joiner.input_pairs[0].crd.id.id
@@ -303,7 +327,7 @@ def merge_protos(proto_files, out_bin):
                 elif i in dependencies and tensor_2 in shared_tens:
                     chan_map[in3] = interm_outs[(operator.joiner.index, "crd")]
                     chan_map[in4] = interm_outs[(operator.joiner.index, "ref")]
-                    
+
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
                     operator.joiner.input_pairs[0].crd.id.id = max_channel_id
@@ -329,19 +353,23 @@ def merge_protos(proto_files, out_bin):
                 else:
                     operator.joiner.input_pairs[1].ref.id.id = chan_map[in4]
                 if (chan_map[in1], "crd") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "crd")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in1], 1, "crd")
                 else:
                     map_broad[(chan_map[in1], "crd")] = []
                 if (chan_map[in2], "ref") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in2], 1, "ref")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in2], 1, "ref")
                 else:
                     map_broad[(chan_map[in2], "ref")] = []
                 if (chan_map[in3], "crd") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in3], 1, "crd")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in3], 1, "crd")
                 else:
                     map_broad[(chan_map[in3], "crd")] = []
                 if (chan_map[in4], "ref") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in4], 1, "ref")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in4], 1, "ref")
                 else:
                     map_broad[(chan_map[in4], "ref")] = []
 
@@ -352,7 +380,7 @@ def merge_protos(proto_files, out_bin):
                     max_channel_id += 1
                 elif out1 != 0:
                     operator.joiner.output_ref1.id.id = chan_map[out1]
-                    
+
                 out2 = operator.joiner.output_ref2.id.id
                 if out2 not in chan_map and out2 != 0:
                     chan_map[out2] = max_channel_id
@@ -360,7 +388,7 @@ def merge_protos(proto_files, out_bin):
                     max_channel_id += 1
                 elif out2 != 0:
                     operator.joiner.output_ref2.id.id = chan_map[out2]
-                    
+
                 out3 = operator.joiner.output_crd.id.id
                 if out3 not in chan_map and out3 != 0:
                     chan_map[out3] = max_channel_id
@@ -375,29 +403,36 @@ def merge_protos(proto_files, out_bin):
                     if operator.fiber_lookup.index in shared_vars:
                         out_crd = ""
                         out_ref = ""
-                        # out_crd = operator.joiner.input_pairs[0].crd if tensor_1 in shared_tens else 
+                        # out_crd = operator.joiner.input_pairs[0].crd if tensor_1 in shared_tens else
                         if tensor_1 in shared_tens:
                             out_crd = operator.joiner.input_pairs[0].crd.id.id
                             out_ref = operator.joiner.input_pairs[0].ref.id.id
                         elif tensor_2 in shared_tens:
                             out_crd = operator.joiner.input_pairs[1].crd.id.id
                             out_ref = operator.joiner.input_pairs[1].ref.id.id
-                        interm_outs[(operator.fiber_lookup.index, "crd")] = chan_map[out_crd]
-                        interm_outs[(operator.fiber_lookup.index, "ref")] = chan_map[out_ref]
+                        interm_outs[(operator.fiber_lookup.index,
+                                     "crd")] = chan_map[out_crd]
+                        interm_outs[(operator.fiber_lookup.index,
+                                     "ref")] = chan_map[out_ref]
 
                 new_program_graph.operators.add().CopyFrom(operator)
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
 
-                map_broad[(chan_map[in1], "crd")].append(new_operator.joiner.input_pairs[0].crd)
-                map_broad[(chan_map[in2], "ref")].append(new_operator.joiner.input_pairs[0].ref)
-                map_broad[(chan_map[in3], "crd")].append(new_operator.joiner.input_pairs[1].crd)
-                map_broad[(chan_map[in4], "ref")].append(new_operator.joiner.input_pairs[1].ref)
-                
+                map_broad[(chan_map[in1], "crd")].append(
+                    new_operator.joiner.input_pairs[0].crd)
+                map_broad[(chan_map[in2], "ref")].append(
+                    new_operator.joiner.input_pairs[0].ref)
+                map_broad[(chan_map[in3], "crd")].append(
+                    new_operator.joiner.input_pairs[1].crd)
+                map_broad[(chan_map[in4], "ref")].append(
+                    new_operator.joiner.input_pairs[1].ref)
+
             elif op == "repeatsig":
                 in1 = operator.repeatsig.input_crd.id.id
                 if i in dependencies and operator.repeatsig.index in shared_vars:
-                    chan_map[in1] = interm_outs[(operator.repeatsig.index, "crd")]
+                    chan_map[in1] = interm_outs[(
+                        operator.repeatsig.index, "crd")]
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
                     operator.repeatsig.input_crd.id.id = max_channel_id
@@ -405,7 +440,8 @@ def merge_protos(proto_files, out_bin):
                 else:
                     operator.repeatsig.input_crd.id.id = chan_map[in1]
                 if (chan_map[in1], "crd") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "crd")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in1], 1, "crd")
                 else:
                     map_broad[(chan_map[in1], "crd")] = []
 
@@ -413,7 +449,8 @@ def merge_protos(proto_files, out_bin):
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
 
-                map_broad[(chan_map[in1], "crd")].append(new_operator.repeatsig.input_crd)
+                map_broad[(chan_map[in1], "crd")].append(
+                    new_operator.repeatsig.input_crd)
 
                 out1 = new_operator.repeatsig.output_rep_sig.id.id
                 if out1 not in chan_map:
@@ -425,7 +462,8 @@ def merge_protos(proto_files, out_bin):
             elif op == "val_write":
                 in1 = operator.val_write.input_val.id.id
                 if i not in dependencies:
-                    interm_outs[(operator.val_write.tensor, "val")] = chan_map[operator.val_write.input_val.id.id]
+                    interm_outs[(operator.val_write.tensor, "val")
+                                ] = chan_map[operator.val_write.input_val.id.id]
                     continue
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
@@ -442,7 +480,8 @@ def merge_protos(proto_files, out_bin):
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
 
-                map_broad[(chan_map[in1], "val")].append(new_operator.fiber_write.input_crd)
+                map_broad[(chan_map[in1], "val")].append(
+                    new_operator.fiber_write.input_crd)
             elif op == "fiber_write":
                 in1 = operator.fiber_write.input_crd.id.id
                 if i not in dependencies:
@@ -454,7 +493,8 @@ def merge_protos(proto_files, out_bin):
                 else:
                     operator.fiber_write.input_crd.id.id = chan_map[in1]
                 if (chan_map[in1], "crd") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "crd")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in1], 1, "crd")
                 else:
                     map_broad[(chan_map[in1], "crd")] = []
 
@@ -462,7 +502,8 @@ def merge_protos(proto_files, out_bin):
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
 
-                map_broad[(chan_map[in1], "crd")].append(new_operator.fiber_write.input_crd)
+                map_broad[(chan_map[in1], "crd")].append(
+                    new_operator.fiber_write.input_crd)
             elif op == "array":
                 in1 = operator.array.input_ref.id.id
                 if i in dependencies and operator.array.tensor in shared_tens:
@@ -475,7 +516,8 @@ def merge_protos(proto_files, out_bin):
                 else:
                     operator.array.input_ref.id.id = chan_map[in1]
                 if (chan_map[in1], "ref") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "ref")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in1], 1, "ref")
                 else:
                     map_broad[(chan_map[in1], "ref")] = []
 
@@ -483,7 +525,8 @@ def merge_protos(proto_files, out_bin):
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
 
-                map_broad[(chan_map[in1], "ref")].append(new_operator.array.input_ref)
+                map_broad[(chan_map[in1], "ref")].append(
+                    new_operator.array.input_ref)
                 out1 = new_operator.array.output_val.id.id
                 if out1 not in chan_map:
                     chan_map[out1] = max_channel_id
@@ -500,7 +543,6 @@ def merge_protos(proto_files, out_bin):
                 elif in2 in tensor_to_chan:
                     chan_map[in2] = interm_outs[(tensor_to_chan[in2], "val")]
                     print(chan_map[in2])
-                
 
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
@@ -516,26 +558,30 @@ def merge_protos(proto_files, out_bin):
                     operator.alu.vals.inputs[1].id.id = chan_map[in2]
 
                 if (chan_map[in1], "val") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "val")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in1], 1, "val")
                     # map_channel_broadcast[in1] += 1
                 else:
                     map_broad[(chan_map[in1], "val")] = []
                 if (chan_map[in2], "val") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in2], 1, "val")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in2], 1, "val")
                     # map_channel_broadcast[in2] += 1
                 else:
                     map_broad[(chan_map[in2], "val")] = []
                 new_program_graph.operators.add().CopyFrom(operator)
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
-                map_broad[(chan_map[in1], "val")].append(new_operator.alu.vals.inputs[0])
-                map_broad[(chan_map[in2], "val")].append(new_operator.alu.vals.inputs[1])
+                map_broad[(chan_map[in1], "val")].append(
+                    new_operator.alu.vals.inputs[0])
+                map_broad[(chan_map[in2], "val")].append(
+                    new_operator.alu.vals.inputs[1])
                 out1 = new_operator.alu.vals.output.id.id
                 if out1 not in chan_map:
                     chan_map[out1] = max_channel_id
                     new_operator.alu.vals.output.id.id = max_channel_id
                     max_channel_id += 1
-                
+
             elif op == "reduce":
                 in1 = operator.reduce.input_val.id.id
                 if in1 not in chan_map:
@@ -545,13 +591,15 @@ def merge_protos(proto_files, out_bin):
                 else:
                     operator.reduce.input_val.id.id = chan_map[in1]
                 if (chan_map[in1], "val") in map_broad:
-                    set_or_create(map_channel_broadcast, chan_map[in1], 1, "val")
+                    set_or_create(map_channel_broadcast,
+                                  chan_map[in1], 1, "val")
                 else:
                     map_broad[(chan_map[in1], "val")] = []
                 new_program_graph.operators.add().CopyFrom(operator)
                 new_operator = new_program_graph.operators[-1]
                 new_operator.id = max_node_id
-                map_broad[(chan_map[in1], "val")].append(new_operator.reduce.input_val)
+                map_broad[(chan_map[in1], "val")].append(
+                    new_operator.reduce.input_val)
                 out1 = new_operator.reduce.output_val.id.id
                 if out1 not in chan_map:
                     chan_map[out1] = max_channel_id
@@ -560,9 +608,13 @@ def merge_protos(proto_files, out_bin):
             elif op == "coord_drop":
                 continue
 
+    # out_comal = "gcn.pbtxt"
+    # with open(out_comal, "w") as f:
+    #     text_format.PrintMessage(new_program_graph, f)
+
     input_id_lst = [s[0].id.id for s in map_broad.values()]
     add_void_channels(new_program_graph, input_id_lst)
-    
+
     insert_broadcast(new_program_graph, map_broad, map_channel_broadcast,
                      max_node_id, max_channel_id)
 
@@ -581,7 +633,7 @@ def merge_protos(proto_files, out_bin):
     comal_graph.channel_size = 1024
     comal_graph.graph.CopyFrom(new_program_graph)
 
-    out_comal = "comal.pbtxt"
+    out_comal = "gcn.pbtxt"
     with open(out_comal, "w") as f:
         text_format.PrintMessage(comal_graph, f)
 

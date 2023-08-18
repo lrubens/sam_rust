@@ -13,8 +13,8 @@ KERNEL_NAMES=(
   # tensor3_fused_feedforward_linear
   # test_max
   # tensor4_mult2_ijklm
-  mul
-  add
+  mul_2
+  # add_1
   #tensor4_mult2_jimlk
   # tensor4_mult2_jimlk
   # tensor4_mult2_ikjml
@@ -35,8 +35,12 @@ TACO_ARGS=(
 #   "X(i,m,k)=E(m,j)*(B(j,l)*C(i,l,k)+d(j))+f(m)" #-f=X:sss:1,2,0 -f=B:ss:0,1 -f=C:sss:2,0,1 -f=d:s -s=reorder(j,k,i)" #reorder: jikl
 #  "X(i,j,k)=exp(B(i,j,k))"
   # "X(i,j,k)=B(j,l)*C(i,l,k)+d(j) -f=X:sss:1,0,2 -f=B:ss:0,1 -f=C:sss:0,1,2 -f=d:s -s=reorder(j,i,k)" #reorder: jikl 
-  "A(i,j,k)=B(j,l)*C(i,l,k) -f=A:sss:1,2,0 -f=B:ss:0,1 -f=C:sss:2,0,1 -s=reorder(j,k,i)" #reorder: jikl 
-  "X(i,j,k)=A(i,j,k)+d(j) -f=X:sss:1,2,0 -f=A:sss:1,2,0 -f=d:s -s=reorder(j,k,i)" #reorder: jikl 
+  # "A(i,j,k)=B(j,l)*C(i,l,k) -f=A:sss:1,2,0 -f=B:ss:0,1 -f=C:sss:2,0,1 -s=reorder(j,k,i)" #reorder: jikl 
+  # "X(i,j,k)=A(i,j,k)+d(j) -f=X:sss:1,2,0 -f=A:sss:1,2,0 -f=d:s -s=reorder(j,k,i)" #reorder: jikl 
+
+  "B(j,l)=E(j,i)*F(i,l) -f=B:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -s=reorder(j,l)" #reorder: jikl 
+  # "A(j,k)=B(j,l)*C(l,k) -f=A:ss:0,1 -f=B:ss:0,1 -f=C:ss:1,0 -s=reorder(j,k)" #reorder: jikl 
+  # "X(j,k)=A(j,k)+d(j) -f=X:ss:0,1 -f=A:ss:0,1 -f=d:s -s=reorder(j,k)" #reorder: jikl 
 
   # "X(i,j,k,l)=Q(i,k,j,m)*K(i,l,j,m) -f=X:ssss:0,1,2,3 -f=B:ssss:0,2,1,3 -f=C:ssss:0,2,1,3 -s=reorder(i,j,k,l,m)"
 #   "X(i,j,k)=B(j,l)*C(i,l,k) -f=X:sss:0,2,1 -f=B:ss:1,0 -f=C:sss:0,2,1" #reorder: jikl 

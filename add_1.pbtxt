@@ -1,0 +1,300 @@
+name: "X=ss01,A=ss01,d=s0\""
+operators {
+  name: "fiberlookup"
+  id: 13
+  fiber_lookup {
+    output_ref {
+      id {
+        id: 14
+      }
+    }
+    output_crd {
+      id {
+        id: 13
+      }
+      name: "in-d"
+    }
+    index: "j"
+    tensor: "d"
+    format: "compressed"
+    src: true
+    root: true
+    label: "FiberLookup j: d0\\ncompressed"
+  }
+}
+operators {
+  name: "fiberlookup"
+  id: 12
+  fiber_lookup {
+    output_ref {
+      id {
+        id: 12
+      }
+    }
+    output_crd {
+      id {
+        id: 1
+      }
+      name: "in-A"
+    }
+    index: "j"
+    tensor: "A"
+    format: "compressed"
+    src: true
+    root: true
+    label: "FiberLookup j: A0\\ncompressed"
+  }
+}
+operators {
+  name: "union"
+  id: 11
+  joiner {
+    join_type: UNION
+    input_pairs {
+      crd {
+        id {
+          id: 1
+        }
+        name: "crd_in-A"
+      }
+      ref {
+        id {
+          id: 12
+        }
+        name: "ref_in-A"
+      }
+    }
+    input_pairs {
+      crd {
+        id {
+          id: 13
+        }
+        name: "crd_in-d"
+      }
+      ref {
+        id {
+          id: 14
+        }
+        name: "ref_in-d"
+      }
+    }
+    index: "j"
+    label: "union j"
+    output_ref1 {
+      id {
+        id: 3
+      }
+      name: "out-A"
+    }
+    output_ref2 {
+      id {
+        id: 11
+      }
+      name: "out-d"
+    }
+    output_crd {
+      id {
+        id: 2
+      }
+    }
+  }
+}
+operators {
+  name: "fiberlookup"
+  id: 10
+  fiber_lookup {
+    input_ref {
+      id {
+        id: 3
+      }
+      name: "ref_out-A"
+    }
+    output_ref {
+      id {
+        id: 9
+      }
+    }
+    output_crd {
+      id {
+        id: 4
+      }
+    }
+    index: "k"
+    tensor: "A"
+    mode: 1
+    format: "compressed"
+    src: true
+    label: "FiberLookup k: A1\\ncompressed"
+  }
+}
+operators {
+  name: "repsiggen"
+  id: 8
+  repeatsig {
+    input_crd {
+      id {
+        id: 4
+      }
+      name: "crd"
+    }
+    output_rep_sig {
+      id {
+        id: 5
+      }
+    }
+    label: "RepeatSignalGenerator k"
+    index: "k"
+  }
+}
+operators {
+  name: "repeat"
+  id: 7
+  repeat {
+    input_ref {
+      id {
+        id: 11
+      }
+      name: "ref_out-d"
+    }
+    output_ref {
+      id {
+        id: 6
+      }
+    }
+    input_rep_sig {
+      id {
+        id: 5
+      }
+      name: "repsig"
+    }
+    label: "Repeat k: d"
+    index: "k"
+    tensor: "d"
+  }
+}
+operators {
+  name: "arrayvals"
+  id: 6
+  array {
+    tensor: "d"
+    input_ref {
+      id {
+        id: 6
+      }
+      name: "ref"
+    }
+    output_val {
+      id {
+        id: 7
+      }
+      name: "val"
+    }
+    label: "Array Vals: d"
+  }
+}
+operators {
+  name: "arrayvals"
+  id: 5
+  array {
+    tensor: "A"
+    input_ref {
+      id {
+        id: 9
+      }
+      name: "ref"
+    }
+    output_val {
+      id {
+        id: 10
+      }
+      name: "val"
+    }
+    label: "Array Vals: A"
+  }
+}
+operators {
+  name: "add"
+  id: 4
+  alu {
+    vals {
+      inputs {
+        id {
+          id: 7
+        }
+        name: "val"
+      }
+      inputs {
+        id {
+          id: 10
+        }
+        name: "val"
+      }
+      output {
+        id {
+          id: 8
+        }
+        name: "val"
+      }
+    }
+    stages {
+      inputs: 0
+      inputs: 1
+    }
+    label: "Add"
+  }
+}
+operators {
+  name: "fiberwrite"
+  id: 3
+  fiber_write {
+    input_crd {
+      id {
+        id: 2
+      }
+      name: "crd"
+    }
+    index: "j"
+    tensor: "X"
+    format: "compressed"
+    segsize: "2"
+    crdsize: "A0_dim"
+    sink: true
+    label: "FiberWrite j: X0\\ncompressed"
+  }
+}
+operators {
+  name: "fiberwrite"
+  id: 2
+  fiber_write {
+    input_crd {
+      id {
+        id: 4
+      }
+      name: "crd"
+    }
+    index: "k"
+    tensor: "X"
+    format: "compressed"
+    segsize: "A0_dim+1"
+    crdsize: "A0_dim*A1_dim"
+    sink: true
+    label: "FiberWrite k: X1\\ncompressed"
+  }
+}
+operators {
+  name: "valwrite"
+  id: 1
+  val_write {
+    input_val {
+      id {
+        id: 8
+      }
+      name: "val"
+    }
+    label: "FiberWrite Vals: X"
+    crdsize: "1*A0_dim*A1_dim"
+    tensor: "X"
+    sink: true
+  }
+}
+
