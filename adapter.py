@@ -152,6 +152,7 @@ def merge_protos(proto_files, out_bin):
     expr_tens = []
     new_name = ""
     expr = {}
+    repsiggen = {}
     for i, program in enumerate(program_graphs):
         ind = []
         max_node_ids.append(0)
@@ -265,7 +266,15 @@ def merge_protos(proto_files, out_bin):
             elif op == "repeat":
                 if i in dependencies and operator.repeat.tensor in shared_tens:
                     continue
-                in1 = operator.repeat.input_rep_sig.id.id
+                repeat_index = operator.repeat.index
+                if repeat_index in repsiggen:
+                    in1 = repsiggen[repeat_index].output_rep_sig.id.id
+                    print(in1, repeat_index, operator.repeat.tensor)
+                    chan_map[in1] = in1
+                    max_channel_id += 1
+                else:
+                    in1 = operator.repeat.input_rep_sig.id.id
+
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
                     operator.repeat.input_rep_sig.id.id = max_channel_id
@@ -430,6 +439,10 @@ def merge_protos(proto_files, out_bin):
 
             elif op == "repeatsig":
                 in1 = operator.repeatsig.input_crd.id.id
+                repsig_index = operator.repeatsig.index
+                not_in_repsig = False
+
+                # If there's already a repsiggen for same index, reuse it
                 if i in dependencies and operator.repeatsig.index in shared_vars:
                     chan_map[in1] = interm_outs[(
                         operator.repeatsig.index, "crd")]
@@ -445,9 +458,14 @@ def merge_protos(proto_files, out_bin):
                 else:
                     map_broad[(chan_map[in1], "crd")] = []
 
-                new_program_graph.operators.add().CopyFrom(operator)
-                new_operator = new_program_graph.operators[-1]
-                new_operator.id = max_node_id
+                new_operator = []
+                if repsig_index not in repsiggen:
+                    new_program_graph.operators.add().CopyFrom(operator)
+                    new_operator = new_program_graph.operators[-1]
+                    # repsiggen[repsig_index] = new_operator.repeatsig
+                    new_operator.id = max_node_id
+                else:
+                    new_operator = operator
 
                 map_broad[(chan_map[in1], "crd")].append(
                     new_operator.repeatsig.input_crd)
@@ -459,6 +477,10 @@ def merge_protos(proto_files, out_bin):
                     max_channel_id += 1
                 else:
                     new_operator.repeatsig.output_rep_sig.id.id = chan_map[out1]
+                if repsig_index not in repsiggen:
+                    repsiggen[repsig_index] = new_operator.repeatsig
+                    not_in_repsig = True
+
             elif op == "val_write":
                 in1 = operator.val_write.input_val.id.id
                 if i not in dependencies:
@@ -486,6 +508,10 @@ def merge_protos(proto_files, out_bin):
                 in1 = operator.fiber_write.input_crd.id.id
                 if i not in dependencies:
                     continue
+                fiber_write_index = operator.fiber_write.index
+                # if fiber_write_index in repsiggen:
+                #     print(repsiggen[fiber_write_index])
+                #     in1 = chan_map[repsiggen[fiber_write_index].input_crd.id.id]
                 if in1 not in chan_map:
                     chan_map[in1] = max_channel_id
                     operator.fiber_write.input_crd.id.id = max_channel_id

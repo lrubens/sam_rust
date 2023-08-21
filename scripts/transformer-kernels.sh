@@ -13,7 +13,10 @@ KERNEL_NAMES=(
   # tensor3_fused_feedforward_linear
   # test_max
   # tensor4_mult2_ijklm
-  mul_2
+  # mul_2
+  gcn_merged
+  # gcn_mul
+  # gcn_add
   # add_1
   #tensor4_mult2_jimlk
   # tensor4_mult2_jimlk
@@ -38,7 +41,9 @@ TACO_ARGS=(
   # "A(i,j,k)=B(j,l)*C(i,l,k) -f=A:sss:1,2,0 -f=B:ss:0,1 -f=C:sss:2,0,1 -s=reorder(j,k,i)" #reorder: jikl 
   # "X(i,j,k)=A(i,j,k)+d(j) -f=X:sss:1,2,0 -f=A:sss:1,2,0 -f=d:s -s=reorder(j,k,i)" #reorder: jikl 
 
-  "B(j,l)=E(j,i)*F(i,l) -f=B:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -s=reorder(j,l)" #reorder: jikl 
+  # "A(j,k)=E(j,i)*F(i,l)*C(l,k) -f=A:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=C:ss:1,0 -s=reorder(j,k)" #reorder: jikl 
+  "A(j,k)=E(j,i)*F(i,l)*C(l,k)+d(j) -f=A:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=C:ss:1,0 -f=d:s -s=reorder(j,k)" #reorder: jikl 
+  # "A(j,k)=E(j,i)*F(i,l)*C(l,k) -f=A:ss -f=E:ss -f=F:ss:1,0 -f=C:ss:1,0" #reorder: jikl 
   # "A(j,k)=B(j,l)*C(l,k) -f=A:ss:0,1 -f=B:ss:0,1 -f=C:ss:1,0 -s=reorder(j,k)" #reorder: jikl 
   # "X(j,k)=A(j,k)+d(j) -f=X:ss:0,1 -f=A:ss:0,1 -f=d:s -s=reorder(j,k)" #reorder: jikl 
 
@@ -76,7 +81,7 @@ for i in ${!KERNEL_NAMES[@]}; do
     args=${TACO_ARGS[$i]}
 
     $taco_exe $args --print-sam-graph="$name.pbtxt"
-    #dot -Tpng $dot_dir/$name.gv -o $png_dir/$name.png
+    #dot -Tpng $name.pbtxt -o $name.png
     echo "Generating sam for $name to $dir"
 done
 
