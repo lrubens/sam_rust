@@ -1,16 +1,16 @@
 name: "A=ss01,E=ss01,F=ss10,C=ss10,d=s0\""
 operators {
   name: "fiberlookup"
-  id: 41
+  id: 42
   fiber_lookup {
     output_ref {
       id {
-        id: 46
+        id: 47
       }
     }
     output_crd {
       id {
-        id: 45
+        id: 46
       }
       name: "in-d"
     }
@@ -24,11 +24,11 @@ operators {
 }
 operators {
   name: "fiberlookup"
-  id: 40
+  id: 41
   fiber_lookup {
     output_ref {
       id {
-        id: 44
+        id: 45
       }
     }
     output_crd {
@@ -47,7 +47,7 @@ operators {
 }
 operators {
   name: "union"
-  id: 39
+  id: 40
   joiner {
     join_type: UNION
     input_pairs {
@@ -59,7 +59,7 @@ operators {
       }
       ref {
         id {
-          id: 44
+          id: 45
         }
         name: "ref_in-E"
       }
@@ -67,13 +67,13 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 45
+          id: 46
         }
         name: "crd_in-d"
       }
       ref {
         id {
-          id: 46
+          id: 47
         }
         name: "ref_in-d"
       }
@@ -82,13 +82,13 @@ operators {
     label: "union j"
     output_ref1 {
       id {
-        id: 41
+        id: 43
       }
       name: "out-E"
     }
     output_ref2 {
       id {
-        id: 42
+        id: 44
       }
       name: "out-d"
     }
@@ -102,7 +102,7 @@ operators {
 }
 operators {
   name: "repsiggen"
-  id: 37
+  id: 38
   repeatsig {
     input_crd {
       id {
@@ -121,7 +121,7 @@ operators {
 }
 operators {
   name: "repeat"
-  id: 35
+  id: 36
   repeat {
     output_ref {
       id {
@@ -142,7 +142,7 @@ operators {
 }
 operators {
   name: "repeat"
-  id: 34
+  id: 35
   repeat {
     output_ref {
       id {
@@ -163,7 +163,7 @@ operators {
 }
 operators {
   name: "fiberlookup"
-  id: 33
+  id: 34
   fiber_lookup {
     input_ref {
       id {
@@ -173,7 +173,7 @@ operators {
     }
     output_ref {
       id {
-        id: 38
+        id: 40
       }
     }
     output_crd {
@@ -191,7 +191,7 @@ operators {
 }
 operators {
   name: "repsiggen"
-  id: 31
+  id: 32
   repeatsig {
     input_crd {
       id {
@@ -206,6 +206,32 @@ operators {
     }
     label: "RepeatSignalGenerator k"
     index: "k"
+  }
+}
+operators {
+  name: "repeat"
+  id: 30
+  repeat {
+    input_ref {
+      id {
+        id: 44
+      }
+      name: "ref_out-d"
+    }
+    output_ref {
+      id {
+        id: 38
+      }
+    }
+    input_rep_sig {
+      id {
+        id: 36
+      }
+      name: "repsig"
+    }
+    label: "Repeat k: d"
+    index: "k"
+    tensor: "d"
   }
 }
 operators {
@@ -240,7 +266,7 @@ operators {
   repeat {
     input_ref {
       id {
-        id: 41
+        id: 43
       }
       name: "ref_out-E"
     }
@@ -266,18 +292,18 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 38
+        id: 40
       }
       name: "ref"
     }
     output_ref {
       id {
-        id: 40
+        id: 42
       }
     }
     output_crd {
       id {
-        id: 39
+        id: 41
       }
       name: "in-C"
     }
@@ -338,13 +364,13 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 39
+          id: 41
         }
         name: "crd_in-C"
       }
       ref {
         id {
-          id: 40
+          id: 42
         }
         name: "ref_in-C"
       }
@@ -666,13 +692,13 @@ operators {
     tensor: "d"
     input_ref {
       id {
-        id: 42
+        id: 38
       }
-      name: "ref_out-d"
+      name: "ref"
     }
     output_val {
       id {
-        id: 43
+        id: 39
       }
       name: "val"
     }
@@ -852,7 +878,7 @@ operators {
       }
       inputs {
         id {
-          id: 43
+          id: 39
         }
         name: "val"
       }
