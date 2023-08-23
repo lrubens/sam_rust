@@ -14,7 +14,10 @@ KERNEL_NAMES=(
   # test_max
   # tensor4_mult2_ijklm
   # mul_2
-  gcn_merged
+  # gcn_merged
+  gcn_1
+  gcn_2
+  gcn_3
   # gcn_mul
   # gcn_add
   # add_1
@@ -42,9 +45,14 @@ TACO_ARGS=(
   # "X(i,j,k)=A(i,j,k)+d(j) -f=X:sss:1,2,0 -f=A:sss:1,2,0 -f=d:s -s=reorder(j,k,i)" #reorder: jikl 
 
   # "A(j,k)=E(j,i)*F(i,l)*C(l,k) -f=A:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=C:ss:1,0 -s=reorder(j,k)" #reorder: jikl 
-  "A(j,k)=E(j,i)*F(i,l)*C(l,k)+d(j) -f=A:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=C:ss:1,0 -f=d:s -s=reorder(j,k)" #reorder: jikl 
+  # "A(j,k)=E(j,i)*F(i,l)*C(l,k)+d(j) -f=A:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=C:ss:1,0 -f=d:s -s=reorder(j,k)" #reorder: jikl 
   # "A(j,k)=E(j,i)*F(i,l)*C(l,k) -f=A:ss -f=E:ss -f=F:ss:1,0 -f=C:ss:1,0" #reorder: jikl 
-  # "A(j,k)=B(j,l)*C(l,k) -f=A:ss:0,1 -f=B:ss:0,1 -f=C:ss:1,0 -s=reorder(j,k)" #reorder: jikl 
+  "B(i,k)=E(i,l)*F(l,k) -f=B:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=d:s -s=reorder(i,k)" #reorder: jikl 
+  "A(i,j)=B(i,k)*C(k,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=C:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
+  "A(i,j)=B(i,k)*E(k,l)*F(l,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
+
+  # "A(i,j)=E(i,l)*F(l,k)*C(k,j)+d(i) -f=A:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=C:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
+  # "A(j,k)=E(j,i)*F(i,l)*C(l,k)+d(j) -f=A:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=C:ss:1,0 -f=d:s -s=reorder(j,k)" #reorder: jikl 
   # "X(j,k)=A(j,k)+d(j) -f=X:ss:0,1 -f=A:ss:0,1 -f=d:s -s=reorder(j,k)" #reorder: jikl 
 
   # "X(i,j,k,l)=Q(i,k,j,m)*K(i,l,j,m) -f=X:ssss:0,1,2,3 -f=B:ssss:0,2,1,3 -f=C:ssss:0,2,1,3 -s=reorder(i,j,k,l,m)"

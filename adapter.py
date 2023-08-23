@@ -112,6 +112,10 @@ def parse_proto(proto_file, out_bin):
         max_id = process_funcs[op](operator, map_broad, map_channel_broadcast)
         max_channel_id = max(max_channel_id, max_id)
 
+
+    input_id_lst = [s[0].id.id for s in map_broad.values()]
+    add_void_channels(program, input_id_lst)
+
     insert_broadcast(program, map_broad, map_channel_broadcast,
                      max_node_id, max_channel_id)
 
