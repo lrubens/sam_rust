@@ -10,7 +10,6 @@ import copy
 
 
 def insert_broadcast(program, map_broad, map_channel_broadcast, max_node_id, max_channel_id):
-    print(map_channel_broadcast)
     for (key, val) in map_channel_broadcast.items():
         if key == 0:
             continue
@@ -100,6 +99,8 @@ def parse_proto(proto_file, out_bin):
     process_funcs = {}
     register_process_funcs(process_funcs)
 
+    # merge_elementwise(proto_file, "relu", out_bin)
+
     max_node_id = 0
     max_channel_id = 0
     map_broad = {}
@@ -111,7 +112,6 @@ def parse_proto(proto_file, out_bin):
         max_node_id = max(max_node_id, op_id)
         max_id = process_funcs[op](operator, map_broad, map_channel_broadcast)
         max_channel_id = max(max_channel_id, max_id)
-
 
     input_id_lst = [s[0].id.id for s in map_broad.values()]
     add_void_channels(program, input_id_lst)
@@ -130,6 +130,61 @@ def parse_proto(proto_file, out_bin):
 
     with open(out_bin, "wb") as f:
         f.write(comal_graph.SerializeToString())
+
+
+def merge_elementwise(proto_file, op_name, out_bin):
+    program = tortilla_pb2.ProgramGraph()
+    with open(proto_file, "rb") as f:
+        proto_fd = f.read()
+        text_format.Parse(proto_fd, program)
+    program_name = program.name
+    operators = program.operators
+
+    process_funcs = {}
+    register_process_funcs(process_funcs)
+
+    max_node_id = 0
+    max_channel_id = 0
+    map_broad = {}
+    map_channel_broadcast = {}
+
+    for operator in operators:
+        op = operator.WhichOneof("op")
+        op_id = operator.id
+        max_node_id = max(max_node_id, op_id)
+        if op == "val_write":
+            intrin = program.operators.add(
+                name=op_name, id=max_node_id+1)
+            intrin.func.name = op_name
+            intrin.func.input_val.id.id = operator.val_write.input_val.id.id
+            intrin.func.input_val.name = operator.val_write.input_val.name
+            intrin.func.output_val.id.id = max_channel_id + 1
+            operator.val_write.input_val.id.id = max_channel_id + 1
+        if op == "func":
+            continue
+
+        max_id = process_funcs[op](operator, map_broad, map_channel_broadcast)
+        max_channel_id = max(max_channel_id, max_id)
+
+    input_id_lst = [s[0].id.id for s in map_broad.values()]
+    add_void_channels(program, input_id_lst)
+
+    insert_broadcast(program, map_broad, map_channel_broadcast,
+                     max_node_id, max_channel_id)
+
+    comal_graph = comal_pb2.ComalGraph()
+    comal_graph.name = "comal graph"
+    comal_graph.channel_size = 1024
+    comal_graph.graph.CopyFrom(program)
+
+    # out_comal = "comal.pbtxt"
+    # with open(out_comal, "w") as f:
+    #     text_format.PrintMessage(comal_graph, f)
+
+    print(comal_graph)
+
+    # with open(out_bin, "wb") as f:
+    #     f.write(comal_graph.SerializeToString())
 
 
 def merge_protos(proto_files, out_bin):
@@ -680,7 +735,8 @@ if __name__ == "__main__":
                         help='path of the output comal graph file')
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-    if type(args.proto_file) == list:
+    if len(args.proto_file) >= 2:
         merge_protos(args.proto_file, args.out_bin)
     else:
-        parse_proto(args.proto_file, args.out_bin)
+        # parse_proto(args.proto_file, args.out_bin)
+        merge_elementwise(args.proto_file[0], "relu", args.out_bin)

@@ -6,6 +6,7 @@ import torch.fx as fx
 from torch.fx import Node
 import time
 from typing import List
+from adapter import *
 
 # TODO: Figure out how to specify the reorder permutation
 # Replace with Anduin's registry based approach where each implementation of a kernel uses different iteration order
@@ -20,7 +21,7 @@ supported_funcs = ["relu", "softmax", "exp", "sin", "cos"]
 def my_compiler(gm: torch.fx.GraphModule, example_inputs: List[torch.Tensor]):
     print("my_compiler() called with FX graph:")
     gm.graph.print_tabular()
-    print(example_inputs[0].name)
+    print("inputs: ", example_inputs[0])
     inputs = []
     # TODO: Maybe fuse ops here
     ops_to_compile = []
@@ -38,6 +39,11 @@ def my_compiler(gm: torch.fx.GraphModule, example_inputs: List[torch.Tensor]):
                 # TODO: Hardcoded for now
                 custard_args = op_map[op]["ijk"].format(**name_map)
                 print(custard_args)
+            elif (item.target == torch.relu):
+                op = "relu"
+                out_name = item.name
+                args = item.args
+                
         if item.op == "call_module":
             submodule_target = gm.get_submodule(item.target)
             submodule_type = type(submodule_target)
@@ -74,14 +80,8 @@ class CustomGCN(nn.Module):
     # @torch.compile(backend=my_compiler)
     def forward(self, x, adjacency):
         x = self.conv1(x, adjacency)
-        # x = torch.matmul(adjacency, x)
-        # x = torch.spmm(self.weight, x)
-        # x = x + torch.unsqueeze(self.bias, 1)
         x = F.relu(x)
         x = self.conv2(x, adjacency)
-        # x = torch.matmul(adjacency, x)
-        # x = torch.spmm(self.weight, x)
-        # x = x + torch.unsqueeze(torch.unsqueeze(self.bias, 0), 2)
         return x
 
 

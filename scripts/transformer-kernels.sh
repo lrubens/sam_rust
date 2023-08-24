@@ -18,6 +18,7 @@ KERNEL_NAMES=(
   gcn_1
   gcn_2
   gcn_3
+  gcn_4
   # gcn_mul
   # gcn_add
   # add_1
@@ -49,9 +50,10 @@ TACO_ARGS=(
   # "A(j,k)=E(j,i)*F(i,l)*C(l,k) -f=A:ss -f=E:ss -f=F:ss:1,0 -f=C:ss:1,0" #reorder: jikl 
   "B(i,k)=E(i,l)*F(l,k) -f=B:ss:0,1 -f=E:ss:0,1 -f=F:ss:1,0 -f=d:s -s=reorder(i,k)" #reorder: jikl 
   "A(i,j)=B(i,k)*C(k,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=C:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
-  # "A(i,j)=B(i,k)*E(k,l)*F(l,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=E:ss:1,0 -f=F:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
+  "A(i,j)=B(i,k)*E(k,l)*F(l,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=E:ss:1,0 -f=F:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
+  # "X(i,j)=G(i,k)*E(k,l)*F(l,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=E:ss:1,0 -f=F:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
 
-  "A(m,n)=G(m,i)*B(i,k)*E(k,l)*F(l,j)*I(i,n)+d(i)+h(m) -f=A:ss:1,0 -f=G:ss:1,0 -f=I:ss:1,0 -f=h:s -f=B:ss:1,0 -f=E:ss:1,0 -f=F:ss:1,0 -f=d:s -s=reorder(m,n)" #reorder: jikl 
+  "X(m,n)=G(m,i)*A(i,j)*I(j,n)+h(m) -f=X:ss -f=G:ss -f=A:ss -f=I:ss -f=h:s" #reorder: jikl 
   # "X(i,j)=B(i,k)*C(k,j) -f=X:ss -f=B:ss:1,0 -f=C:ss -s=reorder(k,i,j)"
 
   # "A(i,j)=B(i,k)*E(k,l)*F(l,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=E:ss:1,0 -f=F:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
