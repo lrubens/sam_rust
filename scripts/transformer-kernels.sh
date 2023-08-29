@@ -54,7 +54,7 @@ TACO_ARGS=(
   # "X(i,j)=G(i,k)*E(k,l)*F(l,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=E:ss:1,0 -f=F:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
 
   # "X(m,j)=G(m,n)*I(n,i)*A(i,j)+h(m) -f=X:ss:1,0 -f=G:ss:0,1 -f=I:ss:1,0 -f=A:ss:0,1 -f=h:s -s=reorder(j,m)"
-  "X(m,j)=G(m,n)*I(n,i)*B(i,k)*E(k,l)*F(l,j)+h(m) -f=X:ss:1,0 -f=G:ss:0,1 -f=I:ss:0,1 -f=A:ss:0,1 -f=B:ss:1,0 -f=E:ss:1,0 -f=F:ss:1,0 -f=h:s -s=reorder(j,m)"
+  "X(m,j)=G(m,n)*I(n,i)*B(i,k)*E(k,l)*F(l,j)+h(m) -f=X:ss:0,1 -f=G:ss:0,1 -f=I:ss:1,0 -f=A:ss:0,1 -f=B:ss:1,0 -f=E:ss:1,0 -f=F:ss:1,0 -f=h:s -s=reorder(m,j)"
   # "X(i,j)=B(i,k)*C(k,j) -f=X:ss -f=B:ss:1,0 -f=C:ss -s=reorder(k,i,j)"
 
   # "A(i,j)=B(i,k)*E(k,l)*F(l,j)+d(i) -f=A:ss:0,1 -f=B:ss:0,1 -f=E:ss:1,0 -f=F:ss:1,0 -f=d:s -s=reorder(i,j)" #reorder: jikl 
