@@ -6,7 +6,7 @@ def set_or_create(map, key, val, valtype):
     return
 
 
-def process_fiber_lookup(operator, map_broad, map_channel_broadcast):
+def process_fiber_lookup(operator, map_broad, map_channel_broadcast, out_lst=None):
     op = operator.WhichOneof("op")
     if op == "fiber_lookup":
         in1 = operator.fiber_lookup.input_ref.id.id
@@ -20,7 +20,7 @@ def process_fiber_lookup(operator, map_broad, map_channel_broadcast):
     return in1
 
 
-def process_repeat(operator, map_broad, map_channel_broadcast):
+def process_repeat(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.repeat.input_rep_sig.id.id
     in2 = operator.repeat.input_ref.id.id
     if (in1, "repsig") in map_broad:
@@ -37,7 +37,7 @@ def process_repeat(operator, map_broad, map_channel_broadcast):
     return max(in1, in2)
 
 
-def process_repeat_sig(operator, map_broad, map_channel_broadcast):
+def process_repeat_sig(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.repeatsig.input_crd.id.id
     if (in1, "crd") in map_broad:
         set_or_create(map_channel_broadcast, in1, 1, "crd")
@@ -47,7 +47,7 @@ def process_repeat_sig(operator, map_broad, map_channel_broadcast):
     return in1
 
 
-def process_fiber_write(operator, map_broad, map_channel_broadcast):
+def process_fiber_write(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.fiber_write.input_crd.id.id
     if (in1, "crd") in map_broad:
         set_or_create(map_channel_broadcast, in1, 1, "crd")
@@ -57,7 +57,7 @@ def process_fiber_write(operator, map_broad, map_channel_broadcast):
     return in1
 
 
-def process_val_write(operator, map_broad, map_channel_broadcast):
+def process_val_write(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.val_write.input_val.id.id
     if (in1, "val") in map_broad:
         set_or_create(map_channel_broadcast, in1, 1, "val")
@@ -67,7 +67,7 @@ def process_val_write(operator, map_broad, map_channel_broadcast):
     return in1
 
 
-def process_array(operator, map_broad, map_channel_broadcast):
+def process_array(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.array.input_ref.id.id
     if (in1, "ref") in map_broad:
         set_or_create(map_channel_broadcast, in1, 1, "ref")
@@ -77,7 +77,7 @@ def process_array(operator, map_broad, map_channel_broadcast):
     return in1
 
 
-def process_joiner(operator, map_broad, map_channel_broadcast):
+def process_joiner(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.joiner.input_pairs[0].crd.id.id
     in2 = operator.joiner.input_pairs[0].ref.id.id
     in3 = operator.joiner.input_pairs[1].crd.id.id
@@ -106,7 +106,7 @@ def process_joiner(operator, map_broad, map_channel_broadcast):
     return max(in1, in2, in3, in4)
 
 
-def process_reduce(operator, map_broad, map_channel_broadcast):
+def process_reduce(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.reduce.input_val.id.id
     if (in1, "val") in map_broad:
         set_or_create(map_channel_broadcast, in1, 1, "val")
@@ -117,7 +117,7 @@ def process_reduce(operator, map_broad, map_channel_broadcast):
     return in1
 
 
-def process_alu(operator, map_broad, map_channel_broadcast):
+def process_alu(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.alu.vals.inputs[0].id.id
     in2 = operator.alu.vals.inputs[1].id.id
     if (in1, "val") in map_broad:
@@ -135,7 +135,7 @@ def process_alu(operator, map_broad, map_channel_broadcast):
     return max(in1, in2)
 
 
-def process_coord_drop(operator, map_broad, map_channel_broadcast):
+def process_coord_drop(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.coord_drop.input_inner_crd.id.id
     in2 = operator.coord_drop.input_outer_crd.id.id
     if (in1, "crd") in map_broad:
@@ -151,7 +151,7 @@ def process_coord_drop(operator, map_broad, map_channel_broadcast):
     return max(in1, in2)
 
 
-def process_coord_hold(operator, map_broad, map_channel_broadcast):
+def process_coord_hold(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.coord_hold.input_inner_crd.id.id
     in2 = operator.coord_hold.input_outer_crd.id.id
     if (in1, "crd") in map_broad:
@@ -168,7 +168,7 @@ def process_coord_hold(operator, map_broad, map_channel_broadcast):
     return max(in1, in2)
 
 
-def process_spacc(operator, map_broad, map_channel_broadcast):
+def process_spacc(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.spacc.input_inner_crd.id.id
     in2 = operator.spacc.input_outer_crd.id.id
     in3 = operator.spacc.input_val.id.id

@@ -70,6 +70,14 @@ def add_void_channels(program, input_id_lst):
             out1 = operator.reduce.output_val
             if out1.id.id not in input_id_lst:
                 out1.id.id = 0
+        elif op == "coord_drop":
+            out1 = operator.coord_drop.output_inner_crd
+            out2 = operator.coord_drop.output_outer_crd
+
+            if out1.id.id not in input_id_lst:
+                out1.id.id = 0
+            if out2.id.id not in input_id_lst:
+                out2.id.id = 0
 
 
 def register_process_funcs(process_funcs):
@@ -105,12 +113,14 @@ def parse_proto(proto_file, out_bin):
     max_channel_id = 0
     map_broad = {}
     map_channel_broadcast = {}
+    out_lst = []
 
     for operator in operators:
         op = operator.WhichOneof("op")
         op_id = operator.id
         max_node_id = max(max_node_id, op_id)
-        max_id = process_funcs[op](operator, map_broad, map_channel_broadcast)
+        max_id = process_funcs[op](
+            operator, map_broad, map_channel_broadcast, out_lst)
         max_channel_id = max(max_channel_id, max_id)
 
     input_id_lst = [s[0].id.id for s in map_broad.values()]
@@ -124,9 +134,9 @@ def parse_proto(proto_file, out_bin):
     comal_graph.channel_size = 1024
     comal_graph.graph.CopyFrom(program)
 
-    # out_comal = "comal.pbtxt"
-    # with open(out_comal, "w") as f:
-    #     text_format.PrintMessage(comal_graph, f)
+    out_comal = "comal.pbtxt"
+    with open(out_comal, "w") as f:
+        text_format.PrintMessage(comal_graph, f)
 
     with open(out_bin, "wb") as f:
         f.write(comal_graph.SerializeToString())
@@ -738,5 +748,5 @@ if __name__ == "__main__":
     if len(args.proto_file) >= 2:
         merge_protos(args.proto_file, args.out_bin)
     else:
-        # parse_proto(args.proto_file, args.out_bin)
-        merge_elementwise(args.proto_file[0], "relu", args.out_bin)
+        parse_proto(args.proto_file[0], args.out_bin)
+        # merge_elementwise(args.proto_file[0], "relu", args.out_bin)

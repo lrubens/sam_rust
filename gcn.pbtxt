@@ -31,8 +31,7 @@ operators {
         id: 85
       }
     }
-    output_crd {:w
-
+    output_crd {
       id {
         id: 1
       }
@@ -1297,7 +1296,7 @@ operators {
     }
     output_inner_crd {
       id {
-        id: 16
+        id: 160
       }
       name: "inner-k"
     }
@@ -1628,7 +1627,7 @@ operators {
       id {
         id: 31
       }
-      name: "crd_inner-k"
+      name: "val"
     }
     output_val {
       id {
@@ -1646,7 +1645,7 @@ operators {
       id {
         id: 21
       }
-      name: "crd_inner-k"
+      name: "val"
     }
     output_val {
       id {
@@ -1664,7 +1663,7 @@ operators {
       id {
         id: 19
       }
-      name: "crd_inner-k"
+      name: "val"
     }
     output_val {
       id {
@@ -1682,7 +1681,7 @@ operators {
       id {
         id: 17
       }
-      name: "crd_inner-k"
+      name: "val"
     }
     output_val {
       id {
