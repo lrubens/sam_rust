@@ -1,1494 +1,260 @@
 name: "comal graph"
 channel_size: 1024
 graph {
-  name: "X=ss01,G=ss01,I=ss10,B=ss10,E=ss10,F=ss10,h=s0\""
   operators {
-    name: "fiberlookup"
-    id: 78
-    fiber_lookup {
+    name: "root"
+    id: 1
+    root {
+      label: "root t0"
       output_ref {
-        id {
-          id: 87
-        }
-      }
-      output_crd {
-        id {
-          id: 86
-        }
-        name: "in-h"
-      }
-      index: "m"
-      tensor: "h"
-      format: "compressed"
-      src: true
-      root: true
-      label: "FiberLookup m: h0\\ncompressed"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 77
-    fiber_lookup {
-      output_ref {
-        id {
-          id: 85
-        }
-      }
-      output_crd {
         id {
           id: 1
         }
-        name: "in-G"
       }
-      index: "m"
-      tensor: "G"
-      format: "compressed"
-      src: true
-      root: true
-      label: "FiberLookup m: G0\\ncompressed"
     }
   }
   operators {
-    name: "union"
-    id: 76
-    joiner {
-      join_type: UNION
-      input_pairs {
-        crd {
-          id {
-            id: 1
-          }
-          name: "crd_in-G"
-        }
-        ref {
-          id {
-            id: 85
-          }
-          name: "ref_in-G"
-        }
-      }
-      input_pairs {
-        crd {
-          id {
-            id: 86
-          }
-          name: "crd_in-h"
-        }
-        ref {
-          id {
-            id: 87
-          }
-          name: "ref_in-h"
-        }
-      }
-      index: "m"
-      label: "union m"
-      output_ref1 {
+    name: "fiberlookup"
+    id: 2
+    fiber_lookup {
+      input_ref {
         id {
-          id: 83
+          id: 1
         }
-        name: "out-G"
       }
-      output_ref2 {
-        id {
-          id: 84
-        }
-        name: "out-h"
-      }
-      output_crd {
+      output_ref {
         id {
           id: 2
         }
-        name: "m"
+      }
+      output_crd {
+        id {
+          id: 3
+        }
+      }
+      index: "d0"
+      tensor: "t0"
+      format: "dense"
+      label: "fiberlookup d0"
+    }
+  }
+  operators {
+    name: "root"
+    id: 3
+    root {
+      label: "root t1"
+      output_ref {
+        id {
+          id: 4
+        }
       }
     }
   }
   operators {
-    name: "repsiggen"
-    id: 74
-    repeatsig {
-      input_crd {
+    name: "repeat"
+    id: 4
+    repeat {
+      input_ref {
         id {
-          id: 119
+          id: 4
         }
-        name: "crd"
       }
-      output_rep_sig {
+      output_ref {
         id {
           id: 5
         }
       }
-      label: "RepeatSignalGenerator m"
-      index: "m"
+      label: "repeat d0: t1"
+      index: "d0"
+      tensor: "t1"
+      input_rep_crd {
+        id {
+          id: 2
+        }
+      }
     }
   }
   operators {
-    name: "repeat"
-    id: 72
-    repeat {
-      output_ref {
+    name: "fiberlookup"
+    id: 5
+    fiber_lookup {
+      input_ref {
         id {
-          id: 73
+          id: 5
         }
       }
-      input_rep_sig {
-        id {
-          id: 88
-        }
-        name: "repsig"
-      }
-      label: "Repeat m: F"
-      index: "m"
-      root: true
-      tensor: "F"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 71
-    repeat {
-      output_ref {
-        id {
-          id: 62
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 89
-        }
-        name: "repsig"
-      }
-      label: "Repeat m: E"
-      index: "m"
-      root: true
-      tensor: "E"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 70
-    repeat {
-      output_ref {
-        id {
-          id: 49
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 90
-        }
-        name: "repsig"
-      }
-      label: "Repeat m: B"
-      index: "m"
-      root: true
-      tensor: "B"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 69
-    repeat {
       output_ref {
         id {
           id: 6
         }
       }
-      input_rep_sig {
-        id {
-          id: 91
-        }
-        name: "repsig"
-      }
-      label: "Repeat m: I"
-      index: "m"
-      root: true
-      tensor: "I"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 68
-    fiber_lookup {
-      input_ref {
-        id {
-          id: 73
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 80
-        }
-      }
       output_crd {
-        id {
-          id: 74
-        }
-      }
-      index: "j"
-      tensor: "F"
-      mode: 1
-      format: "compressed"
-      src: true
-      label: "FiberLookup j: F1\\ncompressed"
-    }
-  }
-  operators {
-    name: "repsiggen"
-    id: 66
-    repeatsig {
-      input_crd {
-        id {
-          id: 117
-        }
-        name: "crd"
-      }
-      output_rep_sig {
-        id {
-          id: 75
-        }
-      }
-      label: "RepeatSignalGenerator j"
-      index: "j"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 64
-    repeat {
-      input_ref {
-        id {
-          id: 84
-        }
-        name: "ref_out-h"
-      }
-      output_ref {
-        id {
-          id: 77
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 92
-        }
-        name: "repsig"
-      }
-      label: "Repeat j: h"
-      index: "j"
-      tensor: "h"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 63
-    repeat {
-      input_ref {
-        id {
-          id: 62
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 63
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 93
-        }
-        name: "repsig"
-      }
-      label: "Repeat j: E"
-      index: "j"
-      tensor: "E"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 62
-    repeat {
-      input_ref {
-        id {
-          id: 49
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 50
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 94
-        }
-        name: "repsig"
-      }
-      label: "Repeat j: B"
-      index: "j"
-      tensor: "B"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 61
-    repeat {
-      input_ref {
-        id {
-          id: 6
-        }
-        name: "ref"
-      }
-      output_ref {
         id {
           id: 7
         }
       }
-      input_rep_sig {
-        id {
-          id: 95
-        }
-        name: "repsig"
-      }
-      label: "Repeat j: I"
-      index: "j"
-      tensor: "I"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 60
-    repeat {
-      input_ref {
-        id {
-          id: 83
-        }
-        name: "ref_out-G"
-      }
-      output_ref {
-        id {
-          id: 76
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 96
-        }
-        name: "repsig"
-      }
-      label: "Repeat j: G"
-      index: "j"
-      tensor: "G"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 59
-    fiber_lookup {
-      input_ref {
-        id {
-          id: 80
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 82
-        }
-      }
-      output_crd {
-        id {
-          id: 81
-        }
-        name: "in-F"
-      }
-      index: "l"
-      tensor: "F"
-      format: "compressed"
-      src: true
-      label: "FiberLookup l: F0\\ncompressed"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 58
-    fiber_lookup {
-      input_ref {
-        id {
-          id: 63
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 72
-        }
-      }
-      output_crd {
-        id {
-          id: 64
-        }
-        name: "in-E"
-      }
-      index: "l"
-      tensor: "E"
+      index: "d1"
+      tensor: "t1"
       mode: 1
-      format: "compressed"
-      src: true
-      label: "FiberLookup l: E1\\ncompressed"
-    }
-  }
-  operators {
-    name: "intersect"
-    id: 57
-    joiner {
-      input_pairs {
-        crd {
-          id {
-            id: 64
-          }
-          name: "crd_in-E"
-        }
-        ref {
-          id {
-            id: 72
-          }
-          name: "ref_in-E"
-        }
-      }
-      input_pairs {
-        crd {
-          id {
-            id: 81
-          }
-          name: "crd_in-F"
-        }
-        ref {
-          id {
-            id: 82
-          }
-          name: "ref_in-F"
-        }
-      }
-      index: "l"
-      label: "intersect l"
-      output_ref1 {
-        id {
-          id: 68
-        }
-        name: "out-E"
-      }
-      output_ref2 {
-        id {
-          id: 71
-        }
-        name: "out-F"
-      }
-      output_crd {
-        id {
-          id: 65
-        }
-        name: "l"
-      }
-    }
-  }
-  operators {
-    name: "repsiggen"
-    id: 55
-    repeatsig {
-      input_crd {
-        id {
-          id: 115
-        }
-        name: "crd"
-      }
-      output_rep_sig {
-        id {
-          id: 66
-        }
-      }
-      label: "RepeatSignalGenerator l"
-      index: "l"
+      format: "dense"
+      label: "fiberlookup d1"
     }
   }
   operators {
     name: "repeat"
-    id: 53
+    id: 6
     repeat {
       input_ref {
         id {
-          id: 50
+          id: 2
         }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 51
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 97
-        }
-        name: "repsig"
-      }
-      label: "Repeat l: B"
-      index: "l"
-      tensor: "B"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 52
-    repeat {
-      input_ref {
-        id {
-          id: 7
-        }
-        name: "ref"
       }
       output_ref {
         id {
           id: 8
         }
       }
-      input_rep_sig {
+      label: "repeat d1: t0"
+      index: "d1"
+      tensor: "t0"
+      input_rep_crd {
         id {
-          id: 98
-        }
-        name: "repsig"
-      }
-      label: "Repeat l: I"
-      index: "l"
-      tensor: "I"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 51
-    repeat {
-      input_ref {
-        id {
-          id: 76
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 67
+          id: 6
         }
       }
-      input_rep_sig {
-        id {
-          id: 99
-        }
-        name: "repsig"
-      }
-      label: "Repeat l: G"
-      index: "l"
-      tensor: "G"
     }
   }
   operators {
     name: "fiberlookup"
-    id: 50
+    id: 7
     fiber_lookup {
-      input_ref {
-        id {
-          id: 68
-        }
-        name: "ref_out-E"
-      }
-      output_ref {
-        id {
-          id: 70
-        }
-      }
-      output_crd {
-        id {
-          id: 69
-        }
-        name: "in-E"
-      }
-      index: "k"
-      tensor: "E"
-      format: "compressed"
-      src: true
-      label: "FiberLookup k: E0\\ncompressed"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 49
-    fiber_lookup {
-      input_ref {
-        id {
-          id: 51
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 61
-        }
-      }
-      output_crd {
-        id {
-          id: 52
-        }
-        name: "in-B"
-      }
-      index: "k"
-      tensor: "B"
-      mode: 1
-      format: "compressed"
-      src: true
-      label: "FiberLookup k: B1\\ncompressed"
-    }
-  }
-  operators {
-    name: "intersect"
-    id: 48
-    joiner {
-      input_pairs {
-        crd {
-          id {
-            id: 52
-          }
-          name: "crd_in-B"
-        }
-        ref {
-          id {
-            id: 61
-          }
-          name: "ref_in-B"
-        }
-      }
-      input_pairs {
-        crd {
-          id {
-            id: 69
-          }
-          name: "crd_in-E"
-        }
-        ref {
-          id {
-            id: 70
-          }
-          name: "ref_in-E"
-        }
-      }
-      index: "k"
-      label: "intersect k"
-      output_ref1 {
-        id {
-          id: 57
-        }
-        name: "out-B"
-      }
-      output_ref2 {
-        id {
-          id: 60
-        }
-        name: "out-E"
-      }
-      output_crd {
-        id {
-          id: 53
-        }
-        name: "k"
-      }
-    }
-  }
-  operators {
-    name: "repsiggen"
-    id: 46
-    repeatsig {
-      input_crd {
-        id {
-          id: 113
-        }
-        name: "crd"
-      }
-      output_rep_sig {
-        id {
-          id: 54
-        }
-      }
-      label: "RepeatSignalGenerator k"
-      index: "k"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 44
-    repeat {
-      input_ref {
-        id {
-          id: 71
-        }
-        name: "ref_out-F"
-      }
-      output_ref {
-        id {
-          id: 56
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 100
-        }
-        name: "repsig"
-      }
-      label: "Repeat k: F"
-      index: "k"
-      tensor: "F"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 43
-    repeat {
       input_ref {
         id {
           id: 8
         }
-        name: "ref"
       }
       output_ref {
         id {
           id: 9
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 101
-        }
-        name: "repsig"
-      }
-      label: "Repeat k: I"
-      index: "k"
-      tensor: "I"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 42
-    repeat {
-      input_ref {
-        id {
-          id: 67
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 55
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 102
-        }
-        name: "repsig"
-      }
-      label: "Repeat k: G"
-      index: "k"
-      tensor: "G"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 41
-    fiber_lookup {
-      input_ref {
-        id {
-          id: 57
-        }
-        name: "ref_out-B"
-      }
-      output_ref {
-        id {
-          id: 59
-        }
-      }
-      output_crd {
-        id {
-          id: 58
-        }
-        name: "in-B"
-      }
-      index: "i"
-      tensor: "B"
-      format: "compressed"
-      src: true
-      label: "FiberLookup i: B0\\ncompressed"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 40
-    fiber_lookup {
-      input_ref {
-        id {
-          id: 9
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 48
         }
       }
       output_crd {
         id {
           id: 10
         }
-        name: "in-I"
       }
-      index: "i"
-      tensor: "I"
+      index: "d2"
+      tensor: "t0"
       mode: 1
       format: "compressed"
-      src: true
-      label: "FiberLookup i: I1\\ncompressed"
+      label: "fiberlookup d2"
+    }
+  }
+  operators {
+    name: "fiberlookup"
+    id: 8
+    fiber_lookup {
+      input_ref {
+        id {
+          id: 6
+        }
+      }
+      output_ref {
+        id {
+          id: 11
+        }
+      }
+      output_crd {
+        id {
+          id: 12
+        }
+      }
+      index: "d2"
+      tensor: "t1"
+      format: "dense"
+      label: "fiberlookup d2"
     }
   }
   operators {
     name: "intersect"
-    id: 39
+    id: 9
     joiner {
       input_pairs {
         crd {
           id {
             id: 10
           }
-          name: "crd_in-I"
         }
         ref {
           id {
-            id: 48
+            id: 9
           }
-          name: "ref_in-I"
         }
       }
       input_pairs {
         crd {
           id {
-            id: 58
+            id: 12
           }
-          name: "crd_in-B"
         }
         ref {
           id {
-            id: 59
+            id: 11
           }
-          name: "ref_in-B"
         }
       }
-      index: "i"
-      label: "intersect i"
-      output_ref1 {
-        id {
-          id: 44
-        }
-        name: "out-I"
-      }
-      output_ref2 {
-        id {
-          id: 47
-        }
-        name: "out-B"
-      }
-      output_crd {
-        id {
-          id: 11
-        }
-        name: "i"
-      }
-    }
-  }
-  operators {
-    name: "repsiggen"
-    id: 37
-    repeatsig {
-      input_crd {
-        id {
-          id: 111
-        }
-        name: "crd"
-      }
-      output_rep_sig {
-        id {
-          id: 22
-        }
-      }
-      label: "RepeatSignalGenerator i"
-      index: "i"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 35
-    repeat {
-      input_ref {
-        id {
-          id: 56
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 43
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 103
-        }
-        name: "repsig"
-      }
-      label: "Repeat i: F"
-      index: "i"
-      tensor: "F"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 34
-    repeat {
-      input_ref {
-        id {
-          id: 60
-        }
-        name: "ref_out-E"
-      }
-      output_ref {
-        id {
-          id: 42
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 104
-        }
-        name: "repsig"
-      }
-      label: "Repeat i: E"
-      index: "i"
-      tensor: "E"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 33
-    repeat {
-      input_ref {
-        id {
-          id: 55
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 23
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 105
-        }
-        name: "repsig"
-      }
-      label: "Repeat i: G"
-      index: "i"
-      tensor: "G"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 32
-    fiber_lookup {
-      input_ref {
-        id {
-          id: 44
-        }
-        name: "ref_out-I"
-      }
-      output_ref {
-        id {
-          id: 46
-        }
-      }
-      output_crd {
-        id {
-          id: 45
-        }
-        name: "in-I"
-      }
-      index: "n"
-      tensor: "I"
-      format: "compressed"
-      src: true
-      label: "FiberLookup n: I0\\ncompressed"
-    }
-  }
-  operators {
-    name: "fiberlookup"
-    id: 31
-    fiber_lookup {
-      input_ref {
-        id {
-          id: 23
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 41
-        }
-      }
-      output_crd {
-        id {
-          id: 24
-        }
-        name: "in-G"
-      }
-      index: "n"
-      tensor: "G"
-      mode: 1
-      format: "compressed"
-      src: true
-      label: "FiberLookup n: G1\\ncompressed"
-    }
-  }
-  operators {
-    name: "intersect"
-    id: 30
-    joiner {
-      input_pairs {
-        crd {
-          id {
-            id: 24
-          }
-          name: "crd_in-G"
-        }
-        ref {
-          id {
-            id: 41
-          }
-          name: "ref_in-G"
-        }
-      }
-      input_pairs {
-        crd {
-          id {
-            id: 45
-          }
-          name: "crd_in-I"
-        }
-        ref {
-          id {
-            id: 46
-          }
-          name: "ref_in-I"
-        }
-      }
-      index: "n"
-      label: "intersect n"
-      output_ref1 {
-        id {
-          id: 36
-        }
-        name: "out-G"
-      }
-      output_ref2 {
-        id {
-          id: 39
-        }
-        name: "out-I"
-      }
-      output_crd {
-        id {
-          id: 25
-        }
-        name: "n"
-      }
-    }
-  }
-  operators {
-    name: "repsiggen"
-    id: 28
-    repeatsig {
-      input_crd {
-        id {
-          id: 109
-        }
-        name: "crd"
-      }
-      output_rep_sig {
-        id {
-          id: 26
-        }
-      }
-      label: "RepeatSignalGenerator n"
-      index: "n"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 26
-    repeat {
-      input_ref {
-        id {
-          id: 43
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 34
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 106
-        }
-        name: "repsig"
-      }
-      label: "Repeat n: F"
-      index: "n"
-      tensor: "F"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 25
-    repeat {
-      input_ref {
-        id {
-          id: 42
-        }
-        name: "ref"
-      }
-      output_ref {
-        id {
-          id: 32
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 107
-        }
-        name: "repsig"
-      }
-      label: "Repeat n: E"
-      index: "n"
-      tensor: "E"
-    }
-  }
-  operators {
-    name: "repeat"
-    id: 24
-    repeat {
-      input_ref {
-        id {
-          id: 47
-        }
-        name: "ref_out-B"
-      }
-      output_ref {
-        id {
-          id: 27
-        }
-      }
-      input_rep_sig {
-        id {
-          id: 108
-        }
-        name: "repsig"
-      }
-      label: "Repeat n: B"
-      index: "n"
-      tensor: "B"
-    }
-  }
-  operators {
-    name: "crddrop"
-    id: 23
-    coord_drop {
-      input_inner_crd {
-        id {
-          id: 110
-        }
-        name: "crd_n"
-      }
-      input_outer_crd {
-        id {
-          id: 112
-        }
-        name: "crd_i"
-      }
-      output_inner_crd {
-        id {
-        }
-        name: "inner-n"
-      }
-      output_outer_crd {
-        id {
-          id: 12
-        }
-        name: "outer-i"
-      }
-      inner_crd: "n"
-      outer_crd: "i"
-      label: "CrdDrop i,n"
-    }
-  }
-  operators {
-    name: "crddrop"
-    id: 22
-    coord_drop {
-      input_inner_crd {
-        id {
-          id: 12
-        }
-        name: "crd_outer-i"
-      }
-      input_outer_crd {
-        id {
-          id: 114
-        }
-        name: "crd_k"
-      }
-      output_inner_crd {
-        id {
-        }
-        name: "inner-i"
-      }
-      output_outer_crd {
+      index: "d2"
+      label: "intersect d2"
+      output_refs {
         id {
           id: 13
         }
-        name: "outer-k"
       }
-      inner_crd: "i"
-      outer_crd: "k"
-      label: "CrdDrop k,i"
+      output_refs {
+        id {
+          id: 14
+        }
+      }
+      output_crd {
+        id {
+        }
+      }
     }
   }
   operators {
-    name: "crddrop"
-    id: 21
-    coord_drop {
-      input_inner_crd {
+    name: "arrayval"
+    id: 10
+    array {
+      tensor: "t0"
+      input_ref {
         id {
           id: 13
         }
-        name: "crd_outer-k"
       }
-      input_outer_crd {
+      output_val {
         id {
-          id: 116
+          id: 16
         }
-        name: "crd_l"
       }
-      output_inner_crd {
-        id {
-        }
-        name: "inner-k"
-      }
-      output_outer_crd {
+      label: "arrayval t0"
+    }
+  }
+  operators {
+    name: "arrayval"
+    id: 11
+    array {
+      tensor: "t1"
+      input_ref {
         id {
           id: 14
         }
-        name: "outer-l"
-      }
-      inner_crd: "k"
-      outer_crd: "l"
-      label: "CrdDrop l,k"
-    }
-  }
-  operators {
-    name: "crddrop"
-    id: 20
-    coord_drop {
-      input_inner_crd {
-        id {
-          id: 14
-        }
-        name: "crd_outer-l"
-      }
-      input_outer_crd {
-        id {
-          id: 118
-        }
-        name: "crd_j"
-      }
-      output_outer_crd {
-        id {
-          id: 15
-        }
-        name: "outer-j"
-      }
-      inner_crd: "l"
-      outer_crd: "j"
-      label: "CrdDrop j,l"
-    }
-  }
-  operators {
-    name: "crddrop"
-    id: 19
-    coord_drop {
-      input_inner_crd {
-        id {
-          id: 15
-        }
-        name: "crd_outer-j"
-      }
-      input_outer_crd {
-        id {
-          id: 120
-        }
-        name: "crd_m"
-      }
-      output_inner_crd {
-        id {
-          id: 4
-        }
-        name: "inner-j"
-      }
-      output_outer_crd {
-        id {
-          id: 3
-        }
-        name: "outer-m"
-      }
-      inner_crd: "j"
-      outer_crd: "m"
-      label: "CrdDrop m,j"
-    }
-  }
-  operators {
-    name: "arrayvals"
-    id: 18
-    array {
-      tensor: "h"
-      input_ref {
-        id {
-          id: 77
-        }
-        name: "ref"
       }
       output_val {
         id {
-          id: 78
+          id: 17
         }
-        name: "val"
       }
-      label: "Array Vals: h"
-    }
-  }
-  operators {
-    name: "arrayvals"
-    id: 17
-    array {
-      tensor: "F"
-      input_ref {
-        id {
-          id: 34
-        }
-        name: "ref"
-      }
-      output_val {
-        id {
-          id: 35
-        }
-        name: "val"
-      }
-      label: "Array Vals: F"
-    }
-  }
-  operators {
-    name: "arrayvals"
-    id: 16
-    array {
-      tensor: "E"
-      input_ref {
-        id {
-          id: 32
-        }
-        name: "ref"
-      }
-      output_val {
-        id {
-          id: 33
-        }
-        name: "val"
-      }
-      label: "Array Vals: E"
-    }
-  }
-  operators {
-    name: "arrayvals"
-    id: 15
-    array {
-      tensor: "B"
-      input_ref {
-        id {
-          id: 27
-        }
-        name: "ref"
-      }
-      output_val {
-        id {
-          id: 28
-        }
-        name: "val"
-      }
-      label: "Array Vals: B"
-    }
-  }
-  operators {
-    name: "arrayvals"
-    id: 14
-    array {
-      tensor: "I"
-      input_ref {
-        id {
-          id: 39
-        }
-        name: "ref_out-I"
-      }
-      output_val {
-        id {
-          id: 40
-        }
-        name: "val"
-      }
-      label: "Array Vals: I"
-    }
-  }
-  operators {
-    name: "arrayvals"
-    id: 13
-    array {
-      tensor: "G"
-      input_ref {
-        id {
-          id: 36
-        }
-        name: "ref_out-G"
-      }
-      output_val {
-        id {
-          id: 37
-        }
-        name: "val"
-      }
-      label: "Array Vals: G"
+      label: "arrayval t1"
     }
   }
   operators {
@@ -1498,615 +264,84 @@ graph {
       vals {
         inputs {
           id {
-            id: 37
-          }
-          name: "val"
-        }
-        inputs {
-          id {
-            id: 40
-          }
-          name: "val"
-        }
-        output {
-          id {
-            id: 38
-          }
-          name: "val"
-        }
-      }
-      stages {
-        inputs: 0
-        inputs: 1
-        op: MUL
-      }
-      label: "Mul"
-    }
-  }
-  operators {
-    name: "mul"
-    id: 11
-    alu {
-      vals {
-        inputs {
-          id {
-            id: 28
-          }
-          name: "val"
-        }
-        inputs {
-          id {
-            id: 38
-          }
-          name: "val"
-        }
-        output {
-          id {
-            id: 29
-          }
-          name: "val"
-        }
-      }
-      stages {
-        inputs: 0
-        inputs: 1
-        op: MUL
-      }
-      label: "Mul"
-    }
-  }
-  operators {
-    name: "mul"
-    id: 10
-    alu {
-      vals {
-        inputs {
-          id {
-            id: 29
-          }
-          name: "val"
-        }
-        inputs {
-          id {
-            id: 33
-          }
-          name: "val"
-        }
-        output {
-          id {
-            id: 30
-          }
-          name: "val"
-        }
-      }
-      stages {
-        inputs: 0
-        inputs: 1
-        op: MUL
-      }
-      label: "Mul"
-    }
-  }
-  operators {
-    name: "mul"
-    id: 9
-    alu {
-      vals {
-        inputs {
-          id {
-            id: 30
-          }
-          name: "val"
-        }
-        inputs {
-          id {
-            id: 35
-          }
-          name: "val"
-        }
-        output {
-          id {
-            id: 31
-          }
-          name: "val"
-        }
-      }
-      stages {
-        inputs: 0
-        inputs: 1
-        op: MUL
-      }
-      label: "Mul"
-    }
-  }
-  operators {
-    name: "reduce"
-    id: 8
-    reduce {
-      input_val {
-        id {
-          id: 31
-        }
-        name: "val"
-      }
-      output_val {
-        id {
-          id: 21
-        }
-      }
-      label: "Reduce"
-    }
-  }
-  operators {
-    name: "reduce"
-    id: 7
-    reduce {
-      input_val {
-        id {
-          id: 21
-        }
-        name: "val"
-      }
-      output_val {
-        id {
-          id: 19
-        }
-      }
-      label: "Reduce"
-    }
-  }
-  operators {
-    name: "reduce"
-    id: 6
-    reduce {
-      input_val {
-        id {
-          id: 19
-        }
-        name: "val"
-      }
-      output_val {
-        id {
-          id: 17
-        }
-      }
-      label: "Reduce"
-    }
-  }
-  operators {
-    name: "reduce"
-    id: 5
-    reduce {
-      input_val {
-        id {
-          id: 17
-        }
-        name: "val"
-      }
-      output_val {
-        id {
-          id: 16
-        }
-      }
-      label: "Reduce"
-    }
-  }
-  operators {
-    name: "add"
-    id: 4
-    alu {
-      vals {
-        inputs {
-          id {
-            id: 78
-          }
-          name: "val"
-        }
-        inputs {
-          id {
             id: 16
           }
-          name: "val"
+        }
+        inputs {
+          id {
+            id: 17
+          }
         }
         output {
           id {
-            id: 79
+            id: 18
           }
-          name: "val"
         }
       }
       stages {
         inputs: 0
         inputs: 1
+        op: MUL
       }
-      label: "Add"
+      label: "mul"
+    }
+  }
+  operators {
+    name: "reduce"
+    id: 13
+    reduce {
+      input_val {
+        id {
+          id: 18
+        }
+      }
+      output_val {
+        id {
+        }
+      }
+      label: "reduce"
     }
   }
   operators {
     name: "fiberwrite"
-    id: 3
+    id: 14
     fiber_write {
       input_crd {
         id {
           id: 3
         }
-        name: "crd_outer-m"
       }
-      index: "m"
-      tensor: "X"
-      format: "compressed"
-      segsize: "2"
-      crdsize: "G0_dim"
-      sink: true
-      label: "FiberWrite m: X0\\ncompressed"
+      index: "d0"
+      tensor: "t0"
+      format: "dense"
+      label: "fiberwrite d0"
     }
   }
   operators {
     name: "fiberwrite"
-    id: 2
+    id: 15
     fiber_write {
       input_crd {
         id {
-          id: 4
+          id: 7
         }
-        name: "crd_inner-j"
       }
-      index: "j"
-      tensor: "X"
-      format: "compressed"
-      segsize: "G0_dim+1"
-      crdsize: "G0_dim*F1_dim"
-      sink: true
-      label: "FiberWrite j: X1\\ncompressed"
+      index: "d1"
+      tensor: "t1"
+      format: "dense"
+      label: "fiberwrite d1"
     }
   }
   operators {
     name: "valwrite"
-    id: 1
+    id: 16
     val_write {
       input_val {
         id {
-          id: 79
-        }
-        name: "val"
-      }
-      label: "FiberWrite Vals: X"
-      crdsize: "1*G0_dim*F1_dim"
-      tensor: "X"
-      sink: true
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 79
-    broadcast {
-      repsig {
-        input {
-          id {
-            id: 5
-          }
-          name: "repsig"
-        }
-        outputs {
-          id {
-            id: 88
-          }
-        }
-        outputs {
-          id {
-            id: 89
-          }
-        }
-        outputs {
-          id {
-            id: 90
-          }
-        }
-        outputs {
-          id {
-            id: 91
-          }
+          id: 19
         }
       }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 80
-    broadcast {
-      repsig {
-        input {
-          id {
-            id: 75
-          }
-          name: "repsig"
-        }
-        outputs {
-          id {
-            id: 92
-          }
-        }
-        outputs {
-          id {
-            id: 93
-          }
-        }
-        outputs {
-          id {
-            id: 94
-          }
-        }
-        outputs {
-          id {
-            id: 95
-          }
-        }
-        outputs {
-          id {
-            id: 96
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 81
-    broadcast {
-      repsig {
-        input {
-          id {
-            id: 66
-          }
-          name: "repsig"
-        }
-        outputs {
-          id {
-            id: 97
-          }
-        }
-        outputs {
-          id {
-            id: 98
-          }
-        }
-        outputs {
-          id {
-            id: 99
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 82
-    broadcast {
-      repsig {
-        input {
-          id {
-            id: 54
-          }
-          name: "repsig"
-        }
-        outputs {
-          id {
-            id: 100
-          }
-        }
-        outputs {
-          id {
-            id: 101
-          }
-        }
-        outputs {
-          id {
-            id: 102
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 83
-    broadcast {
-      repsig {
-        input {
-          id {
-            id: 22
-          }
-          name: "repsig"
-        }
-        outputs {
-          id {
-            id: 103
-          }
-        }
-        outputs {
-          id {
-            id: 104
-          }
-        }
-        outputs {
-          id {
-            id: 105
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 84
-    broadcast {
-      repsig {
-        input {
-          id {
-            id: 26
-          }
-          name: "repsig"
-        }
-        outputs {
-          id {
-            id: 106
-          }
-        }
-        outputs {
-          id {
-            id: 107
-          }
-        }
-        outputs {
-          id {
-            id: 108
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 85
-    broadcast {
-      crd {
-        input {
-          id {
-            id: 25
-          }
-          name: "crd"
-        }
-        outputs {
-          id {
-            id: 109
-          }
-        }
-        outputs {
-          id {
-            id: 110
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 86
-    broadcast {
-      crd {
-        input {
-          id {
-            id: 11
-          }
-          name: "crd"
-        }
-        outputs {
-          id {
-            id: 111
-          }
-        }
-        outputs {
-          id {
-            id: 112
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 87
-    broadcast {
-      crd {
-        input {
-          id {
-            id: 53
-          }
-          name: "crd"
-        }
-        outputs {
-          id {
-            id: 113
-          }
-        }
-        outputs {
-          id {
-            id: 114
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 88
-    broadcast {
-      crd {
-        input {
-          id {
-            id: 65
-          }
-          name: "crd"
-        }
-        outputs {
-          id {
-            id: 115
-          }
-        }
-        outputs {
-          id {
-            id: 116
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 89
-    broadcast {
-      crd {
-        input {
-          id {
-            id: 74
-          }
-          name: "crd"
-        }
-        outputs {
-          id {
-            id: 117
-          }
-        }
-        outputs {
-          id {
-            id: 118
-          }
-        }
-      }
-    }
-  }
-  operators {
-    name: "broadcast"
-    id: 90
-    broadcast {
-      crd {
-        input {
-          id {
-            id: 2
-          }
-          name: "crd"
-        }
-        outputs {
-          id {
-            id: 119
-          }
-        }
-        outputs {
-          id {
-            id: 120
-          }
-        }
-      }
+      label: "valwrite"
     }
   }
 }

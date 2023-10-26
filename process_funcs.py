@@ -6,6 +6,20 @@ def set_or_create(map, key, val, valtype):
     return
 
 
+def process_root(operator, map_broad, map_channel_broadcast, out_lst=None):
+    op = operator.WhichOneof("op")
+    # if op == "root":
+        # in1 = operator.root.input_ref.id.id
+        # if (in1, "ref") in map_broad:
+            # set_or_create(map_channel_broadcast, in1, 1, "ref")
+        # else:
+            # map_broad[(in1, "ref")] = []
+
+        # map_broad[(in1, "ref")].append(operator.fiber_lookup.input_ref)
+
+    return 0
+
+
 def process_fiber_lookup(operator, map_broad, map_channel_broadcast, out_lst=None):
     op = operator.WhichOneof("op")
     if op == "fiber_lookup":
@@ -21,17 +35,22 @@ def process_fiber_lookup(operator, map_broad, map_channel_broadcast, out_lst=Non
 
 
 def process_repeat(operator, map_broad, map_channel_broadcast, out_lst=None):
-    in1 = operator.repeat.input_rep_sig.id.id
+    # in1 = operator.repeat.input_rep_sig.id.id
+    in1 = operator.repeat.input_rep_crd.id.id
     in2 = operator.repeat.input_ref.id.id
-    if (in1, "repsig") in map_broad:
-        set_or_create(map_channel_broadcast, in1, 1, "repsig")
+    # if (in1, "repsig") in map_broad:
+    if (in1, "crd") in map_broad:
+        # set_or_create(map_channel_broadcast, in1, 1, "repsig")
+        set_or_create(map_channel_broadcast, in1, 1, "crd")
     else:
-        map_broad[(in1, "repsig")] = []
+        # map_broad[(in1, "repsig")] = []
+        map_broad[(in1, "crd")] = []
     if (in2, "ref") in map_broad:
         set_or_create(map_channel_broadcast, in2, 1, "ref")
     else:
         map_broad[(in2, "ref")] = []
-    map_broad[(in1, "repsig")].append(operator.repeat.input_rep_sig)
+    # map_broad[(in1, "repsig")].append(operator.repeat.input_rep_sig)
+    map_broad[(in1, "crd")].append(operator.repeat.input_rep_crd)
     map_broad[(in2, "ref")].append(operator.repeat.input_ref)
 
     return max(in1, in2)
@@ -170,8 +189,9 @@ def process_coord_hold(operator, map_broad, map_channel_broadcast, out_lst=None)
 
 def process_spacc(operator, map_broad, map_channel_broadcast, out_lst=None):
     in1 = operator.spacc.input_inner_crd.id.id
-    in2 = operator.spacc.input_outer_crd.id.id
-    in3 = operator.spacc.input_val.id.id
+    in2 = operator.spacc.input_outer_crds[0].id.id
+    in3 = operator.spacc.input_outer_crds[1].id.id
+    in4 = operator.spacc.input_val.id.id
     if (in1, "crd") in map_broad:
         set_or_create(map_channel_broadcast, in1, 1, "crd")
         # map_channel_broadcast[in1] += 1
@@ -180,14 +200,20 @@ def process_spacc(operator, map_broad, map_channel_broadcast, out_lst=None):
         # map_channel_broadcast[in2] += 1
     else:
         map_broad[(in2, "crd")] = []
+    if (in3, "crd") in map_broad:
+        set_or_create(map_channel_broadcast, in3, 1, "crd")
+        # map_channel_broadcast[in2] += 1
+    else:
+        map_broad[(in3, "crd")] = []
     if (in3, "val") in map_broad:
         set_or_create(map_channel_broadcast, in3, 1)
         # map_channel_broadcast[in3] += 1
     else:
         map_broad[(in3, "val")] = []
     map_broad[(in1, "crd")].append(operator.spacc.input_inner_crd)
-    map_broad[(in2, "crd")].append(operator.spacc.input_outer_crd)
-    map_broad[(in3, "val")].append(operator.spacc.input_val)
+    map_broad[(in2, "crd")].append(operator.spacc.input_outer_crds[0])
+    map_broad[(in3, "crd")].append(operator.spacc.input_outer_crds[1])
+    map_broad[(in4, "val")].append(operator.spacc.input_val)
     return max(in1, in2, in3)
 
 

@@ -919,7 +919,7 @@ operators {
     }
     output_rep_sig {
       id {
-        id: 22
+        id: 21
       }
     }
     label: "RepeatSignalGenerator i"
@@ -943,7 +943,7 @@ operators {
     }
     input_rep_sig {
       id {
-        id: 22
+        id: 21
       }
       name: "repsig"
     }
@@ -969,7 +969,7 @@ operators {
     }
     input_rep_sig {
       id {
-        id: 22
+        id: 21
       }
       name: "repsig"
     }
@@ -990,12 +990,12 @@ operators {
     }
     output_ref {
       id {
-        id: 23
+        id: 22
       }
     }
     input_rep_sig {
       id {
-        id: 22
+        id: 21
       }
       name: "repsig"
     }
@@ -1038,7 +1038,7 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 23
+        id: 22
       }
       name: "ref"
     }
@@ -1049,7 +1049,7 @@ operators {
     }
     output_crd {
       id {
-        id: 24
+        id: 23
       }
       name: "in-G"
     }
@@ -1068,7 +1068,7 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 24
+          id: 23
         }
         name: "crd_in-G"
       }
@@ -1109,7 +1109,7 @@ operators {
     }
     output_crd {
       id {
-        id: 25
+        id: 24
       }
       name: "n"
     }
@@ -1121,13 +1121,13 @@ operators {
   repeatsig {
     input_crd {
       id {
-        id: 25
+        id: 24
       }
       name: "crd"
     }
     output_rep_sig {
       id {
-        id: 26
+        id: 25
       }
     }
     label: "RepeatSignalGenerator n"
@@ -1151,7 +1151,7 @@ operators {
     }
     input_rep_sig {
       id {
-        id: 26
+        id: 25
       }
       name: "repsig"
     }
@@ -1177,7 +1177,7 @@ operators {
     }
     input_rep_sig {
       id {
-        id: 26
+        id: 25
       }
       name: "repsig"
     }
@@ -1198,12 +1198,12 @@ operators {
     }
     output_ref {
       id {
-        id: 27
+        id: 26
       }
     }
     input_rep_sig {
       id {
-        id: 26
+        id: 25
       }
       name: "repsig"
     }
@@ -1218,7 +1218,7 @@ operators {
   coord_drop {
     input_inner_crd {
       id {
-        id: 25
+        id: 24
       }
       name: "crd_n"
     }
@@ -1438,13 +1438,13 @@ operators {
     tensor: "B"
     input_ref {
       id {
-        id: 27
+        id: 26
       }
       name: "ref"
     }
     output_val {
       id {
-        id: 28
+        id: 27
       }
       name: "val"
     }
@@ -1530,7 +1530,7 @@ operators {
     vals {
       inputs {
         id {
-          id: 28
+          id: 27
         }
         name: "val"
       }
@@ -1542,7 +1542,7 @@ operators {
       }
       output {
         id {
-          id: 29
+          id: 28
         }
         name: "val"
       }
@@ -1562,7 +1562,7 @@ operators {
     vals {
       inputs {
         id {
-          id: 29
+          id: 28
         }
         name: "val"
       }
@@ -1574,7 +1574,7 @@ operators {
       }
       output {
         id {
-          id: 30
+          id: 29
         }
         name: "val"
       }
@@ -1594,7 +1594,7 @@ operators {
     vals {
       inputs {
         id {
-          id: 30
+          id: 29
         }
         name: "val"
       }
@@ -1606,7 +1606,7 @@ operators {
       }
       output {
         id {
-          id: 31
+          id: 30
         }
         name: "val"
       }
@@ -1620,8 +1620,26 @@ operators {
   }
 }
 operators {
-  name: "spaccumulator"
+  name: "reduce"
   id: 8
+  reduce {
+    input_val {
+      id {
+        id: 30
+      }
+      name: "val"
+    }
+    output_val {
+      id {
+        id: 31
+      }
+      name: "reduce_val"
+    }
+  }
+}
+operators {
+  name: "spaccumulator"
+  id: 7
   spacc {
     input_inner_crd {
       id {
@@ -1629,35 +1647,17 @@ operators {
       }
       name: "crd_inner-n"
     }
-    input_val {
-      id {
-        id: 31
-      }
-      name: "val"
-    }
-    output_val {
-      id {
-        id: 21
-      }
-    }
-    inner_crd: "n"
-    outer_crds: "i"
-    outer_crds: "k"
-    outer_crds: "n"
-    outer_crds: "i"
-    outer_crds: "n"
-    label: "SparseAccumulator 0 "
-  }
-}
-operators {
-  name: "spaccumulator"
-  id: 7
-  spacc {
     input_outer_crds {
       id {
         id: 18
       }
       name: "crd_inner-i"
+    }
+    input_val {
+      id {
+        id: 31
+      }
+      name: "val"
     }
     output_val {
       id {

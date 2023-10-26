@@ -53,8 +53,8 @@ def add_void_channels(program, input_id_lst):
             if out1.id.id not in input_id_lst:
                 out1.id.id = 0
         elif op == "joiner":
-            out1 = operator.joiner.output_ref1
-            out2 = operator.joiner.output_ref2
+            out1 = operator.joiner.output_refs[0]
+            out2 = operator.joiner.output_refs[1]
             out3 = operator.joiner.output_crd
             if out1.id.id not in input_id_lst:
                 out1.id.id = 0
@@ -81,6 +81,7 @@ def add_void_channels(program, input_id_lst):
 
 
 def register_process_funcs(process_funcs):
+    process_funcs["root"] = process_root
     process_funcs["fiber_lookup"] = process_fiber_lookup
     process_funcs["repeat"] = process_repeat
     process_funcs["repeatsig"] = process_repeat_sig

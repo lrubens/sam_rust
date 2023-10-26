@@ -125,7 +125,7 @@ operators {
   repeat {
     output_ref {
       id {
-        id: 33
+        id: 34
       }
     }
     input_rep_sig {
@@ -167,7 +167,7 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 33
+        id: 34
       }
       name: "ref"
     }
@@ -178,7 +178,7 @@ operators {
     }
     output_crd {
       id {
-        id: 34
+        id: 35
       }
     }
     index: "j"
@@ -195,13 +195,13 @@ operators {
   repeatsig {
     input_crd {
       id {
-        id: 34
+        id: 35
       }
       name: "crd"
     }
     output_rep_sig {
       id {
-        id: 35
+        id: 36
       }
     }
     label: "RepeatSignalGenerator j"
@@ -220,12 +220,12 @@ operators {
     }
     output_ref {
       id {
-        id: 37
+        id: 38
       }
     }
     input_rep_sig {
       id {
-        id: 35
+        id: 36
       }
       name: "repsig"
     }
@@ -251,7 +251,7 @@ operators {
     }
     input_rep_sig {
       id {
-        id: 35
+        id: 36
       }
       name: "repsig"
     }
@@ -272,12 +272,12 @@ operators {
     }
     output_ref {
       id {
-        id: 36
+        id: 37
       }
     }
     input_rep_sig {
       id {
-        id: 35
+        id: 36
       }
       name: "repsig"
     }
@@ -326,7 +326,7 @@ operators {
     }
     output_ref {
       id {
-        id: 32
+        id: 33
       }
     }
     output_crd {
@@ -356,7 +356,7 @@ operators {
       }
       ref {
         id {
-          id: 32
+          id: 33
         }
         name: "ref_in-E"
       }
@@ -379,13 +379,13 @@ operators {
     label: "intersect l"
     output_ref1 {
       id {
-        id: 28
+        id: 29
       }
       name: "out-E"
     }
     output_ref2 {
       id {
-        id: 31
+        id: 32
       }
       name: "out-F"
     }
@@ -409,7 +409,7 @@ operators {
     }
     output_rep_sig {
       id {
-        id: 14
+        id: 12
       }
     }
     label: "RepeatSignalGenerator l"
@@ -422,18 +422,18 @@ operators {
   repeat {
     input_ref {
       id {
-        id: 36
+        id: 37
       }
       name: "ref"
     }
     output_ref {
       id {
-        id: 15
+        id: 13
       }
     }
     input_rep_sig {
       id {
-        id: 14
+        id: 12
       }
       name: "repsig"
     }
@@ -448,18 +448,18 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 28
+        id: 29
       }
       name: "ref_out-E"
     }
     output_ref {
       id {
-        id: 30
+        id: 31
       }
     }
     output_crd {
       id {
-        id: 29
+        id: 30
       }
       name: "in-E"
     }
@@ -476,18 +476,18 @@ operators {
   fiber_lookup {
     input_ref {
       id {
-        id: 15
+        id: 13
       }
       name: "ref"
     }
     output_ref {
       id {
-        id: 27
+        id: 28
       }
     }
     output_crd {
       id {
-        id: 16
+        id: 14
       }
       name: "in-B"
     }
@@ -506,13 +506,13 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 16
+          id: 14
         }
         name: "crd_in-B"
       }
       ref {
         id {
-          id: 27
+          id: 28
         }
         name: "ref_in-B"
       }
@@ -520,13 +520,13 @@ operators {
     input_pairs {
       crd {
         id {
-          id: 29
+          id: 30
         }
         name: "crd_in-E"
       }
       ref {
         id {
-          id: 30
+          id: 31
         }
         name: "ref_in-E"
       }
@@ -535,19 +535,19 @@ operators {
     label: "intersect k"
     output_ref1 {
       id {
-        id: 22
+        id: 23
       }
       name: "out-B"
     }
     output_ref2 {
       id {
-        id: 25
+        id: 26
       }
       name: "out-E"
     }
     output_crd {
       id {
-        id: 17
+        id: 15
       }
       name: "k"
     }
@@ -559,13 +559,13 @@ operators {
   repeatsig {
     input_crd {
       id {
-        id: 17
+        id: 15
       }
       name: "crd"
     }
     output_rep_sig {
       id {
-        id: 18
+        id: 16
       }
     }
     label: "RepeatSignalGenerator k"
@@ -578,18 +578,18 @@ operators {
   repeat {
     input_ref {
       id {
-        id: 31
+        id: 32
       }
       name: "ref_out-F"
     }
     output_ref {
       id {
-        id: 19
+        id: 17
       }
     }
     input_rep_sig {
       id {
-        id: 18
+        id: 16
       }
       name: "repsig"
     }
@@ -604,7 +604,7 @@ operators {
   coord_drop {
     input_inner_crd {
       id {
-        id: 17
+        id: 15
       }
       name: "crd_k"
     }
@@ -613,12 +613,6 @@ operators {
         id: 9
       }
       name: "crd_l"
-    }
-    output_inner_crd {
-      id {
-        id: 12
-      }
-      name: "inner-k"
     }
     output_outer_crd {
       id {
@@ -643,7 +637,7 @@ operators {
     }
     input_outer_crd {
       id {
-        id: 34
+        id: 35
       }
       name: "crd_j"
     }
@@ -698,13 +692,13 @@ operators {
     tensor: "d"
     input_ref {
       id {
-        id: 37
+        id: 38
       }
       name: "ref"
     }
     output_val {
       id {
-        id: 38
+        id: 39
       }
       name: "val"
     }
@@ -718,13 +712,13 @@ operators {
     tensor: "F"
     input_ref {
       id {
-        id: 19
+        id: 17
       }
       name: "ref"
     }
     output_val {
       id {
-        id: 20
+        id: 18
       }
       name: "val"
     }
@@ -738,13 +732,13 @@ operators {
     tensor: "E"
     input_ref {
       id {
-        id: 25
+        id: 26
       }
       name: "ref_out-E"
     }
     output_val {
       id {
-        id: 26
+        id: 27
       }
       name: "val"
     }
@@ -758,13 +752,13 @@ operators {
     tensor: "B"
     input_ref {
       id {
-        id: 22
+        id: 23
       }
       name: "ref_out-B"
     }
     output_val {
       id {
-        id: 23
+        id: 24
       }
       name: "val"
     }
@@ -778,19 +772,19 @@ operators {
     vals {
       inputs {
         id {
-          id: 23
+          id: 24
         }
         name: "val"
       }
       inputs {
         id {
-          id: 26
+          id: 27
         }
         name: "val"
       }
       output {
         id {
-          id: 24
+          id: 25
         }
         name: "val"
       }
@@ -810,19 +804,19 @@ operators {
     vals {
       inputs {
         id {
-          id: 20
+          id: 18
         }
         name: "val"
       }
       inputs {
         id {
-          id: 24
+          id: 25
         }
         name: "val"
       }
       output {
         id {
-          id: 21
+          id: 19
         }
         name: "val"
       }
@@ -836,28 +830,39 @@ operators {
   }
 }
 operators {
-  name: "spaccumulator"
+  name: "reduce"
   id: 6
-  spacc {
-    input_inner_crd {
-      id {
-        id: 12
-      }
-      name: "crd_inner-k"
-    }
+  reduce {
     input_val {
       id {
-        id: 21
+        id: 19
       }
       name: "val"
     }
     output_val {
       id {
-        id: 13
+        id: 20
       }
+      name: "reduce_val"
     }
-    inner_crd: "k"
-    label: "SparseAccumulator 0 "
+  }
+}
+operators {
+  name: "reduce"
+  id: 5
+  reduce {
+    input_val {
+      id {
+        id: 20
+      }
+      name: "val"
+    }
+    output_val {
+      id {
+        id: 21
+      }
+      name: "reduce_val"
+    }
   }
 }
 operators {
@@ -867,13 +872,19 @@ operators {
     vals {
       inputs {
         id {
-          id: 38
+          id: 21
+        }
+        name: "val"
+      }
+      inputs {
+        id {
+          id: 39
         }
         name: "val"
       }
       output {
         id {
-          id: 39
+          id: 22
         }
         name: "val"
       }
@@ -929,7 +940,7 @@ operators {
   val_write {
     input_val {
       id {
-        id: 39
+        id: 22
       }
       name: "val"
     }
