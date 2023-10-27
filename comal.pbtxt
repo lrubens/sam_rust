@@ -67,9 +67,9 @@ graph {
       label: "repeat d0: t1"
       index: "d0"
       tensor: "t1"
-      input_rep_crd {
+      input_rep_ref {
         id {
-          id: 2
+          id: 20
         }
       }
     }
@@ -106,7 +106,7 @@ graph {
     repeat {
       input_ref {
         id {
-          id: 2
+          id: 21
         }
       }
       output_ref {
@@ -117,9 +117,9 @@ graph {
       label: "repeat d1: t0"
       index: "d1"
       tensor: "t0"
-      input_rep_crd {
+      input_rep_ref {
         id {
-          id: 6
+          id: 22
         }
       }
     }
@@ -156,7 +156,7 @@ graph {
     fiber_lookup {
       input_ref {
         id {
-          id: 6
+          id: 23
         }
       }
       output_ref {
@@ -297,6 +297,7 @@ graph {
       }
       output_val {
         id {
+          id: 19
         }
       }
       label: "reduce"
@@ -342,6 +343,54 @@ graph {
         }
       }
       label: "valwrite"
+    }
+  }
+  operators {
+    name: "broadcast"
+    id: 17
+    broadcast {
+      ref {
+        input {
+          id {
+            id: 2
+          }
+          name: "ref"
+        }
+        outputs {
+          id {
+            id: 20
+          }
+        }
+        outputs {
+          id {
+            id: 21
+          }
+        }
+      }
+    }
+  }
+  operators {
+    name: "broadcast"
+    id: 18
+    broadcast {
+      ref {
+        input {
+          id {
+            id: 6
+          }
+          name: "ref"
+        }
+        outputs {
+          id {
+            id: 22
+          }
+        }
+        outputs {
+          id {
+            id: 23
+          }
+        }
+      }
     }
   }
 }

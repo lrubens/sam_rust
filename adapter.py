@@ -127,6 +127,8 @@ def parse_proto(proto_file, out_bin):
     input_id_lst = [s[0].id.id for s in map_broad.values()]
     add_void_channels(program, input_id_lst)
 
+    # text_format.PrintMessage(program)
+
     insert_broadcast(program, map_broad, map_channel_broadcast,
                      max_node_id, max_channel_id)
 
@@ -749,5 +751,6 @@ if __name__ == "__main__":
     if len(args.proto_file) >= 2:
         merge_protos(args.proto_file, args.out_bin)
     else:
+        print("Parsing proto")
         parse_proto(args.proto_file[0], args.out_bin)
         # merge_elementwise(args.proto_file[0], "relu", args.out_bin)

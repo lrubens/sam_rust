@@ -36,21 +36,21 @@ def process_fiber_lookup(operator, map_broad, map_channel_broadcast, out_lst=Non
 
 def process_repeat(operator, map_broad, map_channel_broadcast, out_lst=None):
     # in1 = operator.repeat.input_rep_sig.id.id
-    in1 = operator.repeat.input_rep_crd.id.id
+    in1 = operator.repeat.input_rep_ref.id.id
     in2 = operator.repeat.input_ref.id.id
     # if (in1, "repsig") in map_broad:
-    if (in1, "crd") in map_broad:
+    if (in1, "ref") in map_broad:
         # set_or_create(map_channel_broadcast, in1, 1, "repsig")
-        set_or_create(map_channel_broadcast, in1, 1, "crd")
+        set_or_create(map_channel_broadcast, in1, 1, "ref")
     else:
         # map_broad[(in1, "repsig")] = []
-        map_broad[(in1, "crd")] = []
+        map_broad[(in1, "ref")] = []
     if (in2, "ref") in map_broad:
         set_or_create(map_channel_broadcast, in2, 1, "ref")
     else:
         map_broad[(in2, "ref")] = []
     # map_broad[(in1, "repsig")].append(operator.repeat.input_rep_sig)
-    map_broad[(in1, "crd")].append(operator.repeat.input_rep_crd)
+    map_broad[(in1, "ref")].append(operator.repeat.input_rep_ref)
     map_broad[(in2, "ref")].append(operator.repeat.input_ref)
 
     return max(in1, in2)
@@ -82,7 +82,7 @@ def process_val_write(operator, map_broad, map_channel_broadcast, out_lst=None):
         set_or_create(map_channel_broadcast, in1, 1, "val")
     else:
         map_broad[(in1, "val")] = []
-    map_broad[(in1, "val")].append(operator.fiber_write.input_crd)
+    map_broad[(in1, "val")].append(operator.val_write.input_val)
     return in1
 
 
@@ -230,3 +230,4 @@ def register_process_funcs(process_ops):
     process_ops["coord_drop"] = process_coord_drop
     process_ops["coord_hold"] = process_coord_hold
     process_ops["spacc"] = process_spacc
+    process_ops["root"] = process_root
